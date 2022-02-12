@@ -26,17 +26,10 @@ SECRET_KEY = 'django-insecure-c4+)%kz38b&5#havm33664&!2$mj5mzr@r62_dfxgnz+u(k9$3
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
-import dotenv
-import dj_database_url
+
 
 # Application definition
-dotenv_file = os.path.join(BASE_DIR, ".env")
-if os.path.isfile(dotenv_file):
-    dotenv.load_dotenv(dotenv_file)
 
-# load database from the DATABASE_URL environment variable
-DATABASES = {}
-DATABASES['default'] = dj_database_url.config(conn_max_age=600)
 INSTALLED_APPS = [
 
     'django.contrib.admin',
@@ -97,12 +90,12 @@ WSGI_APPLICATION = 'learninglms.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
 
 
 # Password validation
@@ -184,9 +177,3 @@ STATIC_URL = '/static/'
 #  Add configuration for static files storage using whitenoise
 STATICFILES_STORAGE ='whitenoise.storage.CompressedManifestStaticFilesStorage'
 #  'whitenoise.django.GzipManifestStaticFilesStorage'
-
-
-
-import dj_database_url 
-prod_db  =  dj_database_url.config(conn_max_age=500)
-DATABASES['default'].update(prod_db)
