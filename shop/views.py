@@ -17,6 +17,7 @@ from django.views.decorators.csrf import csrf_exempt
 # from .checksum import  generate_checksum, verify_checksum
 MERCHANT_KEY = 'kbzk1DSbJiV_O3p5';
 
+
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 def shop(request):
