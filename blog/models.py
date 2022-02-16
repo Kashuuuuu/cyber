@@ -11,6 +11,7 @@ class blogdetail_img(models.Model):
         return str(self.imgs)[:20]
 
 
+from user_profile.models import slug_generator
 class blogdetail_element(models.Model):
     # blogs=models.ForeignKey(blog_detail,on_delete=models.CASCADE)
     element=models.CharField(max_length=100)
@@ -33,6 +34,11 @@ class blog_detail(models.Model):
     element=models.ManyToManyField(blogdetail_element,related_name='blog_element')
     setting=models.TextField()
     why_need=models.TextField()
+    def save(self, *args, **kwargs):
+        if self.slug == '':
+            self.slug = slug_generator(blog_detail,self.blog_title)
+        super(blog_detail, self).save(*args, **kwargs)
+  
     def __str__(self):
         return self.blog_title
 
