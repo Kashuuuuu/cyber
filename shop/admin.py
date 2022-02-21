@@ -20,18 +20,18 @@ class cart(admin.ModelAdmin):
     list_display=['id','userid','prod_name','prod_id','quntity']
 
 
-@admin.register(product_order)
+@admin.register(products_purchase_order)
 class product_order(admin.ModelAdmin):
     
     list_display_links=('user',)
-    list_display=['user','product','address','city','country']
+    list_display=['user','product','address','city','country','amount']
 
 
-@admin.register(course_order)
+@admin.register(courses_purchase_order)
 class course_order(admin.ModelAdmin):
     
     list_display_links=('user',)
-    list_display=['user','course','address','city','country']
+    list_display=['user','course','address','city','country','amount']
 
 
 @admin.register(coupon_code)

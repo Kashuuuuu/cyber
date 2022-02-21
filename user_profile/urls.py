@@ -21,6 +21,8 @@ urlpatterns = [
   path('instructors/', views.instructors, name='instructors'),
   
   path('orders/<slug:order>', views.orders, name='orders'),
+  
+  path('change-password/<slug:pwd>', views.change_pwd, name='change-password'),
 
   path('quzess/<slug:quize>', views.quzess, name='quzess'),
       

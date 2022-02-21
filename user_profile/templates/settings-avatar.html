@@ -186,7 +186,7 @@
 										</div>
 										<div class="lp-profile-right">
 											<div class="lp-profile-username">
-												{{instruct.0.name}} </div>
+												{{instruct.0.name|capfirst}} </div>
 											<ul class="social-link">
 											</ul>
 											<a href="{% url 'private-message' instruct.0.slug %}" class="default-btn">
@@ -209,11 +209,11 @@
 													data-slug="{% url 'profile-certificates' instruct.0.slug %}">
 													<i class="fas fa-certificate"></i> Certificates </a>
 											</li>
-											<li class="quizzes">
+											<!-- <li class="quizzes">
 												<a href="{% url 'quzess' instruct.0.slug %}"
 													data-slug="{% url 'quzess' instruct.0.slug %}">
 													<i class="fas fa-puzzle-piece"></i> Quizzes </a>
-											</li>
+											</li> -->
 											<li class="orders">
 												<a href="{% url 'orders' instruct.0.slug %}"
 													data-slug="{% url 'orders' instruct.0.slug %}">

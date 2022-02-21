@@ -1,4 +1,5 @@
 
+from email import message
 import pytz
 from django.shortcuts import render,HttpResponse,redirect
 from django.contrib.auth.models import User
@@ -6,12 +7,13 @@ from .models import*
 import datetime
 import pytz
 
+from django.contrib import messages
 
 from django.utils import timezone
 from django.conf import settings
 from django.core.mail import send_mail
 # Create your views here.
-
+import os
 def contact(request):
     res={}
     if request.method=='POST':
@@ -22,11 +24,12 @@ def contact(request):
             msg=request.POST['msg']
             user=User.objects.get(id=request.user.id)
             cont=contact_msg(user=user,name=name,email=email,subject=subject,Msg=msg)
-            cont.save()
-            
+            cont.save()  
+            print(settings.EMAIL_HOST_USER,'ppp',subject,msg,[email])
             send_mail(subject,msg,settings.EMAIL_HOST_USER,[email],fail_silently=False)
-    
+            messages.success(request,'Your Message Send Successfully To Your Email.')
         else:
+            messages.warning(request,'Please Login Or Register.')
             return redirect('loginregister')
     if len(User.objects.filter(username='admin'))>0:
         usr=User.objects.get(username='admin')

@@ -1,14 +1,16 @@
 
+from urllib import request
 from django.shortcuts import render,redirect
 from django.db.models import Count
+from numpy import character
 from login_register.views import register
 from .models import *
 from django.core.paginator import Paginator
 from course.models import*
 from blog.models import*
-from datetime import date
+from datetime import date, datetime
 
-
+from django.contrib import messages
 # for pyment integration
 from math import ceil
 import json
@@ -16,7 +18,7 @@ from .paytm import Checksum
 from django.views.decorators.csrf import csrf_exempt
 # from .checksum import  generate_checksum, verify_checksum
 MERCHANT_KEY = 'kbzk1DSbJiV_O3p5';
-
+from django.db.models import Sum
 
 from django.contrib.auth.decorators import login_required
 # Create your views here.
@@ -50,8 +52,14 @@ def shop(request):
     paginator=Paginator(product_detl,6)
     page_no=request.GET.get('page')
     products=paginator.get_page(page_no)
+    dis=[]
+    for p in products:
+                dis.append({
+                    'id':p.id,'disc':"{:.0f}".format(p.product_price-(p.product_price*p.discount/100)) })
+        
 
-    res={'product':products,'rate_count':rt_count,'count':product_detail.objects.all().count,'result_count':len(product_detl)}
+    res={'product':products,'rate_count':rt_count,'discunt':dis,'count':product_detail.objects.all().count,
+    'result_count':len(product_detl)}
     return  render(request,'shop.html',res)
 
 def single_shop(request,shops):
@@ -70,11 +78,19 @@ def single_shop(request,shops):
             shop=product_detail.objects.get(slug=shops)
             rvw=shop_review(shop=shop,review=review,rate=rate,user=usr)
             rvw.save()
+            messages.success(request,'Review Posted.')
             return redirect(request.get_full_path())
         else:
+            messages.warning(request,'Please Login Or Register.')
+            
             return redirect('login')
+    dis=[]
+    for p in prod:
+                dis.append({
+                    'id':p.id,'disc':"{:.0f}".format(p.product_price-(p.product_price*p.discount/100)) })
+   
 
-    res={'product':product_detl,'rlt_product':prod,'rt_count':rt_count}
+    res={'product':product_detl,'rlt_product':prod,'rt_count':rt_count,'discunt':dis}
     return  render(request,'single-shop.html',res)
 
 def mycart(request):
@@ -96,11 +112,15 @@ def mycart(request):
             prod=product_detail.objects.get(id=c.prod_id)
             subtotal=prod.product_price*c.quntity
             total+=subtotal
+            c.total=total
+            c.save()
             li.append([prod,c.quntity,subtotal])
         elif len(crs)>0:
             prod=course_detail.objects.get(id=c.prod_id)
             subtotal=prod.course_price*c.quntity
             total+=subtotal
+            c.total=total
+            c.save()
             li.append([prod,c.quntity,subtotal])
     if request.method=='POST':
         cou_code=request.POST.get('coupon_code')
@@ -110,11 +130,13 @@ def mycart(request):
             for c in cartlist:
                 c.coupon=cod.code 
                 c.save()
-                
+                messages.success(request,'Coupon Applied.')
             if cod.valid_date>date.today():
                 cd=int((cod.discount*total)/100)
                 total=total-cd
-    
+                c.total=total
+                c.save()
+   
     res={'cart':li,'total':total}
     return  render(request,'cart.html',res)
 
@@ -132,10 +154,10 @@ def add_to_cart(request,addcart):
                 prod.quntity+=1
                 prod.save()
             else:
-                prod=cart.objects.create(slug=product.slug,userid=request.user.id,prod_id=product.id,prod_name=product.product_title,quntity=1)
+                prod=cart.objects.create(slug=product.slug,userid=request.user.id,prod_id=product.id,
+                prod_name=product.product_title,quntity=1)
         elif len(crs)==1:
             courses=course_detail.objects.get(slug=addcart)
-            # crss=course_detail.objects.filter(slug=addcart,)
             prods=cart.objects.filter(prod_id=courses.id,userid=request.user.id,slug=courses.slug)
             if len(prods)>0:
                 if len(prods)>0:
@@ -144,9 +166,9 @@ def add_to_cart(request,addcart):
                     prod.save()
             else:
                 prod=cart.objects.create(slug=courses.slug,userid=request.user.id,prod_id=courses.id,prod_name=courses.course_title,quntity=1)
-        
         return redirect('cart')
     else:
+        messages.warning(request,'Please Login Or Register.')
         return redirect('loginregister')
 
 
@@ -163,6 +185,7 @@ def checkout(request):
             prod=product_detail.objects.get(id=c.prod_id)
             subtotal=prod.product_price*c.quntity
             total+=subtotal
+            
             li.append([prod,c.quntity,subtotal]) 
             cd=coupon_code.objects.filter(code=c.coupon)
             if len(cd)>0:
@@ -170,11 +193,13 @@ def checkout(request):
                 if cod.valid_date>date.today():
                     cd=int((cod.discount*total)/100)
                     total=total-cd
+                    # c.total=total
                  
         elif len(crs)>0:
             prod=course_detail.objects.get(id=c.prod_id)
             subtotal=prod.course_price*c.quntity
             total+=subtotal
+            # c.total=total
             cd=coupon_code.objects.filter(code=c.coupon)
             li.append([prod,c.quntity,subtotal])
             if len(cd)>0:
@@ -182,15 +207,15 @@ def checkout(request):
                 if cod.valid_date>date.today():
                     cd=int((cod.discount*total)/100)
                     total=total-cd
+                    # c.total=total
             
         res={'cart':li,'total':total}
     return render(request, 'checkout.html',res)
 
 def order(request):
     cartlist=cart.objects.filter(userid=request.user.id)
-    li=[]
-    res={}
-    total=0
+    
+   
     if request.method=='POST':
         fname=request.POST['fname']
         lname=request.POST['lname']
@@ -209,10 +234,10 @@ def order(request):
         for c in cartlist:
             prod=product_detail.objects.filter(id=c.prod_id,slug=c.slug)
             crs=course_detail.objects.filter(id=c.prod_id,slug=c.slug)
+            # crs_amt=
             if len(prod)>0:
                 prod=product_detail.objects.get(id=c.prod_id)
                 subtotal=prod.product_price*c.quntity
-                # total+=subtotal
                 cd=coupon_code.objects.filter(code=c.coupon)
                 if len(cd)>0:
                     cod=coupon_code.objects.get(code=c.coupon)
@@ -221,37 +246,20 @@ def order(request):
                         subtotal-=cd
           
                 user=User.objects.get(id=c.userid)
-                orders=product_order(product=prod,user=user,fname=fname,lname=lname,email=email,phone=phone,country=country,city=city,
+                orders=products_purchase_order(product=prod,user=user,fname=fname,lname=lname,email=email,phone=phone,country=country,city=city,
                 address=address+' '+address2,company=comapny,province=province,postal_code=postal_code,payment=payment_method,
-                order_notes=order_notes,quntity=c.quntity,amount=subtotal,uid=uuid.uuid4())
+                order_notes=order_notes,quntity=c.quntity,amount=subtotal,order_id=uuid.uuid4())
                 orders.save()
-                # update = OrderUpdate(order_id=orders.id, update_desc="The order has been placed")
-                # update.save()
                 prods = product_detail.objects.filter(id=c.prod_id)
                 qunt=prod.quntity-c.quntity
                 if len(prods)>0:
                         ob=prods[0]
                         ob.quntity=qunt
                         ob.save()
-                
-                param_dict={
-                'MID': 'WorldP64425807474247',
-                'ORDER_ID': str(orders.uid),
-                'TXN_AMOUNT': str(format(subtotal,'.2f')),
-                'CUST_ID': email,
-                'INDUSTRY_TYPE_ID': 'Retail',
-                'WEBSITE': 'WEBSTAGING',
-                'CHANNEL_ID': 'WEB',
-                'CALLBACK_URL':'https://cyberacdamy.herokuapp.com/handlerequest/', }
-                
-                param_dict['CHECKSUMHASH'] = Checksum.generate_checksum(param_dict, MERCHANT_KEY)
-                c.delete()
-                return  render(request, 'paytms.html', {'param_dict': param_dict})
-            
+                amt=cart.objects.values('total').filter(userid=request.user.id).last()       
             elif len(crs)>0:
                 crs=course_detail.objects.get(id=c.prod_id)
                 subtotal=crs.course_price*c.quntity
-                # total+=subtotal
                 cd=coupon_code.objects.filter(code=c.coupon)              
                 if len(cd)>0:
                     cod=coupon_code.objects.get(code=c.coupon)
@@ -259,67 +267,66 @@ def order(request):
                         cd=int((cod.discount*subtotal)/100)
                         subtotal-=cd
                 user=User.objects.get(id=c.userid)
-                orders=course_order(course=crs,user=user,fname=fname,lname=lname,email=email,phone=phone,country=country,city=city,
+                orders=courses_purchase_order(course=crs,user=user,fname=fname,lname=lname,email=email,phone=phone,country=country,city=city,
                 address=address+' '+address2,company=comapny,province=province,postal_code=postal_code,payment=payment_method,
-                order_notes=order_notes,quntity=c.quntity,amount=subtotal,uid=uuid.uuid4())
+                order_notes=order_notes,quntity=c.quntity,amount=subtotal,order_id=uuid.uuid4())
                 orders.save()
-                # update = OrderUpdate(order_id=orders.id, update_desc="The order has been placed")
-                # update.save()
                 crss = course_detail.objects.filter(id=c.prod_id)
                 if len(crss)>0:
                         ob=crss[0]
                         ob.student_no+=1
                         ob.save()
-                
-                param_dict={
-                    'MID': 'WorldP64425807474247',
-                    'ORDER_ID': str(orders.uid),
-                    'TXN_AMOUNT': str(format(subtotal,'.2f')),
-                    'CUST_ID': email,
-                    'INDUSTRY_TYPE_ID': 'Retail',
-                    'WEBSITE': 'WEBSTAGING',
-                    'CHANNEL_ID': 'WEB',
-                    'CALLBACK_URL':'https://cyberacdamy.herokuapp.com/handlerequest/', 
-                      }  
-                param_dict['CHECKSUMHASH'] = Checksum.generate_checksum(param_dict, MERCHANT_KEY)
+                amt=cart.objects.values('total').filter(userid=request.user.id).last()
+                print(amt,'i666iiiiiiiiiii')
                
-                c.delete()
-                return  render(request, 'paytms.html', {'param_dict': param_dict})
-            
+        param_dict={
+            'MID': 'WorldP64425807474247',
+            'ORDER_ID': str(orders.order_id),
+            'TXN_AMOUNT': str(format(amt['total'],'.2f')),
+            'CUST_ID': email,
+            'INDUSTRY_TYPE_ID': 'Retail',
+            'WEBSITE': 'WEBSTAGING',
+            'CHANNEL_ID': 'WEB',
+            # 'CALLBACK_URL':'https://cyberacdamy.herokuapp.com/handlerequest/',
+            'CALLBACK_URL':'http://127.0.0.1:8000/handlerequest/', 
+
+            }  
+        param_dict['CHECKSUMHASH'] = Checksum.generate_checksum(param_dict, MERCHANT_KEY)
+        return  render(request, 'paytms.html', {'param_dict': param_dict})
+        
     return redirect('checkout')
 
 @csrf_exempt
 def handle_request(request):
-    print(request.user.id,'opppppppp')
+    
     # paytm will send you post request here
     form = request.POST
-    response_dict = {}
+    res_dict = {}
     for i in form.keys():
-        response_dict[i] = form[i]
+        res_dict[i] = form[i]
         if i == 'CHECKSUMHASH':
             checksum = form[i]
 
-    verify = Checksum.verify_checksum(response_dict, MERCHANT_KEY, checksum)
+    verify = Checksum.verify_checksum(res_dict, MERCHANT_KEY, checksum)
     if verify:
-        if response_dict['RESPCODE'] == '01':
-            inst=instructor.objects.filter(user=request.user.id)
-            stud=student.objects.filter(user=request.user.id)
+        if res_dict['RESPCODE'] == '01':
+            products_purchase_order.objects.filter(order_id=res_dict["ORDERID"]).update(status="Success");
+            courses_purchase_order.objects.filter(order_id=res_dict["ORDERID"]).update(status="Success");
            
-            print(stud,'[[[[',request.user.id,']]]]',inst)
-            # if len(stud)>0:
-            #     ob=stud[0]
-            #     print(ob.slug,'[[[[')
-            #     return redirect('profile',ob.slug)
-            # elif len(inst)>0:
-            #     ob=inst[0]
-            #     print(ob.slug,'[[[[')
-            #     return redirect('profile',ob.slug)
-            return redirect('home')
+           
+            return redirect('book')
        
         else:
-            print('order was not successful because' + response_dict['RESPMSG'])
+            messages.error(request,'Payment was unsuccessful because' + res_dict['RESPMSG'])
      
-    return render(request, 'paymentstatus.html', {'response': response_dict})
+    return render(request, 'paymentstatus.html', {'response': res_dict})
+
+def order_book(request):
+    cartlist=cart.objects.filter(userid=request.user.id)
+    cartlist.delete()
+    messages.success(request,'Order Saved Successfully.\n Order Payment success.')
+    return redirect('home')
+       
 
 
 def purchase_guide(request):

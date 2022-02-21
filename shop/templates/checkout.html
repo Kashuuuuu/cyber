@@ -59,7 +59,9 @@
 						<div class="woocommerce-notices-wrapper"></div>
 						<div class="woocommerce-form-coupon-toggle">
 							<div class="woocommerce-info">
-								Have a coupon? <a href="#" class="showcoupon">Click here to enter your code</a> </div>
+								<!-- Have a coupon? <a href="#" class="showcoupon">Click here to enter your code</a> -->
+							<i class="fa"></i>
+							</div>
 						</div>
 						<form class="checkout_coupon woocommerce-form-coupon" method="post" style="display:none">
 							<p>If you have a coupon code, please apply it below.</p>
@@ -494,7 +496,7 @@
 															{% if pro.product_title|length != 0 %}
 															<tr class="cart_item">
 																<td class="product-name">
-																	{{pro.product_title}} <strong
+																	{{pro.product_title|capfirst}} <strong
 																		class="product-quantity">&times;&nbsp;{{qty}}</strong>
 																</td>
 																<td class="product-total">
@@ -505,7 +507,7 @@
 															{% elif pro.course_title|length != 0 %}
 															<tr class="cart_item">
 																<td class="product-name">
-																	{{pro.course_title}} <strong
+																	{{pro.course_title|capfirst}} <strong
 																		class="product-quantity">&times;&nbsp;{{qty}}</strong>
 																</td>
 																<td class="product-total">

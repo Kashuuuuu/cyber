@@ -6,6 +6,7 @@ from .models import *
 from datetime import date
 from django.core.paginator import Paginator
 
+from django.contrib import messages
 # Create your views here.
 
 def single_event(request,event):

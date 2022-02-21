@@ -8,5 +8,4 @@ urlpatterns = [
 
   path('blog-detail/<slug:blogs>', views.single_blog, name='single-blog'),
   
-  # path('category/<slug:cat>', views.category, name='category'),
   ]

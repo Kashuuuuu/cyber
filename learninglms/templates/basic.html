@@ -910,7 +910,9 @@
 		href="/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fthemes.envytheme.com%2Fecademy%2F" />
 	<link rel="alternate" type="text/xml+oembed"
 		href="/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fthemes.envytheme.com%2Fecademy%2F&#038;format=xml" />
-	<style id="learn-press-custom-css">
+		
+  
+		<style id="learn-press-custom-css">
 		:root {
 			--lp-primary-color: #fe4a55;
 			--lp-secondary-color: #442e66;
@@ -928,6 +930,11 @@
 	<link rel="icon" href="{% static '/wp-content/uploads/2020/05/shape4.png' %}" sizes="32x32" />
 	<link rel="icon" href="{% static '/wp-content/uploads/2020/05/shape4.png' %}" sizes="192x192" />
 	<link rel="apple-touch-icon" href="{% static '/wp-content/uploads/2020/05/shape4.png' %}" />
+
+	<link rel='stylesheet' id='learn-press-pmpro-style-css'
+		href=" {% static '/wp-content/plugins/ecademy-toolkit/inc/paid-membership-pro/assets/lp-pms-style.min.css' %}"
+		type='text/css' media='all' />
+
 	<meta name="msapplication-TileImage" content="{% static '/wp-content/uploads/2020/05/shape4.png' %}" />
 
 	<style type="text/css" title="dynamic-css" class="options-output">
@@ -953,9 +960,9 @@
 			color: #e4e4e4;
 		}
 
-		 body {
+		body {
 			font-family: Nunito, Verdana, Geneva, sans-serif;
-		} 
+		}
 	</style>
 	{% block body1 %} {% endblock body1 %}
 </head>
@@ -989,32 +996,29 @@
 					</a>
 					<div class="collapse navbar-collapse mean-menu">
 						<form class="search-box" method="post" action="{% url 'search' %}">{% csrf_token %}
-							<input type="search" value="" name="search" class="input-search" placeholder="Search for anything">
+							<input type="search" value="" name="search" class="input-search"
+								placeholder="Search for anything">
 							<input type="hidden" value="course" name="ref" />
 							<input type="hidden" name="post_type" value="courses">
-							<button type="submit"><i class="flaticon-search"></i></button>  
+							<button type="submit"><i class="flaticon-search"></i></button>
 						</form>
 						<ul id="menu-primary-menu" class="navbar-nav ml-auto">
 							{% url 'home' as homeurl %}
-							<li id="menu-item-976"
-								class="menu-item menu-item-type-post_type menu-item-object-page
+							<li id="menu-item-976" class="menu-item menu-item-type-post_type menu-item-object-page
 								{% if request.path == homeurl %}active{% endif %} menu-item-976 nav-item">
 								<a title="Home" href="{{homeurl}}" class="nav-link">Home</a>
 							</li>
-							
+
 							{% url 'aboutus' as abouturl %}
-							<li id="menu-item-27"
-								class="menu-item menu-item-type-post_type menu-item-object-page
+							<li id="menu-item-27" class="menu-item menu-item-type-post_type menu-item-object-page
 								 {% if request.path == abouturl %}active{% endif %} menu-item-27 nav-item">
 								<a title="Courses" href="{{abouturl}}" class="nav-link">About</a></li>
-									{% url 'courses' as courseurl %}
-							<li id="menu-item-27"
-								class="menu-item menu-item-type-post_type menu-item-object-page 
+							{% url 'courses' as courseurl %}
+							<li id="menu-item-27" class="menu-item menu-item-type-post_type menu-item-object-page 
 								{% if request.path == courseurl %}active{% endif %} menu-item-27 nav-item">
-								<a title="Courses" href="{{courseurl}}"
-								 class="nav-link"
+								<a title="Courses" href="{{courseurl}}" class="nav-link"
 									id="menu-item-dropdown-27">Courses</a>
-									{% comment %}
+								{% comment %}
 								<ul class="dropdown-menu" aria-labelledby="menu-item-dropdown-27" role="menu">
 									<li id="menu-item-21"
 										class="menu-item menu-item-type-post_type menu-item-object-page menu-item-21 nav-item">
@@ -1022,18 +1026,23 @@
 									</li>
 
 									<li id="menu-item-21"
-									class="menu-item menu-item-type-post_type menu-item-object-page menu-item-21 nav-item">
-									<a title="Courses" href="{% url 'faqs' %}" class="dropdown-item">faqs</a>
-								</li><li id="menu-item-21"
-								class="menu-item menu-item-type-post_type menu-item-object-page menu-item-21 nav-item">
-								<a title="Courses" href="{% url 'gallery' %}" class="dropdown-item">gallary</a>
-							</li>	<li id="menu-item-21"
-							class="menu-item menu-item-type-post_type menu-item-object-page menu-item-21 nav-item">
-							<a title="Courses" href="{% url 'purchase-guide' %}" class="dropdown-item">purchase-guide</a>
-						</li><li id="menu-item-21"
-						class="menu-item menu-item-type-post_type menu-item-object-page menu-item-21 nav-item">
-						<a title="Courses" href="{% url 'success-story' %}" class="dropdown-item">success-story</a>
-					</li>
+										class="menu-item menu-item-type-post_type menu-item-object-page menu-item-21 nav-item">
+										<a title="Courses" href="{% url 'faqs' %}" class="dropdown-item">faqs</a>
+									</li>
+									<li id="menu-item-21"
+										class="menu-item menu-item-type-post_type menu-item-object-page menu-item-21 nav-item">
+										<a title="Courses" href="{% url 'gallery' %}" class="dropdown-item">gallary</a>
+									</li>
+									<li id="menu-item-21"
+										class="menu-item menu-item-type-post_type menu-item-object-page menu-item-21 nav-item">
+										<a title="Courses" href="{% url 'purchase-guide' %}"
+											class="dropdown-item">purchase-guide</a>
+									</li>
+									<li id="menu-item-21"
+										class="menu-item menu-item-type-post_type menu-item-object-page menu-item-21 nav-item">
+										<a title="Courses" href="{% url 'success-story' %}"
+											class="dropdown-item">success-story</a>
+									</li>
 
 									<li id="menu-item-23"
 										class="menu-item menu-item-type-post_type menu-item-object-page menu-item-23 nav-item">
@@ -1042,30 +1051,22 @@
 								</ul>{% endcomment %}
 							</li>
 							{% url 'events' as eventurl %}
-							<li id="menu-item-406"
-								class="menu-item menu-item-type-post_type menu-item-object-page
+							<li id="menu-item-406" class="menu-item menu-item-type-post_type menu-item-object-page
 								 {% if request.path == eventurl %}active{% endif %} menu-item-406 nav-item">
-								<a title="Events" href="{{eventurl}}" class="nav-link"
-								>Events</a>
+								<a title="Events" href="{{eventurl}}" class="nav-link">Events</a>
 
 							</li>{% url 'shop' as shopurl %}
-							<li id="menu-item-1031"
-								class="menu-item menu-item-type-post_type menu-item-object-page
+							<li id="menu-item-1031" class="menu-item menu-item-type-post_type menu-item-object-page
 								{% if request.path == shopurl %}active{% endif %} menu-item-1031 nav-item">
-								<a title="Shop" href="{{shopurl}}" class="nav-link"
-						>Shop</a>
+								<a title="Shop" href="{{shopurl}}" class="nav-link">Shop</a>
 
 							</li>{% url 'blog' as blogurl %}
-							<li id="menu-item-403"
-								class="menu-item menu-item-type-post_type menu-item-object-page
+							<li id="menu-item-403" class="menu-item menu-item-type-post_type menu-item-object-page
 								  {% if request.path == blogurl %}active{% endif %}  menu-item-403 nav-item">
-								<a title="Blog" href="{{blogurl}}" 
-								 class="nav-link"
-									>Blog</a>
+								<a title="Blog" href="{{blogurl}}" class="nav-link">Blog</a>
 
 							</li>{% url 'contact' as contacturl %}
-							<li id="menu-item-485"
-								class="menu-item menu-item-type-post_type menu-item-object-page
+							<li id="menu-item-485" class="menu-item menu-item-type-post_type menu-item-object-page
 								 {% if request.path == contacturl %}active{% endif %}  menu-item-485 nav-item">
 								<a title="Contact" href="{{contacturl}}" class="nav-link">Contact</a></li>
 						</ul>
@@ -1088,9 +1089,9 @@
 									Profile<span></span>
 								</a>{% endif %}
 
-								
-								
-								
+
+
+
 								&nbsp;<a href="{% url 'logout' %}" class="default-btn">
 									<i class="flaticon-user"></i>
 									Logout<span></span>
@@ -1123,7 +1124,8 @@
 				<div class="container">
 					<div class="option-inner">
 						<form class="search-box" method="post" action="{% url 'search' %}">{% csrf_token %}
-							<input type="search" value="" name="search" class="input-search" placeholder="Search for anything">
+							<input type="search" value="" name="search" class="input-search"
+								placeholder="Search for anything">
 							<input type="hidden" value="course" name="ref" />
 							<input type="hidden" name="post_type" value="lp_course">
 							<button type="submit"><i class="flaticon-search"></i></button>
@@ -1157,6 +1159,83 @@
 			</div>
 		</div>
 	</div>
+
+	<!-- start alert -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+	
+
+	{% if messages %}
+
+	<!-- Button trigger modal-->
+
+	<!--Modal: modalConfirmDelete-->
+	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModal"
+		aria-hidden="true">
+		<div class="modal-dialog modal-sm modal-notify modal-danger" role="document">
+			<!--Content-->
+			<div class="modal-content text-center">
+				<!--Header-->
+				{% for m in messages %}
+				{% if m.tags == 'error' %}
+				<div class="modal-header d-flex justify-content-center" style="background-color: #d9534f;">
+					<p class="heading" style="color: black;">
+						{{m|capfirst}}
+					</p>
+				</div>
+				<div class="modal-body">
+					<i class="fa fa-times-circle" style="font-size: 35px;color: #d9534f;" aria-hidden="True"></i>
+				</div>{% elif m.tags == 'warning' %}
+				<div class="modal-header d-flex justify-content-center" style="background-color: #f0ad4e">
+					<p class="heading" style="color: black;">
+						{{m|capfirst}}
+					</p>
+				</div>
+				<div class="modal-body">
+					<i class="fas fa-exclamation-circle" aria-hidden="True" style="font-size: 35px;color: #f0ad4e"
+						aria-hidden="True"></i>
+				</div>{% elif m.tags == 'success' %}
+				<div class="modal-header d-flex justify-content-center" style="background-color: #5cb85c">
+					<p class="heading" style="color: black;">
+					{{m|capfirst}}
+					</p>
+				</div>
+				<div class="modal-body">
+					<i class="far fa-check-circle" aria-hidden="True" style="font-size: 35px;color:  #5cb85c;"></i>
+				</div>
+				{% endif %}{% endfor %}
+				<!--Body-->
+
+				<!--Footer-->
+				<div class="modal-footer flex-center">
+					<a type="close" class="btn {% for m in messages %} {% if m.tags == 'error' %}btn-danger
+		  {% elif m.tags == 'warning' %}btn-warning {% elif m.tags == 'success' %}btn-success{% endif %}{% endfor %}
+		 
+		  waves-effect" data-dismiss="modal">OK</a>
+				</div>
+			</div>
+			<!--/.Content-->
+		</div>
+	</div>
+	<!--Modal: modalConfirmDelete-->
+	{% endif %}
+
+
+
+
+
+
+
+
+
+
+
+
+	<!-- end alert -->
+
+
+
+
 
 
 
@@ -1269,13 +1348,13 @@
 					<h3>Resources</h3>
 					<div class="menu-footer-resources-container">
 						<ul id="menu-footer-resources" class="menu">
-							<li id="menu-item-40"
+							<!-- <li id="menu-item-40"
 								class="menu-item menu-item-type-post_type menu-item-object-page menu-item-40"><a
-									href="#">Become A Teacher</a></li>
+									href="#">Become A Teacher</a></li> -->
+
 							<li id="menu-item-41"
 								class="menu-item menu-item-type-post_type menu-item-object-page current-menu-item page_item page-item-13 current_page_item menu-item-41">
-								<a href="{% url 'instructors' %}"
-									aria-current="page">Instructor</a></li>
+								<a href="{% url 'instructors' %}" aria-current="page">Instructor</a></li>
 							<li id="menu-item-42"
 								class="menu-item menu-item-type-post_type menu-item-object-page menu-item-42"><a
 									href="{% url 'courses' %}">Courses</a></li>
@@ -1326,8 +1405,7 @@
 						<li>
 							<!-- Email: sales@cyberflax.com -->
 							<i class="bx bx-envelope"></i>
-							<a href="#"><span
-									class="__cf_email__"
+							<a href="#"><span class="__cf_email__"
 									data-cfemail="523a373e3e3d1237313336373f2b7c313d3f">[email&#160;protected]</span></a>
 						</li>
 						<li>
@@ -1368,7 +1446,7 @@
 		<div class="ecademy-cursor"></div>
 		<div class="ecademy-cursor2"></div>
 	</div>
-	
+
 	<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
 	<script>
 		jQuery(document).ready(function ($) {
@@ -1638,11 +1716,11 @@
 		id='elementor-frontend-js'></script>
 	<script type='text/javascript' src="{% static '/wp-content/plugins/elementor/assets/js/preloaded-modules.min.js' %}"
 		id='preloaded-modules-js'></script>
-		
-	<script type='text/javascript' src="{% static '/wp-content/plugins/front-end-pm/assets/js/notification.js' %}"
-	id='fep-notification-script-js'></script>
 
-{% comment %}
+	<script type='text/javascript' src="{% static '/wp-content/plugins/front-end-pm/assets/js/notification.js' %}"
+		id='fep-notification-script-js'></script>
+
+	{% comment %}
 	<div id="cookie-notice" role="dialog" class="cookie-notice-hidden cookie-revoke-hidden cn-position-bottom"
 		aria-label="Cookie Notice" style="background-color: rgba(0,0,0,1);">
 		<div class="cookie-notice-container" style="color: #fff;"><span id="cn-notice-text" class="cn-text-container">We
@@ -1655,6 +1733,25 @@
 				id="cn-close-notice" data-cookie-set="accept" class="cn-close-icon" aria-label="Ok"></a></div>
 	</div>
 	{% endcomment %}
+
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+		integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+	</script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+		integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+	</script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+		integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+	</script>
+
+	<script type="text/javascript">
+		$(window).on('load', function () {
+			$('#exampleModal').modal('show');
+		});
+	</script>
+
+
+
 </body>
 
 </html>

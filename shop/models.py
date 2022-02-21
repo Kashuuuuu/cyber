@@ -1,5 +1,6 @@
 
 
+from pyexpat import model
 import uuid
 from django.db import models
 from course.models import *
@@ -18,6 +19,7 @@ class product_detail(models.Model):
     quntity=models.IntegerField()
     product_sku=models.IntegerField()
     category=models.CharField(max_length=100)
+    discount=models.IntegerField(default=0)
     created_date=models.DateField(auto_now_add=True)
     def save(self, *args, **kwargs):
         if self.slug == '':
@@ -47,12 +49,13 @@ class cart(models.Model):
     prod_name=models.CharField(max_length=100)
     quntity=models.IntegerField()
     coupon=models.IntegerField(default=0)
+    total=models.IntegerField(default=0)
 
 
-class product_order(models.Model):
+class products_purchase_order(models.Model):
     product=models.ForeignKey(product_detail,on_delete=models.CASCADE)
     user=models.ForeignKey(User,on_delete=models.CASCADE)
-    uid = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = False)
+    order_id = models.CharField(unique=True, max_length=100, null=True, blank=True, verbose_name="prod_pyment")
     fname=models.CharField(max_length=50)
     lname=models.CharField(max_length=50)
     company=models.CharField(max_length=100,blank=True)
@@ -67,17 +70,22 @@ class product_order(models.Model):
     payment=models.CharField(max_length=100)
     amount=models.IntegerField()
     order_notes=models.TextField(blank=True)
+    status = models.CharField(max_length=50,default='pending')
     order_date=models.DateTimeField(auto_now_add=True)
+    def save(self, *args, **kwargs):
+        if self.order_id is None and self.order_date and self.id:
+            self.order_id = self.order_date.strftime('PAY2ME%Y%m%dODR') + str(self.id)
+        return super().save(*args, **kwargs)
     def __str__(self):
         return self.product.product_title[:10]+' '+self.fname+self.lname
  
 
 
 
-class course_order(models.Model):
+class courses_purchase_order(models.Model):
     course=models.ForeignKey(course_detail,on_delete=models.CASCADE)
     user=models.ForeignKey(User,on_delete=models.CASCADE)
-    uid = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = False)
+    order_id = models.CharField(unique=True, max_length=100, null=True, blank=True, verbose_name="crs_pyment")
     fname=models.CharField(max_length=50)
     lname=models.CharField(max_length=50)
     company=models.CharField(max_length=100,blank=True)
@@ -91,21 +99,31 @@ class course_order(models.Model):
     quntity=models.IntegerField()
     payment=models.CharField(max_length=100)
     amount=models.IntegerField()
+    status = models.CharField(max_length=50,default='pending')
     order_notes=models.TextField(blank=True)
     order_date=models.DateTimeField(auto_now_add=True)
+    def save(self, *args, **kwargs):
+        if self.order_id is None and self.order_date and self.id:
+            self.order_id = self.order_date.strftime('PAY2ME%Y%m%dOD') + str(self.id)
+        return super().save(*args, **kwargs)
+ 
     def __str__(self):
         return self.course.course_title[:10]+' '+self.fname+self.lname
  
 
 
-
-
-
-class OrderUpdate(models.Model):
-    update_id  = models.AutoField(primary_key=True)
-    order_id = models.IntegerField(default="")
-    update_desc = models.CharField(max_length=5000)
-    timestamp = models.DateField(auto_now_add=True)
-
-    def __str__(self):
-        return self.update_desc[0:7] + "..."
+class payment_done_detail(models.Model):
+    user = models.ForeignKey(User,on_delete=models.SET_NULL,null=True)
+    amount = models.FloatField()
+    gatewayname = models.CharField(max_length=100)
+    bnk_name=models.CharField(max_length=200)
+    MID=models.CharField(max_length=200)
+    txn_id=models.IntegerField()
+    order_id=models.CharField(max_length=200)
+    bnk_txn_id=models.IntegerField()
+    txn_status = models.CharField(max_length=20,default="pending")
+    txn_time = models.DateTimeField()
+    # def msgtime(self):
+    #     return datetime_from_utc_to_local(self.time).strftime('%I:%M')
+    def __str__(self) -> str:
+        return self.user.username

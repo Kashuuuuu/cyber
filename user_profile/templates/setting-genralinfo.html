@@ -132,7 +132,7 @@ var fep_notification_script = {"root":"https:\/\/themes.envytheme.com\/ecademy\/
                                         </div>
                                         <div class="lp-profile-right">
                                             <div class="lp-profile-username">
-                                            {{instruct.0.name}} </div>
+                                            {{instruct.0.name|capfirst}} </div>
                                             <ul class="social-link">
                                             </ul>
                                             <a href="{% url 'private-message' instruct.0.slug %}" class="default-btn">
@@ -155,11 +155,11 @@ var fep_notification_script = {"root":"https:\/\/themes.envytheme.com\/ecademy\/
                                                     data-slug="{% url 'profile-certificates' instruct.0.slug %}">
                                                     <i class="fas fa-certificate"></i> Certificates </a>
                                             </li>
-                                            <li class="quizzes">
+                                            <!-- <li class="quizzes">
                                                 <a href="{% url 'quzess' instruct.0.slug %}"
                                                     data-slug="{% url 'quzess' instruct.0.slug %}">
                                                     <i class="fas fa-puzzle-piece"></i> Quizzes </a>
-                                            </li>
+                                            </li> -->
                                             <li class="orders">
                                                 <a href="{% url 'orders' instruct.0.slug %}" data-slug="{% url 'orders' instruct.0.slug %}">
                                                     <i class="fas fa-shopping-cart"></i> Orders </a>
@@ -172,7 +172,7 @@ var fep_notification_script = {"root":"https:\/\/themes.envytheme.com\/ecademy\/
                                                 <a href="{% url 'setting-genralinfo' instruct.0.slug %}"
                                                     data-slug="{% url 'setting-genralinfo' instruct.0.slug %}">
                                                     <i class="fas fa-cog"></i> Settings </a>
-                                                <ul class="profile-tab-sections">
+                                                <!-- <ul class="profile-tab-sections">
                                                     <li class="basic-information active">
                                                         <a
                                                             href="{% url 'setting-genralinfo' instruct.0.slug %}">General</a>
@@ -187,7 +187,7 @@ var fep_notification_script = {"root":"https:\/\/themes.envytheme.com\/ecademy\/
                                                     <li class="privacy">
                                                         <a href="{% url 'settings-privacy' instruct.0.slug %}">Privacy</a>
                                                     </li>
-                                                </ul>
+                                                </ul> -->
                                             </li>
                                             {% endif %}{% endif %}
                                             {% if request.user.is_authenticated %}
@@ -209,29 +209,17 @@ var fep_notification_script = {"root":"https:\/\/themes.envytheme.com\/ecademy\/
                                                 id="course-tab-61c41ff096be8__basic-information" />
                                             <input type="radio" name="course-tab-61c41ff096be8>"
                                                 class="learn-press-tabs__checker"
-                                                id="course-tab-61c41ff096be8__avatar" />
-                                            <input type="radio" name="course-tab-61c41ff096be8>"
-                                                class="learn-press-tabs__checker"
-                                                id="course-tab-61c41ff096be8__change-password" />
-                                            <input type="radio" name="course-tab-61c41ff096be8>"
-                                                class="learn-press-tabs__checker"
                                                 id="course-tab-61c41ff096be8__privacy" />
                                             <ul class="learn-press-tabs__nav" data-tabs="4">
-                                                <li class="learn-press-tabs__tab basic-information active">
+                                                <li class="learn-press-tabs__tab basic-information active"  style="width: 50%;">
                                                     <label><a
                                                             href="{% url 'setting-genralinfo' instruct.0.slug %}">General</a></label>
                                                 </li>
-                                                <li class="learn-press-tabs__tab avatar">
+                                               
+                                              
+                                                <li class="learn-press-tabs__tab privacy" style="width: 50%;">
                                                     <label><a
-                                                            href="{% url 'settings-avatar' instruct.0.slug %}">Avatar</a></label>
-                                                </li>
-                                                <li class="learn-press-tabs__tab change-password">
-                                                    <label><a
-                                                            href="/profile/Navneet/settings/change-password/">Password</a></label>
-                                                </li>
-                                                <li class="learn-press-tabs__tab privacy">
-                                                    <label><a
-                                                            href="{% url 'settings-privacy' instruct.0.slug %}">Privacy</a></label>
+                                                            href="{% url 'change-password' instruct.0.slug %}">Change Password</a></label>
                                                 </li>
                                             </ul>
                                         </div>
@@ -253,15 +241,7 @@ var fep_notification_script = {"root":"https:\/\/themes.envytheme.com\/ecademy\/
                                                             class="regular-text">
                                                     </div>
                                                 </li>
-                                                <li class="form-field form-field__last-name form-field__50">
-                                                    <label for="account_display_name">Display name<span
-                                                            class="required">*</span></label>
-                                                    <div class="form-field-input">
-                                                        <input type="text" name="name"
-                                                            id="account_display_name" placeholder="Navneet"
-                                                            class="regular-text">
-                                                    </div>
-                                                </li>
+                                               
                                                 <li class="form-field form-field__last-name form-field__50">
                                                     <label for="account_email">Email address<span
                                                             class="required">*</span></label>
@@ -270,6 +250,20 @@ var fep_notification_script = {"root":"https:\/\/themes.envytheme.com\/ecademy\/
                                                             placeholder="Navneet.cyberflax@gmail.com" class="regular-text">
                                                     </div>
                                                 </li>
+                                                <li class="form-field form-field__last-name form-field__50">
+                                                    <label for="images">Profile Image<span
+                                                            class="required">*</span></label>
+                                                    <div class="form-field-input">
+                                                        <input type="file" name="img"
+                                                            id="images" placeholder="Upload Profile image"
+                                                       style="width: 100%;"   class="regular-text">
+                                                    </div>
+                                                </li>
+
+
+
+
+
                                                 <li class="form-field form-field__bio form-field__clear">
                                                     <label for="description">Biographical Info</label>
                                                     <div class="form-field-input">

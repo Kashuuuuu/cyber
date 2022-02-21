@@ -8,6 +8,7 @@ from course.models import *
 from blog.models import *
 from event.views import *
 
+from django.contrib import messages
 from django.db.models import Count
 from .models import*
 # Create your views here.
@@ -16,11 +17,12 @@ def home(request):
         email = request.POST['email1']
         var = Newsletter_subscriber(suscriber_email=email)
         var.save()
+        messages.success(request,'Thank You For Subscription.')
         return redirect('home')
 
     course=course_detail.objects.all()
     list={c.course_title for c in course}
-    print(list,'ppppppp',len(list))
+    
     blog=blog_detail.objects.all()
     inst=instructor.objects.all()
     res={'course':course,'blog':blog,'recent_crse':list,'instructor':inst}

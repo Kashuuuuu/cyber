@@ -77,9 +77,9 @@
 <div class="page-title-area">
     <div class="container">
         <div class="page-title-content">
-            <h2>{{product.0.product_title}}</h2>
+            <h2>{{product.0.product_title|safe|capfirst}}</h2>
             <nav class="woocommerce-breadcrumb"><a href="">Home</a>&nbsp;&#47;&nbsp;<a
-                    href="{% url 'shop' %}?category={{product.0.category}}">{{product.0.category}}</a>&nbsp;&#47;&nbsp;{{product.0.product_title}}
+                    href="{% url 'shop' %}?category={{product.0.category}}">{{product.0.category|safe|capfirst}}</a>&nbsp;&#47;&nbsp;{{product.0.product_title}}
             </nav>
         </div>
     </div>
@@ -116,16 +116,22 @@
                             </div>
 
                             <div class="summary entry-summary products-details" style="float: right;width: 48%;">
-                                <h3 class="product_title entry-title">{{product.0.product_title}}</h3>
+                                <h3 class="product_title entry-title">{{product.0.product_title|capfirst}}</h3>
                                 <p class="price">
                                     <del aria-hidden="true"><span class="woocommerce-Price-amount amount"><bdi><span
-                                                    class="woocommerce-Price-currencySymbol">&#36;</span>99</bdi></span></del>
+                                                    class="woocommerce-Price-currencySymbol">&#36;</span>{{product.0.product_price}}</bdi></span></del>
                                     <ins><span class="woocommerce-Price-amount amount"><bdi><span
-                                                    class="woocommerce-Price-currencySymbol">&#36;</span>{{product.0.product_price}}</bdi></span></ins>
+                                                    class="woocommerce-Price-currencySymbol">&#36;</span>
+                                                
+                                                
+                                                    {% for d in discunt %}  
+                                                    {% if d.id == product.0.id %}  
+                                                        {{d.disc}}{% endif %}{% endfor %}
+                                                   </bdi></span></ins>
                                 </p>
                                 <div class="woocommerce-product-details__short-description">
                                     <div class="woocommerce-product-details__short-description">
-                                        <p>{{product.0.about_product}}</p>
+                                        <p>{{product.0.about_product|safe|capfirst}}</p>
                                     </div>
                                     <div class="product_meta"></div>
                                 </div>
@@ -134,10 +140,10 @@
                                             class="sku">{{product.0.product_sku}}</span></span>
                                     <span class="posted_in">Category: <a
                                             href="{% url 'shop' %}?category={{product.0.category}}"
-                                            rel="tag">{{product.0.category}}</a></span>
+                                            rel="tag">{{product.0.category|capfirst}}</a></span>
                                     <span class="tagged_as">Tag: <a
                                             href="{% url 'shop' %}?tag={{product.0.product_tag}}"
-                                            rel="tag">{{product.0.product_tag}}</a></span>
+                                            rel="tag">{{product.0.product_tag|capfirst}}</a></span>
                                 </div>{% if product.quantity != 0 %}
                                 <p>{{product.0.quantity}}</p>{% else %}
                                 <p class="stock out-of-stock">Out of stock</p>{% endif %}
@@ -173,22 +179,22 @@
                                     </ul>
                                 </div>
                             </div>
-
+                            
                             <div class="woocommerce-tabs wc-tabs-wrapper products-details-tabs">
                                 <ul class="nav nav-tabs tabs wc-tabs" role="tablist" id="tabs">
                                     <li class="description_tab nav-item" id="tab-title-description" role="tab"
                                         style="box-sizing: border-box;" aria-controls="tab-description">
-                                        <a href="#tab-description" class="nav-link">Description</a>
+                                        <a href="#tab-description" class="nav-link active">Description</a>
                                     </li>
                                     <li class="reviews_tab nav-item" id="tab-title-reviews" role="tab"
                                         aria-controls="tab-reviews">
-                                        <a href="#tab-reviews" class="nav-link">Reviews (0)</a>
+                                        <a href="#tab-reviews" class="nav-link ">Reviews </a>
                                     </li>
                                 </ul>
                                 <div class="row woocommerce-Tabs-panel woocommerce-Tabs-panel--description panel entry-content wc-tab content"
                                     id="tab-description" role="tabpanel" aria-labelledby="tab-title-description">
-                                    <h3>Description</h3>
-                                    <p>{{product.0.product_description}} </p>
+                                    <h3>Description</h3></br>
+                                    <p>{{product.0.product_description|safe|capfirst}} </p>
 
                                 </div>
                                 <div class="woocommerce-Tabs-panel woocommerce-Tabs-panel--reviews panel entry-content wc-tab content"
@@ -203,7 +209,7 @@
                                             <div id="review_form">
                                                 <div id="respond" class="comment-respond">
                                                     <span id="reply-title" class="comment-reply-title">Be the first to
-                                                        review &ldquo;{{product.0.product_title}}&rdquo; <small><a
+                                                        review &ldquo;{{product.0.product_title|capfirst}}&rdquo; <small><a
                                                                 rel="nofollow" id="cancel-comment-reply-link"
                                                                 href="/ecademy/product/motivational-book-cover/#respond"
                                                                 style="display:none;">Cancel reply</a></small></span>
@@ -272,12 +278,16 @@
                                                 </div>
                                                 <div class="products-content">
                                                     <h3><a href="{% url 'single-shop' r.slug %}">
-                                                            {{r.product_title}}</a></h3>
+                                                            {{r.product_title|capfirst}}</a></h3>
                                                     <span class="price"><del aria-hidden="true"><span
                                                                 class="woocommerce-Price-amount amount"><bdi><span
-                                                                        class="woocommerce-Price-currencySymbol">&#36;</span>210</bdi></span></del>
+                                                                        class="woocommerce-Price-currencySymbol">&#36;</span>{{r.product_price}}</bdi></span></del>
                                                         <ins><span class="woocommerce-Price-amount amount"><bdi><span
-                                                                        class="woocommerce-Price-currencySymbol">&#36;</span>{{r.product_price}}</bdi></span></ins></span>
+                                                                        class="woocommerce-Price-currencySymbol">&#36;</span>
+                                                                        {% for d in discunt %}  
+                                                                        {% if d.id == r.id %}  
+                                                                            {{d.disc}}{% endif %}{% endfor %}
+                                                                    </bdi></span></ins></span>
                                                     <ul>
 
                                                         {% for i in rt_count %}
@@ -370,18 +380,22 @@
                                                                 </div>
                                                             </div>
                                                             <div class="col-lg-6">
-                                                                <div class="products-content">
-            
-            
-            
-                                                                    <h3>{{r.product_title}}</h3>
+                                                              
+                                                                <div class="products-content" style="text-align: left;">
+
+                                                                    <h3>{{r.product_title|capfirst}}</h3>
                                                                     <span class="price"><del aria-hidden="true"><span
                                                                                 class="woocommerce-Price-amount amount"><bdi><span
-                                                                                        class="woocommerce-Price-currencySymbol">&#36;</span>210</bdi></span></del>
+                                                                                        class="woocommerce-Price-currencySymbol">&#36;</span>{{r.product_price}}</bdi></span></del>
                                                                         <ins><span class="woocommerce-Price-amount amount"><bdi><span
-                                                                                        class="woocommerce-Price-currencySymbol">&#36;</span>{{r.product_price}}</bdi></span></ins></span>
+                                                                                        class="woocommerce-Price-currencySymbol">&#36;</span>
+                                                                                        {% for d in discunt %}  
+                                                                                        {% if d.id == r.id %}  
+                                                                                            {{d.disc}}{% endif %}{% endfor %}
+                                                                                        
+                                                                                       </bdi></span></ins></span>
                                                                     <div class="woocommerce-product-details__short-description">
-                                                                        <p>{{r.product_description|slice:':150'}}</p>
+                                                                        <p>{{r.product_description|slice:':150'|capfirst|safe}}</p>
                                                                     </div>
                                                                     <div class="product-meta">
                                                                         <div class="product_meta">
@@ -400,7 +414,7 @@
                                                                                     href="{% url 'shop' %}?category={{r.category}}"
                                                                                     rel="tag">
             
-                                                                                    <input value="{{r.category}}"
+                                                                                    <input value="{{r.category|capfirst}}"
                                                                                         style="border:none; display: inline;"
                                                                                         id='prod_cat'>
                                                                                 </a></span>
@@ -408,13 +422,16 @@
                                                                                     href="{% url 'shop' %}?tag={{r.product_tag}}"
                                                                                     rel="tag">
             
-                                                                                    <input value="{{r.product_tag}}"
+                                                                                    <input value="{{r.product_tag|capfirst}}"
                                                                                         style="border:none; display: inline;"
                                                                                         id='prod_tag'>
                                                                                 </a></span>
                                                                         </div>
                                                                     </div>
                                                                 </div>
+
+
+
                                                             </div>
                                                         </div>
                                                     </div>
@@ -436,16 +453,4 @@
     </div>
 </div>
 
-<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-<script>
-
-    $('#product-detail'.click(function()
-    {
-$('#product-title').html($(this).data(title))
-
-$('#product-price').html($(this).data(price))
-    }
-    );
-</script> -->
 {% endblock body %}

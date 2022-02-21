@@ -1,8 +1,10 @@
 
+from email import message
 from django.shortcuts import render,HttpResponse,redirect
 from django.core.paginator import Paginator
 from .models import*
 
+from django.contrib import messages
 from django.db.models import Q
 # Create your views here.
 
@@ -11,8 +13,7 @@ def blog(request):
     if request.method=='POST':
         search=request.POST['search']
         look=(Q(blog_category__icontains=search)|Q(blog_title__icontains=search)
-        |Q(slug__icontains=search)|Q(blog_description__icontains=search)|Q(tags__icontains=search)|Q(head1__icontains=search)
-        |Q(head2__icontains=search)|Q(setting__icontains=search)|Q(why_need__icontains=search))
+        |Q(slug__icontains=search)|Q(tags__icontains=search))
         blogs=blog_detail.objects.filter(look).order_by('id')  
     else:
       cat=request.GET.get('category')
@@ -41,17 +42,14 @@ def blog(request):
     return  render(request,'blog.html',res)
 
 def single_blog(request,blogs):
-    if request.GET.get('search')!= None :
-        search=request.GET.get('search')
-        look=(Q(blog_category__icontains=search)|Q(blog_title__icontains=search)
-        |Q(slug__icontains=search)|Q(blog_description__icontains=search)|Q(tags__icontains=search)|Q(head1__icontains=search)
-        |Q(head2__icontains=search)|Q(setting__icontains=search)|Q(why_need__icontains=search))
-        blgs=blog_detail.objects.filter(look).order_by('id')  
-    else:
-       blgs=blog_detail.objects.filter(slug=blogs)
-   
-
-
+    # if request.GET.get('srch')!= None :
+    #     search=request.GET.get('srch')
+    #     blgs=blog_detail.objects.filter(Q(blog_category__contains=search)|Q(blog_title__contains=search)
+    #     |Q(slug__contains=search)|Q(blog_description__contains=search)|Q(tags__contains=search))
+    #     # blgs=blog_detail.objects.filter(look).order_by('id')  
+    #     return redirect('blog')
+    # else:
+    blgs=blog_detail.objects.filter(slug=blogs)
 
     blog_rcnt=blog_detail.objects.all() 
     li=[]
@@ -72,6 +70,7 @@ def single_blog(request,blogs):
           bg=blog_detail.objects.get(slug=blogs)
           rvw=review(user=user,blog_id=bg,comment=comment)
           rvw.save()
+          messages.success(request,'Review Posted Successfully.')
           return redirect(request.get_full_path())
         else:
           return redirect('loginregister')

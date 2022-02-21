@@ -90,7 +90,7 @@
                                                                                 {%  if forloop.counter < 5  %}
                                                                                 <li><span><i
                                                                                             class="flaticon-experience"></i>
-                                                                                        {{c}}</span></li>{% endif %}
+                                                                                        {{c|capfirst}}</span></li>{% endif %}
                                                                                 {% endfor %}
 
                                                                             </ul>
@@ -169,7 +169,7 @@
                                                                                       {% for i in inst %}
                                                                                         <div
                                                                                             class="single-feedback-item">
-                                                                                            <p>{{i.about|slice:'100'}}...</p>
+                                                                                            <p>{{i.about|slice:'100'|capfirst}}...</p>
                                                                                             <div
                                                                                                 class="client-info d-flex align-items-center">
                                                                                                 {% if i.img|length != 0 %}
@@ -181,10 +181,10 @@
                                                                                                     alt="David Warner">
                                                                                               {% endif %}
                                                                                                 <div class="title">
-                                                                                                    <h3>{{i.name}}
+                                                                                                    <h3>{{i.name|capfirst}}
                                                                                                     </h3>
                                                                                                     <span>
-                                                                                                    {{i.expert}}</span>
+                                                                                                    {{i.expert|capfirst}}</span>
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
@@ -470,12 +470,12 @@
                                                                     </div>
                                                                     <div class="col-lg-8 col-md-8">
                                                                         <div class="advisor-content">
-                                                                            <h3><a href="{% url 'profile' i.slug %}">{{i.name}}</a>
+                                                                            <h3><a href="{% url 'profile' i.slug %}">{{i.name|capfirst}}</a>
                                                                             </h3>
                                                                             <span class="sub-title">
-                                                                                <p>{{i.expert}}</p>
+                                                                                <p>{{i.expert|capfirst}}</p>
                                                                             </span>
-                                                                            <p>{{i.about|slice:'150'}}...</p>
+                                                                            <p>{{i.about|slice:'150'|capfirst}}...</p>
                                                                             <ul class="social-link">
                                                                                 <li><a href="{{i.facebook}}" class="d-block"
                                                                                         target="_blank"><i

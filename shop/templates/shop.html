@@ -76,13 +76,18 @@
                                         </div>
                                         <div class="products-content">
                                             <h3 id='prod_title'><a
-                                                    href="{% url 'single-shop' p.slug %}">{{p.product_title}}</a></h3>
+                                                    href="{% url 'single-shop' p.slug %}">{{p.product_title|capfirst}}</a></h3>
                                             <span class="price"><del aria-hidden="true"><span
                                                         class="woocommerce-Price-amount amount"><bdi><span
-                                                                class="woocommerce-Price-currencySymbol">&#36;</span>210</bdi></span></del>
+                                                                class="woocommerce-Price-currencySymbol">&#36;</span>{{p.product_price}}</bdi></span></del>
                                                 <ins><span class="woocommerce-Price-amount amount"><bdi><span
                                                                 id='prod_price'
-                                                                class="woocommerce-Price-currencySymbol">&#36;</span>{{p.product_price}}</bdi></span></ins></span>
+                                                                class="woocommerce-Price-currencySymbol">&#36;</span>
+                                                            {% for d in discunt %}  
+                                                            {% if d.id == p.id %}  
+                                                                {{d.disc}}{% endif %}{% endfor %}
+                                                            
+                                                            </bdi></span></ins></span>
                                             <ul>
 
                                                 {% for i in rate_count %}
@@ -178,14 +183,19 @@
 
 
 
-                                                        <h3>{{p.product_title}}</h3>
+                                                        <h3>{{p.product_title|capfirst}}</h3>
                                                         <span class="price"><del aria-hidden="true"><span
                                                                     class="woocommerce-Price-amount amount"><bdi><span
-                                                                            class="woocommerce-Price-currencySymbol">&#36;</span>210</bdi></span></del>
+                                                                            class="woocommerce-Price-currencySymbol">&#36;</span>{{p.product_price}}</bdi></span></del>
                                                             <ins><span class="woocommerce-Price-amount amount"><bdi><span
-                                                                            class="woocommerce-Price-currencySymbol">&#36;</span>{{p.product_price}}</bdi></span></ins></span>
+                                                                            class="woocommerce-Price-currencySymbol">&#36;</span>
+                                                                            {% for d in discunt %}  
+                                                                            {% if d.id == p.id %}  
+                                                                                {{d.disc}}{% endif %}{% endfor %}
+                                                                            
+                                                                           </bdi></span></ins></span>
                                                         <div class="woocommerce-product-details__short-description">
-                                                            <p>{{p.product_description|slice:':150'}}</p>
+                                                            <p>{{p.product_description|slice:':150'|capfirst|safe}}</p>
                                                         </div>
                                                         <div class="product-meta">
                                                             <div class="product_meta">
@@ -204,7 +214,7 @@
                                                                         href="{% url 'shop' %}?category={{p.category}}"
                                                                         rel="tag">
 
-                                                                        <input value="{{p.category}}"
+                                                                        <input value="{{p.category|capfirst}}"
                                                                             style="border:none; display: inline;"
                                                                             id='prod_cat'>
                                                                     </a></span>
@@ -212,7 +222,7 @@
                                                                         href="{% url 'shop' %}?tag={{p.product_tag}}"
                                                                         rel="tag">
 
-                                                                        <input value="{{p.product_tag}}"
+                                                                        <input value="{{p.product_tag|capfirst}}"
                                                                             style="border:none; display: inline;"
                                                                             id='prod_tag'>
                                                                     </a></span>
@@ -264,28 +274,5 @@
         </div>
     </main>
 </div>
-<!-- 
-<script type="text/javascript">
-    $("#detail").click(function () {
-        var id = $("#prod_id").val();
-        var title = $("#prod_title").val();
-        var desc = $("#prod_desc").val();
-        var img = $("#prod_img").val();
-        var sku = $("#prod_sku").val();
-        var cat = $("#prod_cat").val();
-        var tag = $("#prod_tag").val();
-        var price = $("#prod_price").val();
-        $("#prod_ids").val(id);
-        $("#prod_titles").val(title);
-        $("#prod_descs").val(desc);
-        $("#prod_imgs").val(img);
-        $("#prod_skus").val(prod_sku);
-        $("#prod_cats").val(cat);
-        $("#prod_tags").val(tag);
-        $("#prod_prices").val(price);
-
-    });
-</script> -->
-
 
 {% endblock body %}

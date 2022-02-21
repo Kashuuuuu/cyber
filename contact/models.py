@@ -23,6 +23,7 @@ class operation_hours(models.Model):
 
 class contact_page_info(models.Model):
     user=models.OneToOneField(User,on_delete=models.CASCADE)
+    about_contact=models.TextField(null=True,blank=True)
     address=models.TextField()
     mail=models.EmailField()
     gmail=models.EmailField()

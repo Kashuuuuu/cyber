@@ -191,7 +191,7 @@
                                         </div>
                                         <div class="lp-profile-right">
                                             <div class="lp-profile-username">
-                                                {{instruct.0.name}}</div>
+                                                {{instruct.0.name|capfirst}}</div>
                                             <ul class="social-link">
                                             </ul>
                                             <a href="{% url 'private-message' instruct.0.slug %}" class="default-btn">
@@ -214,11 +214,11 @@
                                                     data-slug="{% url 'profile-certificates' instruct.0.slug %}">
                                                     <i class="fas fa-certificate"></i> Certificates </a>
                                             </li>
-                                            <li class="quizzes">
+                                            <!-- <li class="quizzes">
                                                 <a href="{% url 'quzess' instruct.0.slug %}"
                                                     data-slug="{% url 'quzess' instruct.0.slug %}">
                                                     <i class="fas fa-puzzle-piece"></i> Quizzes </a>
-                                            </li>
+                                            </li> -->
                                             <li class="orders">
                                                 <a href="{% url 'orders' instruct.0.slug %}"
                                                     data-slug="{% url 'orders' instruct.0.slug %}">
@@ -232,23 +232,7 @@
                                                 <a href="{% url 'setting-genralinfo' instruct.0.slug %}"
                                                     data-slug="{% url 'setting-genralinfo' instruct.0.slug %}">
                                                     <i class="fas fa-cog"></i> Settings </a>
-                                                <ul class="profile-tab-sections">
-                                                    <li class="basic-information">
-                                                        <a
-                                                            href="{% url 'setting-genralinfo' instruct.0.slug %}">General</a>
-                                                    </li>
-                                                    <li class="avatar">
-                                                        <a href="{% url 'settings-avatar' instruct.0.slug %}">Avatar</a>
-                                                    </li>
-                                                    <li class="change-password">
-                                                        <a
-                                                            href="/profile/Navneet/settings/change-password/">Password</a>
-                                                    </li>
-                                                    <li class="privacy">
-                                                        <a
-                                                            href="{% url 'settings-privacy' instruct.0.slug %}">Privacy</a>
-                                                    </li>
-                                                </ul>
+                                              
                                             </li>
                                             {% endif %}{% endif %}
                                             {% if request.user.is_authenticated %}
@@ -282,14 +266,14 @@
                                     
                                                     <tr class="cart_item">
                                                         <td class="product-name">
-                                                            {{c.course_title}}
+                                                            {{c.course_title|capfirst}}
                                                         </td>
 
                                                         <td class="product-total">
                                                             <span class="woocommerce-Price-amount amount"><bdi><span
                                                                         class="woocommerce-Price-currencySymbol"></span>
                                                                     <a href="/media/{{c.course_certificate}}">
-                                                                        {{c.course_certificate}}</a></bdi></span>
+                                                                        {{c.course_certificate|capfirst}}</a></bdi></span>
                                                         </td>
                                                     </tr>
                                             
@@ -307,8 +291,8 @@
 
 
 
-                                            {% else %}<h3>
-                                            <i class="fa"></i>No Certificate Available !</h3> {% endif %}
+                                            {% else %}<h5 class="mt-1">
+                                            <i class="fa"></i>No Certificate Available !</h5> {% endif %}
 
 
 

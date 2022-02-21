@@ -17,7 +17,7 @@
 </div>
 <div class="blog-area ptb-100">
     <div class="container">
-        <div class="row">
+        <div class="row" style="display: contents;">
             {% if blog|length != 0 %}
             <div class="col-lg-12">
                 <div class="row">
@@ -33,9 +33,9 @@
                                 </a>
                             </div>
                             <div class="post-content">
-                                <a class="category" href="{% url 'blog' %}?category={{b.blog_category}}">{{b.blog_category}}</a>
-                                <h3><a href="{% url 'single-blog' b.slug %}">{{b.blog_title}}</a></h3>
-                                <p>{{b.blog_description}}</p>
+                                <a class="category" href="{% url 'blog' %}?category={{b.blog_category}}">{{b.blog_category|capfirst}}</a>
+                                <h3><a href="{% url 'single-blog' b.slug %}">{{b.blog_title|capfirst}}</a></h3>
+                                <p>{{b.blog_description|capfirst|safe|slice:':150'}}....</p>
                                 <ul class="post-content-footer d-flex align-items-center">
                                     <li>
                                         <div class="post-author d-flex align-items-center">
@@ -46,7 +46,7 @@
                                                 <img src="/media/default.png"
                                                 class="rounded-circle" alt="Jone Smit">{% endif %}
 
-                                            <span>{{b.blog_instructor.name}}</span>
+                                            <span>{{b.blog_instructor.name|capfirst}}</span>
                                         </div>
                                     </li>
                                     <li><i class="flaticon-calendar"></i><a
@@ -89,7 +89,7 @@
 
             
 
-            <div class="col-lg-4 col-md-12">
+            <div class="col-lg-5 col-md-12 mt-5" >
                 <div id="secondary" class="sidebar">
                     <div id="search-3" class="widget widget_search">
                         <form role="search" method="post" id="search" class="search-form">
@@ -113,7 +113,7 @@
                             <div class="info gradient-effect">
                                 <time datetime="2020-07-01">{{b.blog_created_date|date:'F d, Y'}}</time>
                                 <h4 class="title usmall"><a href="{% url 'single-blog' b.slug %}">
-                                        {{b.blog_title}}</a></h4>
+                                        {{b.blog_title|capfirst}}</a></h4>
                             </div>
                             <div class="clear"></div>
                         </article>{% endif %}
@@ -122,7 +122,7 @@
                     <div id="categories-3" class="widget widget_categories">
                         <h2 class="widget-title">Categories</h2>
                         <ul> {% for cats,count in cat %}  
-                            <li class="cat-item cat-item-16"><a href="{% url 'blog' %}?category={{cats}}">{{cats}}</a><span
+                            <li class="cat-item cat-item-16"><a href="{% url 'blog' %}?category={{cats}}">{{cats|capfirst}}</a><span
                                     class="post-count">({{count}})</span>
                             </li>  {% endfor %}
                            
@@ -133,7 +133,7 @@
                         <div class="tagcloud">
                             {% for t in tag %}
                             <a href="{% url 'blog' %}?tags={{t}}" class="tag-cloud-link tag-link-15 tag-link-position-1"
-                                style="font-size: 8pt;" aria-label="ATD (1 item)">{{t}}</a>
+                                style="font-size: 8pt;" aria-label="ATD (1 item)">{{t|capfirst}}</a>
                               {% endfor %}
                             </div>
                     </div>
@@ -157,7 +157,7 @@
             </div>
 
             {% else %}
-            <p style="align-items: center;">search not found !</p>
+            <p style="text-align: center;">search not found !</p>
             {% endif %}
         </div>
     </div>

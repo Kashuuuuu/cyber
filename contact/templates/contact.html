@@ -43,18 +43,16 @@
                                                                             <span class="sub-title">Contact
                                                                                 Details</span>
                                                                             <h2>Get in Touch</h2>
-                                                                            <p>Lorem ipsum dolor sit amet, consectetur
-                                                                                adipiscing elit, sed do eiusmod tempor
-                                                                                incididunt ut labore et dolore magna
-                                                                                aliqua. Quis ipsum suspendisse ultrices
-                                                                                gravida. Risus commodo viverra.</p>
+                                                                            <p>
+                                                                                {{cont.0.about_contact|capfirst|safe}}
+                                                                               </p>
                                                                             <ul>
                                                                                 <li>
                                                                                     <div class="icon">
                                                                                         <i class="bx bx-map"></i>
                                                                                     </div>
                                                                                     <h3>Our Address</h3>
-                                                                                    <p>{{cont.0.address}}</p>
+                                                                                    <p>{{cont.0.address|capfirst}}</p>
                                                                                 </li>
                                                                                 <li>
                                                                                     <div class="icon">
@@ -119,7 +117,7 @@
                                                                             style="background-image:url(/wp-content/uploads/2020/05/register-shape.jpg);">
                                                                             <h2>Ready to Get Started?</h2>
                                                                             <p>Your email address will not be published.
-                                                                                Required fields are marked *</p>
+                                                                                Required fields are marked*</p>
                                                                             <div role="form" class="wpcf7"
                                                                                 id="wpcf7-f334-p246-o1" lang="en-US"
                                                                                 dir="ltr">

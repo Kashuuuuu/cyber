@@ -67,8 +67,8 @@
                                                                             <a href="{% url 'profile' i.slug %}"
                                                                                class="link-btn"><i
                                                                                     class="flaticon-right"></i></a>
-                                                                            <h3>{{i.name}}</h3>
-                                                                            <span>{{i.expert}}</span>
+                                                                            <h3>{{i.name|capfirst}}</h3>
+                                                                            <span>{{i.expert|capfirst}}</span>
                                                                         </div>
                                                                     </div>
                                                                 </div>

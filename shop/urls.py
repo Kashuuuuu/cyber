@@ -15,6 +15,7 @@ urlpatterns = [
 
   path('purchase-guide/', views.purchase_guide, name='purchase-guide'),
 
+  path('order-booked/', views.order_book, name='book'),
 
   path('shop/', views.shop, name='shop'),
 

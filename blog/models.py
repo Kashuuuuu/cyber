@@ -27,7 +27,7 @@ class blog_detail(models.Model):
     blog_description=models.TextField()
     blog_created_date=models.DateField(auto_now=True)
     tags=models.CharField(max_length=100)
-    #for full blog detail
+#for full blog detail
     head1=models.TextField()
     head2=models.TextField()
     imgs=models.ManyToManyField(blogdetail_img,related_name='blog_img')

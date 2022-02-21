@@ -107,13 +107,13 @@ id='lp-global-js'></script>
 
 
 											<span><a href="{% url 'profile' c.course_instructor.slug %}"><span>
-														{{c.course_instructor.name}}</span></a></span>
+														{{c.course_instructor.name|capfirst}}</span></a></span>
 										</div>
 										<h3><a
 												href="{% url 'course-single' c.slug %}">
-												{{c.course_title}}</a></h3>
+												{{c.course_title|capfirst}}</a></h3>
 										<p></p>
-										<p>{{c.course_description|safe|slice:':200'}}...</strong></p>
+										<p>{{c.course_description|safe|slice:':200'|capfirst}}...</strong></p>
 										<p></p>
 										<ul
 											class="courses-box-footer d-flex justify-content-between align-items-center">
@@ -132,7 +132,7 @@ id='lp-global-js'></script>
 
 
 						</ul>
-						{% comment %}
+				
 						{% if crs|length != 0 %}
 						<nav class="pagination-area text-center learn-press-pagination navigation pagination">
 						
@@ -163,7 +163,7 @@ id='lp-global-js'></script>
 								
 								</nav>
 								{% endif %}
-{% endcomment %}
+
 
 
 

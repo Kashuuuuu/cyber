@@ -2,11 +2,8 @@
 {% block body %}
 {% load static %}
 
-
-
 {% block body1 %}
-
-
+{% load myfilter %}
 <link rel='stylesheet' id='certificates-css-css'
 	href="{% static '/wp-content/plugins/ecademy-toolkit/inc/certificates/assets/css/certificates.min.css' %}"
 	type='text/css' media='all' />
@@ -50,15 +47,17 @@
 <script type='text/javascript'
 	src="{% static '/wp-content/plugins/ecademy-toolkit/inc/certificates/assets/js/pdf.js' %}" id='pdfjs-js'></script>
 <script type='text/javascript'
-	src="{% static '/wp-content/plugins/ecademy-toolkit/inc/certificates/assets/js/fabric.min.js' %}"
-	id='fabric-js'></script>
+	src="{% static '/wp-content/plugins/ecademy-toolkit/inc/certificates/assets/js/fabric.min.js' %}" id='fabric-js'>
+</script>
 <script type='text/javascript'
 	src="{% static '/wp-content/plugins/ecademy-toolkit/inc/certificates/assets/js/download.min.js' %}"
 	id='downloadjs-js'></script>
 <script type='text/javascript' src="{% static '/wp-includes/js/dist/hooks.min.js' %}" id='wp-hooks-js'></script>
 <script type='text/javascript' src="{% static '/wp-includes/js/dist/i18n.min.js' %}" id='wp-i18n-js'></script>
 <script type='text/javascript' id='wp-i18n-js-after'>
-	wp.i18n.setLocaleData({ 'text direction\u0004ltr': ['ltr'] });
+	wp.i18n.setLocaleData({
+		'text direction\u0004ltr': ['ltr']
+	});
 </script>
 <script type='text/javascript' src="{% static '/wp-includes/js/dist/vendor/lodash.min.js' %}" id='lodash-js'></script>
 <script type='text/javascript' id='lodash-js-after'>
@@ -70,7 +69,13 @@
 		var localeData = translations.locale_data[domain] || translations.locale_data.messages;
 		localeData[""].domain = domain;
 		wp.i18n.setLocaleData(localeData, domain);
-	})("default", { "locale_data": { "messages": { "": {} } } });
+	})("default", {
+		"locale_data": {
+			"messages": {
+				"": {}
+			}
+		}
+	});
 </script>
 <script type='text/javascript' src="{% static '/wp-includes/js/dist/api-fetch.min.js' %}" id='wp-api-fetch-js'></script>
 <script type='text/javascript' id='wp-api-fetch-js-after'>
@@ -82,8 +87,12 @@
 </script>
 <script type='text/javascript' id='certificates-js-js-extra'>
 	/* <![CDATA[ */
-	var localize_lp_cer_js = { "base_url": "https:\/\/themes.envytheme.com\/ecademy", "url_upload_cert": "https:\/\/themes.envytheme.com\/ecademy\/upload", "url_ajax": "https:\/\/themes.envytheme.com\/ecademy\/wp-admin\/admin-ajax.php" };
-/* ]]> */
+	var localize_lp_cer_js = {
+		"base_url": "https:\/\/themes.envytheme.com\/ecademy",
+		"url_upload_cert": "https:\/\/themes.envytheme.com\/ecademy\/upload",
+		"url_ajax": "https:\/\/themes.envytheme.com\/ecademy\/wp-admin\/admin-ajax.php"
+	};
+	/* ]]> */
 </script>
 <script type='text/javascript'
 	src="{% static '/wp-content/plugins/ecademy-toolkit/inc/certificates/assets/js/certificates.min.js' %}"
@@ -92,20 +101,26 @@
 <script type='text/javascript' src="{% static '/wp-includes/js/comment-reply.min.js' %}" id='comment-reply-js'></script>
 <script type='text/javascript' id='course-review-js-extra'>
 	/* <![CDATA[ */
-	var learn_press_course_review = { "localize": { "empty_title": "Please enter the review title", "empty_content": "Please enter the review content", "empty_rating": "Please select your rating" } };
-/* ]]> */
+	var learn_press_course_review = {
+		"localize": {
+			"empty_title": "Please enter the review title",
+			"empty_content": "Please enter the review content",
+			"empty_rating": "Please select your rating"
+		}
+	};
+	/* ]]> */
 </script>
 <script type='text/javascript'
-	src="{% static '/wp-content/plugins/learnpress-course-review/assets/js/course-review.js' %}"
-	id='course-review-js'></script>
+	src="{% static '/wp-content/plugins/learnpress-course-review/assets/js/course-review.js' %}" id='course-review-js'>
+</script>
 <script type='text/javascript' src="{% static '/wp-includes/js/dist/vendor/react.min.js' %}" id='react-js'></script>
-<script type='text/javascript' src="{% static '/wp-includes/js/dist/vendor/react-dom.min.js' %}"
-	id='react-dom-js'></script>
-<script type='text/javascript' src="{% static '/wp-includes/js/dist/escape-html.min.js' %}"
-	id='wp-escape-html-js'></script>
+<script type='text/javascript' src="{% static '/wp-includes/js/dist/vendor/react-dom.min.js' %}" id='react-dom-js'>
+</script>
+<script type='text/javascript' src="{% static '/wp-includes/js/dist/escape-html.min.js' %}" id='wp-escape-html-js'>
+</script>
 <script type='text/javascript' src="{% static '/wp-includes/js/dist/element.min.js' %}" id='wp-element-js'></script>
-<script type='text/javascript' src="{% static '/wp-includes/js/dist/deprecated.min.js' %}"
-	id='wp-deprecated-js'></script>
+<script type='text/javascript' src="{% static '/wp-includes/js/dist/deprecated.min.js' %}" id='wp-deprecated-js'>
+</script>
 <script type='text/javascript' src="{% static '/wp-includes/js/dist/dom.min.js' %}" id='wp-dom-js'></script>
 <script type='text/javascript' src="{% static '/wp-includes/js/dist/is-shallow-equal.min.js' %}"
 	id='wp-is-shallow-equal-js'></script>
@@ -114,22 +129,32 @@
 		var localeData = translations.locale_data[domain] || translations.locale_data.messages;
 		localeData[""].domain = domain;
 		wp.i18n.setLocaleData(localeData, domain);
-	})("default", { "locale_data": { "messages": { "": {} } } });
+	})("default", {
+		"locale_data": {
+			"messages": {
+				"": {}
+			}
+		}
+	});
 </script>
 <script type='text/javascript' src="{% static '/wp-includes/js/dist/keycodes.min.js' %}" id='wp-keycodes-js'></script>
 <script type='text/javascript' src="{% static '/wp-includes/js/dist/priority-queue.min.js' %}"
 	id='wp-priority-queue-js'></script>
 <script type='text/javascript' src="{% static '/wp-includes/js/dist/compose.min.js' %}" id='wp-compose-js'></script>
-<script type='text/javascript' src="{% static '/wp-includes/js/dist/redux-routine.min.js' %}"
-	id='wp-redux-routine-js'></script>
+<script type='text/javascript' src="{% static '/wp-includes/js/dist/redux-routine.min.js' %}" id='wp-redux-routine-js'>
+</script>
 <script type='text/javascript' src="{% static '/wp-includes/js/dist/data.min.js' %}" id='wp-data-js'></script>
 <script type='text/javascript' id='wp-data-js-after'>
 	(function () {
 		var userId = 0;
 		var storageKey = "WP_DATA_USER_" + userId;
 		wp.data
-			.use(wp.data.plugins.persistence, { storageKey: storageKey });
-		wp.data.plugins.persistence.__unstableMigrate({ storageKey: storageKey });
+			.use(wp.data.plugins.persistence, {
+				storageKey: storageKey
+			});
+		wp.data.plugins.persistence.__unstableMigrate({
+			storageKey: storageKey
+		});
 	})();
 </script>
 <script type='text/javascript'
@@ -138,8 +163,12 @@
 
 <script type='text/javascript' id='lp-woo-payment-js-js-extra'>
 	/* <![CDATA[ */
-	var localize_lp_woo_js = { "url_ajax": "https:\/\/themes.envytheme.com\/ecademy\/wp-admin\/admin-ajax.php", "woo_enable_signup_and_login_from_checkout": "no", "woocommerce_enable_guest_checkout": "yes" };
-/* ]]> */
+	var localize_lp_woo_js = {
+		"url_ajax": "https:\/\/themes.envytheme.com\/ecademy\/wp-admin\/admin-ajax.php",
+		"woo_enable_signup_and_login_from_checkout": "no",
+		"woocommerce_enable_guest_checkout": "yes"
+	};
+	/* ]]> */
 </script>
 <script type='text/javascript'
 	src="{% static '/wp-content/plugins/ecademy-toolkit/inc/woo-payment/assets/lp_woo.min.js' %}"
@@ -165,87 +194,25 @@
 						<div class="review-stars-rated">
 							<ul class="review-stars">
 								<!-- <li><span class="fa fa-star-o"></span></li>
-								<li><span class="fa fa-star-o">-0=</span></li>
+								<li><span class="fa fa-star-o"></span></li>00
 								<li><span class="fa fa-star-o"></span></li>
 								<li><span class="fa fa-star-o"></span></li>
 								<li><span class="fa fa-star-o"></span></li> -->
-						
 
 
-
-									{% for i in rate_count %}
-
-									{% if i.id == crs.0.id %}
-
-
-
-									{% if i.rate__count >= 0 %}
-									<li><span class="fa fa-star"
-										style="color: #ffb60a"></span></li>
-									<li><span class="fa fa-star-o"
-										style="color: #ffb60a"></span></li>
-									<li><span class="fa fa-star-o"
-										style="color: #ffb60a"></span></li>
-									<li><span class="fa fa-star-o"
-										style="color: #ffb60a"></span></li>
-									<li><span class="fa fa-star-o"
-										style="color: #ffb60a"></span></li>
-
-									{% elif i.rate__count >= 33 %}
-									<li><span class="fa fa-star"
-										style="color: #ffb60a"></span></li>
-									<li><span class="fa fa-star"
-										style="color: #ffb60a"></span></li>
-									<li><span class="fa fa-star-o"
-										style="color: #ffb60a"></span></li>
-									<li><span class="fa fa-star-o"
-										style="color: #ffb60a"></span></li>
-									<li><span class="fa fa-star-o"
-										style="color: #ffb60a"></span></li>
-
-									{% elif i.rate__count >= 60 %}
-									<li><span class="fa fa-star"
-										style="color: #ffb60a"></span></li>
-									<li><span class="fa fa-star"
-										style="color: #ffb60a"></span></li>
-									<li><span class="fa fa-star"
-										style="color: #ffb60a"></span></li>
-									<li><span class="fa fa-star-o"
-										style="color: #ffb60a"></span></li>
-									<li><span class="fa fa-star-o"
-										style="color: #ffb60a"></span></li>
-
-
-									{% elif i.rate__count >= 75 %}
-									<li><span class="fa fa-star"
-										style="color: #ffb60a"></span></li>
-									<li><span class="fa fa-star"
-										style="color: #ffb60a"></span></li>
-									<li><span class="fa fa-star"
-										style="color: #ffb60a"></span></li>
-									<li><span class="fa fa-star"
-										style="color: #ffb60a"></span></li>
-									<li><span class="fa fa-star-o"
-										style="color: #ffb60a"></span></li>
-
-
-									{% elif i.rate__count >= 100 %}
-									<li><span class="fa fa-star"
-										style="color: #ffb60a"></span></li>
-									<li><span class="fa fa-star"
-										style="color: #ffb60a"></span></li>
-									<li><span class="fa fa-star"
-										style="color: #ffb60a"></span></li>
-									<li><span class="fa fa-star"
-										style="color: #ffb60a"></span></li>
-									<li><span class="fa fa-star"
-										style="color: #ffb60a"></span></li>
-									{% endif %}
-
-									{% endif %}{% endfor %}
-
-
-								</ul>
+								{% for  j in "x"|ljust:"5" %}
+			
+								{% if tot > forloop.counter0 %}
+							
+								
+								<li><span class="fa fa-star"></span></li>
+											{% else %}
+										
+								<li><span class="fa fa-star-o"></span></li>
+											{% endif %}
+											
+									
+														{% endfor %}
 
 
 
@@ -262,18 +229,7 @@
 						</div>
 					</div>
 					<div class="reviews-total d-inline-block">
-					
-
-
-						{% if count >= 0 %}
-						(  1.0 Rating )
-						{% elif count >= 33 %}
-						( 2 Rating )
-						{% elif count >= 60 %}( 3 Rating )
-						{% elif count >= 75 %}( 4 Rating )
-						{% elif count >= 100 %}( 5 Rating )
-						{% endif %}
-
+						( {{total}} Rating )
 					</div>
 				</div>
 			</div>
@@ -287,7 +243,8 @@
 	</style>
 	<div class="courses-details-area pb-100">
 		<div class="courses-details-image">
-			<img src="/media/{{crs.0.course_img}}" width="100%" height="170" alt="">
+			<img src="/media/{{crs.0.course_img}}" width="100%" height="60%"
+				style="padding-left: 70px;padding-right: 70px;" alt="">
 		</div>
 		<div class="container">
 			<div class="row">
@@ -320,7 +277,7 @@
 														<div class="meta-item__value">
 															<label>Instructor</label>
 															<div><a
-																	href="{% url 'profile' crs.0.course_instructor.slug %}"><span>{{crs.0.course_instructor.name}}</span></a>
+																	href="{% url 'profile' crs.0.course_instructor.slug %}"><span>{{crs.0.course_instructor.name|capfirst}}</span></a>
 															</div>
 														</div>
 													</div>
@@ -329,7 +286,7 @@
 															<label>Category</label>
 															<div>
 																<a href="{% url 'course-single' crs.0.id %}"
-																	rel="tag">{{crs.0.course_category}}</a><span>|</span><a
+																	rel="tag">{{crs.0.course_category|capfirst}}</a><span>|</span><a
 																	href="/course-category/photo-flim/" rel="tag">Photo
 																	&amp; Flim</a>
 															</div>
@@ -339,6 +296,7 @@
 														<div class="meta-item__value">
 															<label>Review</label>
 															<div>
+
 																<div class="review-stars-rated"
 																	title="0 out of 5 stars">
 																	<div class="review-star">
@@ -447,7 +405,7 @@
 													</div>
 												</div>
 											</div>
-											<h1 class="course-title">{{crs.0.course_title}}
+											<h1 class="course-title">{{crs.0.course_title|capfirst}}
 											</h1>
 											<div class="course-meta course-meta-secondary">
 												<div class="course-meta__pull-left">
@@ -494,15 +452,15 @@
 													<div class="course-description" id="learn-press-course-description">
 														<h3>Course Description</h3>
 
-														<p>{{crs.0.course_description|safe}}</p>
+														<p>{{crs.0.course_description|safe|capfirst}}</p>
 
-{% comment %}
+														{% comment %}
 														<!-- <h3>Certification</h3>
 														<p>{{crs.0.course_certificate}}</p> -->
 														{% endcomment %}
 														<h3>Who This Course is for</h3>
 														{% for i in crs.0.who_this_course.all %}
-														<p>* {{i.title}}</p>
+														<p>* {{i.title|capfirst}}</p>
 														{% endfor %}
 													</div>
 												</div>
@@ -531,10 +489,10 @@
 															</div>
 															<div class="course-author__pull-right">
 																<div class="author-title"><a
-																		href="{% url 'profile' crs.0.course_instructor.slug %}"><span>{{crs.0.course_instructor.name}}
+																		href="{% url 'profile' crs.0.course_instructor.slug %}"><span>{{crs.0.course_instructor.name|capfirst}}
 																		</span></a></div>
 																<div class="author-description margin-bottom">
-																	{{crs.0.course_instructor.about|slice:'200'}}....
+																	{{crs.0.course_instructor.about|slice:'200'|capfirst}}....
 																</div>
 															</div>
 														</div>
@@ -544,93 +502,28 @@
 													<div class="course-rate">
 														<div class="course-rate__summary">
 															<div class="course-rate__summary-value">
-																
-																{% if count >= 0 %}
-																1.0
-																{% elif count >= 33 %}
-																2.0
-																{% elif count >= 60 %}3.0
-																{% elif count >= 75 %}4.0
-																{% elif count >= 100 %}5.0
-																{% endif %}
+																{{total}}
+
 															</div>
 															<div class="course-rate__summary-stars">
 																<div class="review-stars-rated"
 																	title="0 out of 5 stars">
 																	<div class="review-star ">
+																	
+
+					{% for  j in "x"|ljust:"5" %}
+						
+					{% if tot > forloop.counter0 %}
+				
+					<i class="fa fa-star" style="color: #ffb60a"></i>
+
+								{% else %}
+								<i class="fa fa-star-o" style="color: #ffb60a"></i>
+
+								{% endif %}
+								{% endfor %}
 
 
-
-																		{% for i in rate_count %}
-
-																		{% if i.id == crs.0.id %}
-
-
-
-																		{% if i.rate__count >= 0 %}
-																		<i class="fa fa-star"
-																			style="color: #ffb60a"></i>
-																		<i class="fa fa-star-o"
-																			style="color: #ffb60a"></i>
-																		<i class="fa fa-star-o"
-																			style="color: #ffb60a"></i>
-																		<i class="fa fa-star-o"
-																			style="color: #ffb60a"></i>
-																		<i class="fa fa-star-o"
-																			style="color: #ffb60a"></i>
-
-																		{% elif i.rate__count >= 33 %}
-																		<i class="fa fa-star"
-																			style="color: #ffb60a"></i>
-																		<i class="fa fa-star"
-																			style="color: #ffb60a"></i>
-																		<i class="fa fa-star-o"
-																			style="color: #ffb60a"></i>
-																		<i class="fa fa-star-o"
-																			style="color: #ffb60a"></i>
-																		<i class="fa fa-star-o"
-																			style="color: #ffb60a"></i>
-
-																		{% elif i.rate__count >= 60 %}
-																		<i class="fa fa-star"
-																			style="color: #ffb60a"></i>
-																		<i class="fa fa-star"
-																			style="color: #ffb60a"></i>
-																		<i class="fa fa-star"
-																			style="color: #ffb60a"></i>
-																		<i class="fa fa-star-o"
-																			style="color: #ffb60a"></i>
-																		<i class="fa fa-star-o"
-																			style="color: #ffb60a"></i>
-
-
-																		{% elif i.rate__count >= 75 %}
-																		<i class="fa fa-star"
-																			style="color: #ffb60a"></i>
-																		<i class="fa fa-star"
-																			style="color: #ffb60a"></i>
-																		<i class="fa fa-star"
-																			style="color: #ffb60a"></i>
-																		<i class="fa fa-star"
-																			style="color: #ffb60a"></i>
-																		<i class="fa fa-star-o"
-																			style="color: #ffb60a"></i>
-
-
-																		{% elif i.rate__count >= 100 %}
-																		<i class="fa fa-star"
-																			style="color: #ffb60a"></i>
-																		<i class="fa fa-star"
-																			style="color: #ffb60a"></i>
-																		<i class="fa fa-star"
-																			style="color: #ffb60a"></i>
-																		<i class="fa fa-star"
-																			style="color: #ffb60a"></i>
-																		<i class="fa fa-star"
-																			style="color: #ffb60a"></i>
-																		{% endif %}
-
-																		{% endif %}{% endfor %}
 
 
 																	</div>
@@ -641,19 +534,14 @@
 																</div>
 															</div>
 															<div class="course-rate__summary-text">
-																<span>{{count}}</span> total
+																<span>{{counts}}</span> total
 															</div>
 														</div>
+
 														<div class="course-rate__details">
 															<div class="course-rate__details-row">
 																<span class="course-rate__details-row-star">
-																	5
-																
-
-																	{% if ct_5 != 0 %}
-
-																	<i class="fas" style="color: #ffb60a">
-
+																	5 <i class="fas" style="color: #ffb60a">
 																		<svg xmlns="http://www.w3.org/2000/svg"
 																			width="16" height="16" fill="currentColor"
 																			class="bi bi-star-fill" viewBox="0 0 16 16">
@@ -661,38 +549,17 @@
 																				d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
 																		</svg>
 																	</i>
-																	{% else %}
-
-
-																	<i class="fa fa-star-o" style="color: #ffb60a"></i>
-
-
-
-
-																	{% endif %}
-
 																</span>
 																<div class="course-rate__details-row-value">
 																	<div class="rating-gray"></div>
 																	<div class="rating" style="width:0%;" title="0%">
 																	</div>
-																	<span class="rating-count">
-																	
-
-																		{% if ct_5 != 0 %}
-																		{{ct_5}}{% else %}0
-																		{% endif %}
-																	</span>
+																	<span class="rating-count">{{ct_5}}%</span>
 																</div>
 															</div>
 															<div class="course-rate__details-row">
 																<span class="course-rate__details-row-star">
-																	4
-																	
-
-																	{% if ct_4 != 0 %}
- 
-																	<i class="fas" style="color: #ffb60a">
+																	4 <i class="fas" style="color: #ffb60a">
 																		<svg xmlns="http://www.w3.org/2000/svg"
 																			width="16" height="16" fill="currentColor"
 																			class="bi bi-star-fill" viewBox="0 0 16 16">
@@ -700,39 +567,17 @@
 																				d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
 																		</svg>
 																	</i>
-																	{% else %}
-
-
-																	<i class="fa fa-star-o" style="color: #ffb60a"></i>
-
-
-
-
-																	{% endif %}
 																</span>
 																<div class="course-rate__details-row-value">
 																	<div class="rating-gray"></div>
 																	<div class="rating" style="width:0%;" title="0%">
 																	</div>
-																	<span class="rating-count">
-
-																		
-
-																		{% if ct_4 != 0 %}
-																		{{ct_4}}{% else %}0
-																		{% endif %}
-
-																	</span>
+																	<span class="rating-count">{{ct_4}}%</span>
 																</div>
 															</div>
 															<div class="course-rate__details-row">
 																<span class="course-rate__details-row-star">
-																	3 
-																	
-
-																	{% if ct_3 != 0 %}
- 
-																	<i class="fas" style="color: #ffb60a">
+																	3 <i class="fas" style="color: #ffb60a">
 																		<svg xmlns="http://www.w3.org/2000/svg"
 																			width="16" height="16" fill="currentColor"
 																			class="bi bi-star-fill" viewBox="0 0 16 16">
@@ -740,36 +585,17 @@
 																				d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
 																		</svg>
 																	</i>
-																	{% else %}
-
-
-																	<i class="fa fa-star-o" style="color: #ffb60a"></i>
-
-
-
-
-																	{% endif %}
 																</span>
 																<div class="course-rate__details-row-value">
 																	<div class="rating-gray"></div>
 																	<div class="rating" style="width:0%;" title="0%">
 																	</div>
-																	<span class="rating-count">
-
-																		
-
-																		{% if ct_3 != 0 %}
-																		{{ct_3}}{% else %}0
-																		{% endif %}
-																	</span>
+																	<span class="rating-count">{{ct_3}}%</span>
 																</div>
 															</div>
 															<div class="course-rate__details-row">
 																<span class="course-rate__details-row-star">
-																	2 
-
-																	{% if ct_2 != 0 %}
- <i class="fas" style="color: #ffb60a">
+																	2 <i class="fas" style="color: #ffb60a">
 																		<svg xmlns="http://www.w3.org/2000/svg"
 																			width="16" height="16" fill="currentColor"
 																			class="bi bi-star-fill" viewBox="0 0 16 16">
@@ -777,36 +603,17 @@
 																				d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
 																		</svg>
 																	</i>
-																	{% else %}
-
-
-																	<i class="fa fa-star-o" style="color: #ffb60a"></i>
-
-
-
-
-																	{% endif %}
 																</span>
 																<div class="course-rate__details-row-value">
 																	<div class="rating-gray"></div>
 																	<div class="rating" style="width:0%;" title="0%">
 																	</div>
-																	<span class="rating-count">
-
-															
-
-																		{% if ct_2 != 0 %}
-																		{{ct_2}}{% else %}0
-																		{% endif %}
-																	</span>
+																	<span class="rating-count">{{ct_2}}%</span>
 																</div>
 															</div>
 															<div class="course-rate__details-row">
 																<span class="course-rate__details-row-star">
-																	1
-
-																	{% if ct_1 != 0 %}
-  <i class="fas" style="color: #ffb60a">
+																	1 <i class="fas" style="color: #ffb60a">
 																		<svg xmlns="http://www.w3.org/2000/svg"
 																			width="16" height="16" fill="currentColor"
 																			class="bi bi-star-fill" viewBox="0 0 16 16">
@@ -814,77 +621,59 @@
 																				d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
 																		</svg>
 																	</i>
-																	{% else %}
-
-
-																	<i class="fa fa-star-o" style="color: #ffb60a"></i>
-
-
-
-
-																	{% endif %}
 																</span>
 																<div class="course-rate__details-row-value">
 																	<div class="rating-gray"></div>
 																	<div class="rating" style="width:0%;" title="0%">
 																	</div>
-																	<span class="rating-count">
-														
-
-																		{% if ct_1 != 0 %}
-																		{{ct_1}}
-																		{% else %}0
-																		{% endif %}
-																	</span>
+																	<span class="rating-count">{{ct_1}}%</span>
 																</div>
 															</div>
 														</div>
 													</div>
 
 													<div class="mt-5px">
-													
-															{% for r in crss %}
-															
-															{% if r.crs.id == crs.0.id %}
-														
-																<div class="lp-course-author" style="border: 2px;">
-																	<div class="course-author__pull-left">
-																		
-																	<!-- {{r.name.user.img}}={{r.name.users.img}} -->
-																		{% if r.name.user.img|length != 0 %}
-																		<img alt='User Avatar'
-																			src='/media/{{r.name.user.img}}'
-																			srcset='/media/{{r.name.user.img}} 2x'
-																			class='avatar avatar-96 photo' height='20'
-																			width='20' loading='lazy' />
-																			{% elif r.name.users.img|length != 0 %}
-																			<img alt='User Avatar'
-																				src='/media/{{r.name.users.img}}'
-																				srcset='/media/{{r.name.users.img}} 2x'
-																				class='avatar avatar-96 photo' height='20'
-																				width='20' loading='lazy' />
-																
-																			{% else %}
 
-																		<img alt='User Avatar' src='/media/default.png'
-																			srcset='/media/default.png 2x'
-																			class='avatar avatar-96 photo' height='20'
-																			width='20' loading='lazy' />{% endif %}
-																	</div>
-																	<div class="course-author__pull-right">
-																		<div class="author-title">
-																			<span>{{r.name}}
-																			</span>
-																		</div>
-																		<div class="author-description margin-bottom">
-																			{{r.comment}}
-																		</div>
-																	</div>
+														{% for r in crss %}
 
-																	
+														{% if r.crs.id == crs.0.id %}
+
+														<div class="lp-course-author" style="border: 2px;">
+															<div class="course-author__pull-left">
+
+																<!-- {{r.name.user.img}}={{r.name.users.img}} -->
+																{% if r.name.user.img|length != 0 %}
+																<img alt='User Avatar' src='/media/{{r.name.user.img}}'
+																	srcset='/media/{{r.name.user.img}} 2x'
+																	class='avatar avatar-96 photo' height='20'
+																	width='20' loading='lazy' />
+																{% elif r.name.users.img|length != 0 %}
+																<img alt='User Avatar' src='/media/{{r.name.users.img}}'
+																	srcset='/media/{{r.name.users.img}} 2x'
+																	class='avatar avatar-96 photo' height='20'
+																	width='20' loading='lazy' />
+
+																{% else %}
+
+																<img alt='User Avatar' src='/media/default.png'
+																	srcset='/media/default.png 2x'
+																	class='avatar avatar-96 photo' height='20'
+																	width='20' loading='lazy' />{% endif %}
+															</div>
+															<div class="course-author__pull-right">
+																<div class="author-title">
+																	<span>{{r.name|capfirst}}
+																	</span>
 																</div>
-															{% endif %} {% endfor %}
-														
+																<div class="author-description margin-bottom">
+																	{{r.comment|capfirst}}
+																</div>
+															</div>
+
+
+														</div>
+														{% endif %} {% endfor %}
+
 
 													</div>
 
@@ -915,7 +704,7 @@
 													<p class="comment-form-comment">
 														<label for="comment">Comment</label>
 														<textarea id="comment" name="comment" cols="45" rows="8"
-															required maxlength="65525" ></textarea>
+															required maxlength="65525"></textarea>
 													</p>
 
 
@@ -1006,7 +795,7 @@
 								<div class="d-flex justify-content-between align-items-center">
 									<span><i class="flaticon-teacher"></i> Instructor</span>
 									<a href="{% url 'profile' crs.0.course_instructor.slug %}"
-										class="d-inline-block">{{crs.0.course_instructor.name}}</a>
+										class="d-inline-block">{{crs.0.course_instructor.name|capfirst}}</a>
 								</div>
 							</li>
 							<li>
@@ -1034,6 +823,7 @@
 								</div>
 							</li>
 						</ul>
+						{% if request.user.userType.type == '2' %}
 						<div class="btn-box">
 							<div class="wrap-btn-add-course-to-cart">
 								<form name="form-add-course-to-cart" method="post">
@@ -1047,7 +837,7 @@
 									</button>
 								</form>
 							</div>
-						</div>
+						</div>{% endif %}
 						<div class="courses-share">
 							<div class="share-info">
 								<span>Share This Course <i class="flaticon-share"></i></span>
@@ -1100,11 +890,11 @@
 								{% endif %}
 
 								<span><a
-										href="{% url 'profile' m.course_instructor.slug %}"><span>{{m.course_instructor.name}}</span></a></span>
+										href="{% url 'profile' m.course_instructor.slug %}"><span>{{m.course_instructor.name|capfirst}}</span></a></span>
 							</div>
 							<h3><a href="{% url 'course-single' m.slug %}">
-									{{m.course_title}}</a></h3>
-							<p>{{m.course_description|safe|slice:':200'}}...</p>
+									{{m.course_title|safe|slice:':80'|capfirst}}</a></h3>
+							<p>{{m.course_description|safe|slice:':140'|capfirst}}...</strong></p>
 							<ul class="courses-box-footer d-flex justify-content-between align-items-center">
 								<li>
 									<i class='flaticon-agenda'></i>
@@ -1116,14 +906,14 @@
 							</ul>
 						</div>
 					</div>
+				</div>
+
+
+				{% endif %} {% endfor %}
+
 			</div>
-
-
-			{% endif %} {% endfor %}
-
 		</div>
-</div>
 
-<script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
-<script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
-{% endblock body %}
+		<script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
+		<script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
+		{% endblock body %}

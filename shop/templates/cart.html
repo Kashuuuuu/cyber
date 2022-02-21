@@ -94,7 +94,8 @@ var wc_cart_fragments_params = {"ajax_url":"\/ecademy\/wp-admin\/admin-ajax.php"
 												<td class="product-name" data-title="Product">
 													<a
 														href="{% url 'single-shop' prods.slug %}">
-												{{prods.product_title|slice:'50'}} ..</a>
+												{{prods.product_title|slice:'50'|capfirst}} ..</a>
+											
 												</td>
 
 												<td class="product-price" data-title="Price">
@@ -136,7 +137,7 @@ var wc_cart_fragments_params = {"ajax_url":"\/ecademy\/wp-admin\/admin-ajax.php"
 												<td class="product-name" data-title="Product">
 													<a
 														href="{% url 'single-shop' prods.slug %}">
-												{{prods.course_title|slice:'50'}} ..</a>
+												{{prods.course_title|slice:'50'|capfirst}} ..</a>
 												</td>
 
 												<td class="product-price" data-title="Price">

@@ -74,16 +74,16 @@
 																						loading='lazy' />{% endif %}
 
 																					<span><a href="{% url 'profile'  c.course_instructor.slug %}">
-																							<span>{{c.course_instructor.name}}
+																							<span>{{c.course_instructor.name|capfirst}}
 																							</span></a></span>
 																				</div>
 																				<h3 style='font-size:15px;'><a
-																						href="{% url 'course-single' c.slug %}">{{c.course_title|slice:':60'}}...</a>
+																						href="{% url 'course-single' c.slug %}">{{c.course_title|slice:':60'|capfirst}}...</a>
 																				</h3>
 																				<p>
 																					
 													
-																					{{c.short_course_description|safe|slice:":200"}}
+																					{{c.short_course_description|safe|slice:":200"|capfirst}}
 																						<!-- {{c.course_description|safe|slice:":200"}} -->
 																					</strong>...
 
@@ -397,14 +397,14 @@
 
 
 																	<span><a href="{% url 'profile'  c.course_instructor.slug %}"><span>
-																				{{c.course_instructor.name}}</span></a></span>
+																				{{c.course_instructor.name|capfirst}}</span></a></span>
 																</div>
 																<h3  style="font-size: 18px;"><a
 																		href="{% url 'course-single' c.slug %}">
-																		{{c.course_title|slice:':40'}}...</a></h3>
+																		{{c.course_title|slice:':40'|capfirst}}...</a></h3>
 																		<div>
 																<p>
-																	{{c.short_course_description|safe|slice:":200"}}
+																	{{c.short_course_description|safe|slice:":200"|capfirst}}
 																		<!-- {{c.course_description|safe|slice:':200'}} -->
 																	</strong>...
 																	</p>
@@ -558,7 +558,7 @@
 																			class="feedback-slides owl-carousel owl-theme">
 																		{% for i in instructor %}
 																			<div class="single-feedback-item">
-																				<p>{{i.about|slice:'100'}}....</p>
+																				<p>{{i.about|slice:'100'|capfirst}}....</p>
 																				<div
 																					class="client-info d-flex align-items-center">
 																					{% if i.img|length != 0 %}
@@ -570,8 +570,8 @@
 																						alt="David Warner">
 																					{% endif %}	
 																					<div class="title">
-																						<h3>{{i.name}}</h3>
-																						<span>{{i.expert}}</span>
+																						<h3>{{i.name|capfirst}}</h3>
+																						<span>{{i.expert|capfirst}}</span>
 																					</div>
 																				</div>
 																			</div>
@@ -872,8 +872,8 @@
 															</div>
 															<div class="post-content">
 																<a class="category"
-																	href="{% url 'blog' %}?category={{b.blog_category}}">{{b.blog_category}}</a>
-																<h3><a href="{% url 'single-blog' b.slug %}">{{b.blog_title}}
+																	href="{% url 'blog' %}?category={{b.blog_category}}">{{b.blog_category|capfirst}}</a>
+																<h3><a href="{% url 'single-blog' b.slug %}">{{b.blog_title|capfirst}}
 																	</a></h3>
 																<ul
 																	class="post-content-footer d-flex justify-content-between align-items-center">
@@ -887,7 +887,7 @@
 																			<img src="/media/default.png"
 																				class="rounded-circle"
 																				alt="Jone Smit">{% endif %}
-																			<span>{{b.blog_instructor.name}}</span>
+																			<span>{{b.blog_instructor.name|capfirst}}</span>
 																		</div>
 																	</li>
 																	<li>

@@ -184,7 +184,7 @@
 										</div>
 										<div class="lp-profile-right">
 											<div class="lp-profile-username">
-										{{instruct.0.name}}		</div>
+										{{instruct.0.name|capfirst}}		</div>
 											<ul class="social-link">
 											</ul>
 											<a href="{% url 'private-message' instruct.0.slug %}" class="default-btn">
@@ -207,11 +207,11 @@
 													data-slug="{% url 'profile-certificates' instruct.0.slug %}">
 													<i class="fas fa-certificate"></i> Certificates </a>
 											</li>
-											<li class="quizzes">
+											<!-- <li class="quizzes">
 												<a href="{% url 'quzess' instruct.0.slug %}"
 													data-slug="{% url 'quzess' instruct.0.slug %}">
 													<i class="fas fa-puzzle-piece"></i> Quizzes </a>
-											</li>
+											</li> -->
 											<li class="orders active">
 												<a href="{% url 'orders' instruct.0.slug %}"
 													data-slug="{% url 'orders' instruct.0.slug %}">
@@ -225,23 +225,7 @@
 												<a href="{% url 'setting-genralinfo' instruct.0.slug %}"
 													data-slug="{% url 'setting-genralinfo' instruct.0.slug %}">
 													<i class="fas fa-cog"></i> Settings </a>
-												<ul class="profile-tab-sections">
-													<li class="basic-information">
-														<a
-															href="{% url 'setting-genralinfo' instruct.0.slug %}">General</a>
-													</li>
-													<li class="avatar">
-														<a href="{% url 'settings-avatar' instruct.0.slug %}">Avatar</a>
-													</li>
-													<li class="change-password">
-														<a
-															href="/profile/Navneet/settings/change-password/">Password</a>
-													</li>
-													<li class="privacy">
-														<a
-															href="{% url 'settings-privacy' instruct.0.slug %}">Privacy</a>
-													</li>
-												</ul>
+											
 											</li>{% endif %}{% endif %}
 
 
@@ -278,7 +262,7 @@
 														{% for c  in crs_oder %}
 														<tr class="cart_item">
 															<td class="product-name">
-																{{c.course.course_title}} 
+																{{c.course.course_title|capfirst}} 
 															</td>
 															
 															<td class="product-total">
@@ -323,11 +307,11 @@
 					
 					
 					
-																			<h3>{{c.course.course_title}}</h3>
+																			<h3>{{c.course.course_title|capfirst}}</h3>
 										
 																	
 																			<div class="woocommerce-product-details__short-description">
-																				<p>{{c.course.course_description|safe|slice:':150'}}...</p>
+																				<p>{{c.course.course_description|capfirst|safe|slice:':100'}}...</p>
 																			</div>
 																			<div class="product-meta">
 																				<div class="product_meta">
@@ -346,7 +330,7 @@
 																					</span>	
 																					<span class="posted_in">Payment Method:
 					
-																						<input value="{{c.payment}}"
+																						<input value="{{c.payment|capfirst}}"
 																							style="border:none; display: inline;"
 																							id='prod_cat'>
 																					</span>															</div>
@@ -363,7 +347,7 @@
 														{% for p  in prod_oder %}
 														<tr class="cart_item">
 															<td class="product-name">
-																{{p.product.product_title}} 
+																{{p.product.product_title|capfirst}} 
 															</td>
 															<td class="product-total">
 																<span class="woocommerce-Price-amount amount"><bdi><span
@@ -387,8 +371,10 @@
 					
 														<div class="modal-dialog modal-dialog-centered" role="document">
 															<div class="modal-content">
-																<button type="button" class="close" data-dismiss="modal" style="line-height: 0px;" aria-label="Close">
-																	<span aria-hidden="true"  >&times;</span>
+																
+
+																<button type="button" class="close" data-dismiss="modal" style="line-height: 10px;" aria-label="Close">
+																	<span aria-hidden="true">&times;</span>
 																</button>
 																<div class="row">
 																	<div class="col-lg-6">
@@ -406,11 +392,11 @@
 					
 					
 					
-																			<h3>{{p.product.product_title}}</h3>
+																			<h3>{{p.product.product_title|capfirst}}</h3>
 										
 																	
 																			<div class="woocommerce-product-details__short-description">
-																				<p>{{p.product.product_description|safe|slice:':150'}}...</p>
+																				<p>{{p.product.product_description|capfirst|safe|slice:':100'}}...</p>
 																			</div>
 																			<div class="product-meta">
 																				<div class="product_meta">
@@ -429,7 +415,7 @@
 																					</span>	
 																					<span class="posted_in">Payment Method:
 					
-																						<input value="{{p.payment}}"
+																						<input value="{{p.payment|capfirst}}"
 																							style="border:none; display: inline;"
 																							id='prod_cat'>
 																					</span>															</div>
@@ -453,8 +439,8 @@
 
 
 
-												{% else %}
-												<i class="fa"></i>No orders! {% endif %}
+												{% else %}<h5 class="mt-1">
+												<i class="fa"></i>No orders!</h5> {% endif %}
 											
 											
 											
