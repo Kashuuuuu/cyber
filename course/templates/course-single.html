@@ -193,12 +193,7 @@
 					<div class="course-review">
 						<div class="review-stars-rated">
 							<ul class="review-stars">
-								<!-- <li><span class="fa fa-star-o"></span></li>
-								<li><span class="fa fa-star-o"></span></li>00
-								<li><span class="fa fa-star-o"></span></li>
-								<li><span class="fa fa-star-o"></span></li>
-								<li><span class="fa fa-star-o"></span></li> -->
-
+								
 
 								{% for  j in "x"|ljust:"5" %}
 			
@@ -680,6 +675,7 @@
 												</div>
 											</div>
 										</div>
+										{% if request.user.userType.type != '1' %}
 										<div id="comments" class="comments-area">
 											<div id="respond" class="comment-respond">
 												<h3 id="reply-title" class="comment-reply-title">Leave a Reply <small><a
@@ -726,6 +722,8 @@
 												</form>
 											</div>
 										</div>
+{% endif %}
+
 									</div>
 									<aside class="course-summary-sidebar">
 										<div class="course-summary-sidebar__inner">

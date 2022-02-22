@@ -42,7 +42,6 @@
                                 <select name="orderby" class="orderby form-control" aria-label="Shop order">
                                     <option value="menu_order" selected='selected'>Default sorting</option>
                                     <option value="popularity">Sort by popularity</option>
-                                    <option value="rating">Sort by average rating</option>
                                     <option value="date">Sort by latest</option>
                                     <option value="price">Sort by price: low to high</option>
                                     <option value="price-desc">Sort by price: high to low</option>
@@ -53,7 +52,7 @@
                         <ul class="products columns-3 row">{% for p in product %}
                             <li class="pmpro-has-access product type-product post-1006 status-publish
                              first outofstock product_cat-business product_tag-book has-post-thumbnail sale
-                              shipping-taxable purchasable product-type-simple" style="padding: 10px;">
+                              shipping-taxable purchasable product-type-simple" style="padding: 10px; ">
                                 <div class="single-products single-products-box">
                                     <a href="{% url 'single-shop' p.slug %}"
                                         class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
@@ -93,52 +92,13 @@
                                                 {% for i in rate_count %}
 
                                                 {% if i.id == p.id  %}
-                                                {% if i.rate__count <= 20 %}
-                                                <li><i class="fa fa-star-o"></i></li>
-                                                <li><i class="fa fa-star-o"></i></li>
-                                                <li><i class="fa fa-star-o"></i></li>
-                                                <li><i class="fa fa-star-o"></i></li>
-                                                <li><i class="fa fa-star-o"></i></li>
+                                                {% for j in 'o'|ljust:'5' %}
+                                            {% if i.tot > forloop.counter0 %}
+                                                <li><i class="fa fa-star"></i></li>
+                                               {% else %} <li><i class="fa fa-star-o"></i></li>
 
-
-                                                {% elif i.rate__count >= 20 %}
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star-o"></i></li>
-                                                <li><i class="fa fa-star-o"></i></li>
-                                                <li><i class="fa fa-star-o"></i></li>
-                                                <li><i class="fa fa-star-o"></i></li>
-
-                                                {%  elif i.rate__count >= 33 %}
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star-o"></i></li>
-                                                <li><i class="fa fa-star-o"></i></li>
-                                                <li><i class="fa fa-star-o"></i></li>
-
-                                                {% elif i.rate__count >= 60 %}
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star-o"></i></li>
-                                                <li><i class="fa fa-star-o"></i></li>
-
-
-                                                {% elif i.rate__count >= 75 %}
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star-o"></i></li>
-
-
-                                                {% elif i.rate__count >= 100 %}
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                                {% endif %}
-
+                                                {% endif %}{% endfor %}
+                                                
                                                 {% endif %}{% endfor %}
                                             </ul>
                                             <button>

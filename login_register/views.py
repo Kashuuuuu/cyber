@@ -46,7 +46,7 @@ def register(request):
                                 token=str(uuid.uuid4())
                                 frgpwd=frgt_pwd(user=user,frg_token=token)
                                 frgpwd.save()
-                                messages.success(request,'Registration Successfully.Thank You !\n Now You Are Instructor.')
+                                messages.success(request,'Registration Successfully.Thank You !\n As Instructor.')
                                 return redirect('home')
                             else:
                                 typeuser = userType(user=user, type='2')
@@ -57,7 +57,7 @@ def register(request):
                                 token=str(uuid.uuid4())
                                 frgpwd=frgt_pwd(user=user,frg_token=token)
                                 frgpwd.save()  
-                                messages.success(request,'Registration Successfully.Thank You !\n Now You Are Our New Student.')
+                                messages.success(request,'Registration Successfully.Thank You !\n As Student.')
                                 
                                 return redirect('home')
                         else:
@@ -81,10 +81,10 @@ def loged_in(request):
                 if user is not None:
                     login(request,user)
                     if next=='password-confirm' or next=='lost-password':
-                        messages.success(request, "Login Successfully. ")
+                        messages.success(request, f"{username} You are Login Successfully. ")
                         return redirect('home')
                     else:
-                        messages.success(request, "Login Successfully. ")           
+                        messages.success(request, f"{username} You are Login Successfully. ")           
                         return redirect(next)   
                 messages.error(request,'Invalid Email Or Password !') 
             else:

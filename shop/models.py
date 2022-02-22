@@ -20,6 +20,7 @@ class product_detail(models.Model):
     product_sku=models.IntegerField()
     category=models.CharField(max_length=100)
     discount=models.IntegerField(default=0)
+    rating=models.FloatField(default=0.0)
     created_date=models.DateField(auto_now_add=True)
     def save(self, *args, **kwargs):
         if self.slug == '':

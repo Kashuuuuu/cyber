@@ -200,19 +200,15 @@
 											<li class="courses">
 													
 
-
-
-													{% if request.user.userType.type == '1' %}
-													<a href="{% url 'courses' %}?inst={{instruct.0.id}}"
-														data-slug="{% url 'courses' %}?inst={{instruct.0.id}}">
-														<i class="fas fa-book-open"></i> Courses </a>
-													  {% elif request.user.userType.type == '2' %}
-													  <a href="{% url 'courses' %}"
-													  data-slug="{% url 'courses' %}">
-													  <i class="fas fa-book-open"></i> Courses </a>
-											   {% endif %}
-
-
+												{% if request.user.userType.type == '1' %}
+												<a href="{% url 'profile' request.user.user.slug %}"
+													data-slug="{% url 'profile' request.user.user.slug %}">
+													<i class="fas flaticon-user"></i> Profile </a>
+												  {% elif request.user.userType.type == '2' %}
+												  <a href="{% url 'profile' request.user.users.slug %}"
+												  data-slug="{% url 'profile' request.user.users.slug %}">
+												  <i class="fas flaticon-user"></i> Profile </a>
+										   {% endif %}
 
 											</li>{% if request.user.userType.type == '1' %}
 											<li class="certificates">
@@ -289,7 +285,7 @@
 																<a data-toggle="modal" id='prod'
 																data-target="#crs{{forloop.counter}}">
 														   
-															<button  style="float: rigth;"
+															<button  style="float: rigth; border-radius: 5px;"
 															class="btn btn-primary" name="apply_coupon"
 															value="Apply coupon">view</button></a></td>
 														</tr>

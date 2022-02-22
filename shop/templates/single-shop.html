@@ -290,55 +290,16 @@
                                                                     </bdi></span></ins></span>
                                                     <ul>
 
-                                                        {% for i in rt_count %}
+                                                        {% for i in rate_count %}
 
                                                         {% if i.id == r.id  %}
-                                                        {% if i.rate__count <= 20 %}
-                                                        <li><i class="fa fa-star-o"></i></li>
-                                                        <li><i class="fa fa-star-o"></i></li>
-                                                        <li><i class="fa fa-star-o"></i></li>
-                                                        <li><i class="fa fa-star-o"></i></li>
-                                                        <li><i class="fa fa-star-o"></i></li>
-
-
-                                                        {% elif i.rate__count >= 20 %}
+                                                        {% for j in 'o'|ljust:'5' %}
+                                                    {% if i.tot > forloop.counter0 %}
                                                         <li><i class="fa fa-star"></i></li>
-                                                        <li><i class="fa fa-star-o"></i></li>
-                                                        <li><i class="fa fa-star-o"></i></li>
-                                                        <li><i class="fa fa-star-o"></i></li>
-                                                        <li><i class="fa fa-star-o"></i></li>
-
-                                                        {%  elif i.rate__count >= 33 %}
-                                                        <li><i class="fa fa-star"></i></li>
-                                                        <li><i class="fa fa-star"></i></li>
-                                                        <li><i class="fa fa-star-o"></i></li>
-                                                        <li><i class="fa fa-star-o"></i></li>
-                                                        <li><i class="fa fa-star-o"></i></li>
-
-                                                        {% elif i.rate__count >= 60 %}
-                                                        <li><i class="fa fa-star"></i></li>
-                                                        <li><i class="fa fa-star"></i></li>
-                                                        <li><i class="fa fa-star"></i></li>
-                                                        <li><i class="fa fa-star-o"></i></li>
-                                                        <li><i class="fa fa-star-o"></i></li>
-
-
-                                                        {% elif i.rate__count >= 75 %}
-                                                        <li><i class="fa fa-star"></i></li>
-                                                        <li><i class="fa fa-star"></i></li>
-                                                        <li><i class="fa fa-star"></i></li>
-                                                        <li><i class="fa fa-star"></i></li>
-                                                        <li><i class="fa fa-star-o"></i></li>
-
-
-                                                        {% elif i.rate__count >= 100 %}
-                                                        <li><i class="fa fa-star"></i></li>
-                                                        <li><i class="fa fa-star"></i></li>
-                                                        <li><i class="fa fa-star"></i></li>
-                                                        <li><i class="fa fa-star"></i></li>
-                                                        <li><i class="fa fa-star"></i></li>
-                                                        {% endif %}
-
+                                                       {% else %} <li><i class="fa fa-star-o"></i></li>
+        
+                                                        {% endif %}{% endfor %}
+                                                        
                                                         {% endif %}{% endfor %}
                                                     </ul>
                                                     <button>

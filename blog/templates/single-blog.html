@@ -32,7 +32,8 @@
                             <ul>
                                 <li>
                                     <i class="bx bx-comment"></i>
-                                    No Comments
+                                    {% if comment_count != 0 %}
+                                    {{comment_count}} {% else %}0{% endif %}Comments
                                 </li>
                                 <li>
                                     <i class="bx bx-group"></i>

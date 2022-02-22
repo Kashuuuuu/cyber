@@ -66,9 +66,10 @@ def courses(request):
     if request.method=='POST':
         search=request.POST['search']
         or_look=(Q(course_title__icontains=search)|Q(category__icontains=search)|Q(course_price__contains=search)|
-        Q(course_description__icontains=search)|Q(slug__icontains=search)|Q(lession_no__icontains=search)
-        |Q(student_no__icontains=search)|Q(course_certificate__icontains=search)|
-        Q(course_quiz__icontains=search) |Q(course_duration_in_weeks__icontains=search))
+        Q(slug__icontains=search)|Q(course_instructor__name__icontains=search))
+        # Q(course_description__icontains=search)|Q(lession_no__icontains=search) 
+        # |Q(student_no__icontains=search)|Q(course_certificate__icontains=search)|
+        # Q(course_quiz__icontains=search) |Q(course_duration_in_weeks__icontains=search))
         crs=course_detail.objects.filter(or_look).order_by('id')
     
     elif request.GET.get('inst')!=None:

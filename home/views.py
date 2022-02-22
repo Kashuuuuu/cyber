@@ -22,10 +22,10 @@ def home(request):
 
     course=course_detail.objects.all()
     list={c.course_title for c in course}
-    
+    crs=course.order_by('-id')[:2]
     blog=blog_detail.objects.all()
     inst=instructor.objects.all()
-    res={'course':course,'blog':blog,'recent_crse':list,'instructor':inst}
+    res={'course':course,'blog':blog,'recent_crse':list,'instructor':inst,'crs':crs}
     return  render(request,'index.html',res)
 
 

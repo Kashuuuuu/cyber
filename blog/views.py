@@ -44,13 +44,7 @@ def blog(request):
     return  render(request,'blog.html',res)
 
 def single_blog(request,blogs):
-    # if request.GET.get('srch')!= None :
-    #     search=request.GET.get('srch')
-    #     blgs=blog_detail.objects.filter(Q(blog_category__contains=search)|Q(blog_title__contains=search)
-    #     |Q(slug__contains=search)|Q(blog_description__contains=search)|Q(tags__contains=search))
-    #     # blgs=blog_detail.objects.filter(look).order_by('id')  
-    #     return redirect('blog')
-    # else:
+  
     blgs=blog_detail.objects.filter(slug=blogs)
 
     blog_rcnt=blog_detail.objects.all() 
@@ -76,8 +70,8 @@ def single_blog(request,blogs):
           return redirect(request.get_full_path())
         else:
           return redirect('loginregister')
-
-    res={'blog':blgs,'rcnt':blog_rcnt,'cat':li,'tag':tags}
+    com=review.objects.filter(blog_id=blog_detail.objects.get(slug=blogs)).count()
+    res={'blog':blgs,'rcnt':blog_rcnt,'cat':li,'tag':tags,'comment_count':com}
     return  render(request,'single-blog.html',res)
 
 

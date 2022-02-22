@@ -18,23 +18,33 @@ from .paytm import Checksum
 from django.views.decorators.csrf import csrf_exempt
 # from .checksum import  generate_checksum, verify_checksum
 MERCHANT_KEY = 'kbzk1DSbJiV_O3p5';
-from django.db.models import Sum
+from django.db.models import Sum,Avg
 
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 def shop(request):
     prod=product_detail.objects.all()
-    rt_count=[]
-    for p in prod:
-        rt=shop_review.objects.filter(shop=p).aggregate(Count('rate'))
-        rt['id']=p.id
-        rt_count.append(rt)
-   
+    lis=[]
+    for x in product_detail.objects.all():
+        try:    
+            tot=cunt=0 
+            if len(shop_review.objects.filter(shop=x))!=0:
+                for i in shop_review.objects.filter(shop=x):
+            
+                    cunt+=i.rate
+                tot=cunt/len(shop_review.objects.filter(shop=x))
+                x.rating=tot
+                x.save()
+                lis.append({'id':x.id,'tot':int(format(tot,'.0f'))})
+            else: 
+                lis.append({'id':x.id,'tot':int(format(0,'.0f'))})
+        except ZeroDivisionError:
+                pass  
+    
     if request.GET.get('category') != None:
         product_detl=product_detail.objects.filter(category=request.GET.get('category'))
     elif request.GET.get('tag') != None:
         product_detl=product_detail.objects.filter(product_tag=request.GET.get('tag'))
-    
     elif request.GET.get('orderby') != None and request.GET.get('orderby') == 'menu_order':
         product_detl=product_detail.order_by('id')
     elif request.GET.get('orderby') != None and  request.GET.get('orderby') == 'popularity':
@@ -52,24 +62,24 @@ def shop(request):
     paginator=Paginator(product_detl,6)
     page_no=request.GET.get('page')
     products=paginator.get_page(page_no)
+     
+    
     dis=[]
     for p in products:
                 dis.append({
                     'id':p.id,'disc':"{:.0f}".format(p.product_price-(p.product_price*p.discount/100)) })
-        
-
-    res={'product':products,'rate_count':rt_count,'discunt':dis,'count':product_detail.objects.all().count,
+    res={'product':products,'rate_count':lis,'discunt':dis,'count':product_detail.objects.all().count,
     'result_count':len(product_detl)}
     return  render(request,'shop.html',res)
 
 def single_shop(request,shops):
     prod=product_detail.objects.all()
     product_detl=product_detail.objects.filter(slug=shops)
-    rt_count=[]
-    for p in prod:
-        rt=shop_review.objects.filter(shop=p).aggregate(Count('rate'))
-        rt['id']=p.id
-        rt_count.append(rt)
+    # rt_count=[]
+    # for p in prod:
+    #     rt=shop_review.objects.filter(shop=p).aggregate(Count('rate'))
+    #     rt['id']=p.id
+    #     rt_count.append(rt)
     if request.method=='POST':
         if request.user.is_authenticated:
             review=request.POST['review']
@@ -82,15 +92,30 @@ def single_shop(request,shops):
             return redirect(request.get_full_path())
         else:
             messages.warning(request,'Please Login Or Register.')
-            
             return redirect('login')
+    lis=[]
+    for x in product_detail.objects.all():
+        try:    
+            tot=cunt=0 
+            if len(shop_review.objects.filter(shop=x))!=0:
+                for i in shop_review.objects.filter(shop=x):
+            
+                    cunt+=i.rate
+                tot=cunt/len(shop_review.objects.filter(shop=x))
+                x.rating=tot
+                x.save()
+                lis.append({'id':x.id,'tot':int(format(tot,'.0f'))})
+            else: 
+                lis.append({'id':x.id,'tot':int(format(0,'.0f'))})
+        except ZeroDivisionError:
+                pass  
     dis=[]
     for p in prod:
                 dis.append({
                     'id':p.id,'disc':"{:.0f}".format(p.product_price-(p.product_price*p.discount/100)) })
    
 
-    res={'product':product_detl,'rlt_product':prod,'rt_count':rt_count,'discunt':dis}
+    res={'product':product_detl,'rlt_product':prod,'discunt':dis,'rate_count':lis}
     return  render(request,'single-shop.html',res)
 
 def mycart(request):
@@ -130,7 +155,7 @@ def mycart(request):
             for c in cartlist:
                 c.coupon=cod.code 
                 c.save()
-                messages.success(request,'Coupon Applied.')
+                # messages.success(request,'Coupon Applied.')
             if cod.valid_date>date.today():
                 cd=int((cod.discount*total)/100)
                 total=total-cd

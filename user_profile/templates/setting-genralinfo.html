@@ -147,13 +147,13 @@ var fep_notification_script = {"root":"https:\/\/themes.envytheme.com\/ecademy\/
                                         <ul class="lp-profile-nav-tabs">
                                             <li class="courses">
                                                 {% if request.user.userType.type == '1' %}
-                                                <a href="{% url 'courses' %}?inst={{instruct.0.id}}"
-                                                    data-slug="{% url 'courses' %}?inst={{instruct.0.id}}">
-                                                    <i class="fas fa-book-open"></i> Courses </a>
+                                                <a href="{% url 'profile' request.user.user.slug %}"
+                                                    data-slug="{% url 'profile' request.user.user.slug %}">
+                                                    <i class="fas flaticon-user"></i> Profile </a>
                                                   {% elif request.user.userType.type == '2' %}
-                                                  <a href="{% url 'courses' %}"
-                                                  data-slug="{% url 'courses' %}">
-                                                  <i class="fas fa-book-open"></i> Courses </a>
+                                                  <a href="{% url 'profile' request.user.users.slug %}"
+                                                  data-slug="{% url 'profile' request.user.users.slug %}">
+                                                  <i class="fas flaticon-user"></i> Profile </a>
                                            {% endif %}  </li>
                                            {% if request.user.userType.type == '1' %}
 												
