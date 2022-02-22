@@ -85,8 +85,9 @@ def loged_in(request):
                         return redirect('home')
                     else:
                         messages.success(request, "Login Successfully. ")           
-                        return redirect(next)
-            messages.error(request,'Please! Register Or Login. ')   
+                        return redirect(next)   
+                messages.error(request,'Invalid Email Or Password !') 
+            # messages.error(request,'Please! Register Or Login.')   
     return redirect('loginregister')
 
 def loged_out(request):

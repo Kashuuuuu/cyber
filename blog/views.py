@@ -24,6 +24,8 @@ def blog(request):
           blogs=blog_detail.objects.filter(tags=tg).order_by('id')
       else:
         blogs=blog_detail.objects.all().order_by('id')
+    if len(blogs)==0:    
+      return render(request,'searchnotfound.html')
 
     li=[]
     cats=blog_detail.objects.values('blog_category')

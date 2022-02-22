@@ -98,7 +98,7 @@ def search(request):
     elif len(inst)>0:
           return  render(request,'instructor.html',{'instructor':inst})
 
-    return redirect('home')
+    return render(request,'searchnotfound.html')
 
 def error(request):
     return render(request,'error-404.html')

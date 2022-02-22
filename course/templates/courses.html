@@ -59,7 +59,8 @@ id='lp-global-js'></script>
 					<div class="ecademy-grid-sorting row align-items-center">
 						
 						<div class="col-lg-6 col-md-6 result-count">
-							{% if crs|length != 0 %}	<p>Showing 1-{{count}} of {{cnt}} results</p>{% endif %}
+							{% if crs|length != 0 %}
+								<p>Showing 1-{{count}} of {{cnt}} results</p>{% endif %}
 						</div>
 						<div class="col-lg-6 col-md-6 ordering">
 							<div class="topbar-search">
@@ -75,7 +76,8 @@ id='lp-global-js'></script>
 					</div>
 					<div class="row justify-content-center" >
 						<ul class="row learn-press-courses" data-layout="list">
-						{% if crs|length != 0 %}	{% for c in crs %}
+						
+						{% for c in crs %}
 							<div id="post-604"
 								class="col-lg-4 col-md-6 post-604 lp_course type-lp_course status-publish has-post-thumbnail hentry course_category-python course_category-web-development course_tag-python course_tag-web-development pmpro-has-access course">
 								<div class="single-courses-box">
@@ -126,9 +128,7 @@ id='lp-global-js'></script>
 									</div>
 								</div>
 							</div>{% endfor %}
-							{% else %}
-							<p>search not found !</p>
-							{% endif %}
+							
 
 
 						</ul>

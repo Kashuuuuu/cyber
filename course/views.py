@@ -76,6 +76,9 @@ def courses(request):
         crs=course_detail.objects.filter(course_instructor=ins).order_by('id')
     else:
         crs=course_detail.objects.all().order_by('id')
+    if len(crs)==0:    
+      return render(request,'searchnotfound.html')
+
         
     paginator=Paginator(crs,6)
     page_no=request.GET.get('page')

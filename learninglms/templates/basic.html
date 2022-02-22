@@ -1208,11 +1208,16 @@
 
 				<!--Footer-->
 				<div class="modal-footer flex-center">
-					<a type="close" class="btn {% for m in messages %} {% if m.tags == 'error' %}btn-danger
-		  {% elif m.tags == 'warning' %}btn-warning {% elif m.tags == 'success' %}btn-success{% endif %}{% endfor %}
+					
+					<a href="" class="btn {% for m in messages %} {% if m.tags == 'error' %}btn-outline-danger
+		  {% elif m.tags == 'warning' %}btn-outline-warning {% elif m.tags == 'success' %}btn-outline-success{% endif %}{% endfor %}
 		 
-		  waves-effect" data-dismiss="modal">OK</a>
+	">OK</a>
 				</div>
+
+
+
+
 			</div>
 			<!--/.Content-->
 		</div>
