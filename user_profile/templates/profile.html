@@ -154,9 +154,17 @@ var fep_notification_script = {"root":"https:\/\/themes.envytheme.com\/ecademy\/
 													  <i class="fas flaticon-user"></i> Profile </a>
 											   {% endif %}
 
+											   {% if request.user.is_authenticated != 'True' %}
+                                           
+											   <li class="certificates active">
+												   <a href="{% url 'courses'  %}?inst={{instruct.0.slug}}"
+													   data-slug="{% url 'courses'  %}?inst={{instruct.0.slug}}">
+													   <i class="fas fa-book-open"></i> Courses</a>
+											   </li> {% endif %}
+
 												</li> {% if request.user.userType.type == '1' %}
                                                
-												<li class="certificates">
+												<li class="certificates ">
 													<a href="{% url 'profile-certificates' instruct.0.slug %}"
 														data-slug="{% url 'profile-certificates' instruct.0.slug %}">
 														<i class="fas fa-certificate"></i> Certificates </a>
@@ -166,12 +174,13 @@ var fep_notification_script = {"root":"https:\/\/themes.envytheme.com\/ecademy\/
 													<a href="{% url 'quzess' instruct.0.slug %}"
 														data-slug="{% url 'quzess' instruct.0.slug %}">
 														<i class="fas fa-puzzle-piece"></i> Quizzes </a>
-												</li> -->
+												</li> -->{% if request.user.userType.type == '1' %}
+                                               
 												<li class="orders">
 													<a href="{% url 'orders' instruct.0.slug %}"
 														data-slug="{% url 'orders' instruct.0.slug %}">
 														<i class="fas fa-shopping-cart"></i> Orders </a>
-												</li>
+												</li>{% endif %}
 
 												              
 {% if request.user.is_authenticated %}

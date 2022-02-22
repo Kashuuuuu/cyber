@@ -211,20 +211,23 @@ def profile(request,profile):
             res={'instruct':instruct}
         elif len(stud)>0:
             res={'instruct':stud}
-
-        if request.user.userType.type=='1':
-            cr=course_detail.objects.filter(course_instructor=instructor.objects.get(slug=profile))
-            totl=0
-            for c in cr:
-                crs=courses_purchase_order.objects.filter(course=c).count()
+        if request.user.is_authenticated:
+            if request.user.userType.type=='1':
+                cr=course_detail.objects.filter(course_instructor=instructor.objects.get(slug=profile))
+                totl=0
+                for c in cr:
+                    crs=courses_purchase_order.objects.filter(course=c).count()
+                    totl+=crs
+                res['stud']=totl
+            elif request.user.userType.type=='2':
+                totl=0
+                us=User.objects.get(id=request.user.id)
+                crs=courses_purchase_order.objects.filter(user=us).count()
                 totl+=crs
-            res['stud']=totl
-        elif request.user.userType.type=='2':
-            totl=0
-            us=User.objects.get(id=request.user.id)
-            crs=courses_purchase_order.objects.filter(user=us).count()
-            totl+=crs
-            res['corse_prchase']=totl
+                res['corse_prchase']=totl
+            # else:
+            #     res={'instruct':stud}
+       
             
                
         return  render(request,'profile.html',res)
@@ -247,9 +250,10 @@ def orders(request,order):
         res={'instruct':instruct}
     elif len(stud)>0:
         res={'instruct':stud}
-    c=User.objects.get(id=request.user.id)
-    res['crs_oder']=courses_purchase_order.objects.filter(user=c)
-    res['prod_oder']=products_purchase_order.objects.filter(user=c)
+    if request.user.is_authenticated:   
+        c=User.objects.get(id=request.user.id)
+        res['crs_oder']=courses_purchase_order.objects.filter(user=c)
+        res['prod_oder']=products_purchase_order.objects.filter(user=c)
     return  render(request,'orders.html',res)
 
 

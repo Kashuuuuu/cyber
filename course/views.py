@@ -73,7 +73,7 @@ def courses(request):
         crs=course_detail.objects.filter(or_look).order_by('id')
     
     elif request.GET.get('inst')!=None:
-        ins=instructor.objects.get(id=request.GET.get('inst'))
+        ins=instructor.objects.get(slug=request.GET.get('inst'))
         crs=course_detail.objects.filter(course_instructor=ins).order_by('id')
     else:
         crs=course_detail.objects.all().order_by('id')
