@@ -13,7 +13,7 @@
 
 
 <link rel='stylesheet' id='editor-buttons-css' href="{% static '/wp-includes/css/editor.min.css' %}" type='text/css' media='all' />
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel='stylesheet' id='lp-font-awesome-5-css' href="{% static '/wp-content/plugins/learnpress/assets/src/css/vendor/font-awesome-5.min.css' %}" type='text/css' media='all' />
 <link rel='stylesheet' id='lp-bundle-css' href="{% static '/wp-content/plugins/learnpress/assets/css/bundle.min.css' %}" type='text/css' media='all' />
 <link rel='stylesheet' id='learnpress-css' href="{% static '/wp-content/plugins/learnpress/assets/css/learnpress.css' %}" type='text/css' media='all' />
@@ -199,7 +199,19 @@ tinymce.ScriptLoader.markDone( '/wp-includes/js/tinymce/langs/en.js' );
 		</script>
         {% endblock body1 %}
 
+<!-- <style>
+    #spn{
+        position: absolute;
+        right: 15px;
+        transform: translate(0,-50%);
+        top:50%;
+        cursor: pointer;
 
+    }
+    .fa{
+        font-size: 20px;
+    }
+    </style> -->
 
 <div class="page-main-content">
     <div class="page-area">
@@ -229,7 +241,14 @@ tinymce.ScriptLoader.markDone( '/wp-includes/js/tinymce/langs/en.js' );
                                                         class="required">*</span></label>
                                                 <input type="password" name="password" id="password" required
                                                        placeholder="Password" autocomplete="current-password"/>
-                                            </li>
+                                           <!-- <span id="spn">
+                                               <i class="fa fa-eye"
+                                               aria-hidden="true" id="eye"
+                                               onclick="toggle()">
+
+                                               </i>
+                                           </span> -->
+                                                    </li>
                                         </ul>
                                         <p>
                                             <label>
@@ -483,4 +502,17 @@ tinymce.ScriptLoader.markDone( '/wp-includes/js/tinymce/langs/en.js' );
         </div>
     </div>
 </div>
+
+<script>
+    var state=false;
+    function toggle(){
+        if(state){
+            document.getElementById('password').setAttribute('type','password');
+            state=false;}
+            else{
+         document.getElementById('password').setAttribute('type','text');
+            state=true;}  
+            }
+</script>
+
 {% endblock body %}
