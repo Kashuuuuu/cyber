@@ -213,13 +213,20 @@ def profile(request,profile):
             res={'instruct':stud}
 
         if request.user.userType.type=='1':
-
             cr=course_detail.objects.filter(course_instructor=instructor.objects.get(slug=profile))
             totl=0
             for c in cr:
                 crs=courses_purchase_order.objects.filter(course=c).count()
                 totl+=crs
-            res['stud']=totl       
+            res['stud']=totl
+        elif request.user.userType.type=='2':
+            totl=0
+            us=User.objects.get(id=request.user.id)
+            crs=courses_purchase_order.objects.filter(user=us).count()
+            totl+=crs
+            res['corse_prchase']=totl
+            
+               
         return  render(request,'profile.html',res)
    
 def success_story(request):

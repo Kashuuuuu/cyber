@@ -1209,10 +1209,12 @@
 				<!--Footer-->
 				<div class="modal-footer flex-center">
 					
-					<a href="" class="btn {% for m in messages %} {% if m.tags == 'error' %}btn-outline-danger
+					<a id='close' class="btn {% for m in messages %} {% if m.tags == 'error' %}btn-outline-danger
 		  {% elif m.tags == 'warning' %}btn-outline-warning {% elif m.tags == 'success' %}btn-outline-success{% endif %}{% endfor %}
 		 
-	">OK</a>
+	">
+	
+	OK</a>
 				</div>
 
 
@@ -1755,7 +1757,14 @@
 		});
 	</script>
 
+<script>
+    
+        // Close modal on button click
+        $("#close").click(function(){
+            $("#exampleModal").modal('hide');
+        });
 
+</script>
 
 </body>
 

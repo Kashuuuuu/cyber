@@ -146,15 +146,22 @@ var fep_notification_script = {"root":"https:\/\/themes.envytheme.com\/ecademy\/
                                     <div id="profile-nav">
                                         <ul class="lp-profile-nav-tabs">
                                             <li class="courses">
+                                                {% if request.user.userType.type == '1' %}
                                                 <a href="{% url 'courses' %}?inst={{instruct.0.id}}"
                                                     data-slug="{% url 'courses' %}?inst={{instruct.0.id}}">
                                                     <i class="fas fa-book-open"></i> Courses </a>
-                                            </li>
+                                                  {% elif request.user.userType.type == '2' %}
+                                                  <a href="{% url 'courses' %}"
+                                                  data-slug="{% url 'courses' %}">
+                                                  <i class="fas fa-book-open"></i> Courses </a>
+                                           {% endif %}  </li>
+                                           {% if request.user.userType.type == '1' %}
+												
                                             <li class="certificates">
                                                 <a href="{% url 'profile-certificates' instruct.0.slug %}"
                                                     data-slug="{% url 'profile-certificates' instruct.0.slug %}">
                                                     <i class="fas fa-certificate"></i> Certificates </a>
-                                            </li>
+                                            </li>{% endif %} 
                                             <!-- <li class="quizzes">
                                                 <a href="{% url 'quzess' instruct.0.slug %}"
                                                     data-slug="{% url 'quzess' instruct.0.slug %}">
