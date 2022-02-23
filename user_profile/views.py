@@ -204,11 +204,15 @@ def change_pwd(request,pwd):
         
 
 def profile(request,profile):
-    
+        # res={}
         instruct=instructor.objects.filter(slug=profile)
         stud=student.objects.filter(slug=profile)
         if len(instruct)>0:
-            res={'instruct':instruct}
+            ins=instructor.objects.get(slug=profile)
+            inst_crs=course_detail.objects.filter(course_instructor=ins).count()
+            res={'instruct':instruct,
+            'inst_crs':inst_crs
+            }
         elif len(stud)>0:
             res={'instruct':stud}
         if request.user.is_authenticated:

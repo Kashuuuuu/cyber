@@ -204,49 +204,83 @@
                                 <aside id="profile-sidebar">
                                     <div id="profile-nav">
                                         <ul class="lp-profile-nav-tabs">
+                                            
                                             <li class="courses">
                                                 {% if request.user.userType.type == '1' %}
+                                                
+                                                {% if instruct.0.slug == request.user.user.slug %}
                                                 <a href="{% url 'profile' request.user.user.slug %}"
                                                     data-slug="{% url 'profile' request.user.user.slug %}">
-                                                    <i class="fas flaticon-user"></i> Profile </a>
+                                                    <i class="fas flaticon-user"></i> Profile </a>{% endif %}
                                                   {% elif request.user.userType.type == '2' %}
+                                                  {% if instruct.0.slug == request.user.users.slug %}
                                                   <a href="{% url 'profile' request.user.users.slug %}"
                                                   data-slug="{% url 'profile' request.user.users.slug %}">
-                                                  <i class="fas flaticon-user"></i> Profile </a>
+                                                  <i class="fas flaticon-user"></i> Profile</a>{% endif %}
+
                                            {% endif %}
+                                           {% if request.user.userType.type == '2' %}
+                                           {% if instruct.0.slug != request.user.users.slug %}
+                                           <a href="{% url 'courses' %}?inst={{instruct.0.slug}}"
+                                           data-slug="{% url 'courses' %}?inst={{instruct.0.slug}}">
+                                           <i class="fas flaticon-user"></i> Course</a>
+                                    {% endif %}
+                                    
+                                    {% elif request.user.userType.type == '1' %}
+                                    {% if instruct.0.slug != request.user.user.slug %}
+                                    <a href="{% url 'courses' %}?inst={{instruct.0.slug}}"
+                                    data-slug="{% url 'courses' %}?inst={{instruct.0.slug}}">
+                                    <i class="fas flaticon-user"></i> Course</a>
+                             {% endif %}
+                                    {% endif %}
+                                           <!-- {% if   instruct.0.slug != request.user.users.slug %}
+                                       
+                                           <li class="certificates active">
+                                               <a href="{% url 'courses'  %}?inst={{instruct.0.slug}}"
+                                                   data-slug="{% url 'courses'  %}?inst={{instruct.0.slug}}">
+                                                   <i class="fas fa-book-open"></i> Courses</a>
+                                           </li> {% endif %} -->
+
                                             </li> {% if request.user.userType.type == '1' %}
-                                               
-                                            <li class="certificates active">
+                                           
+                                            <li class="certificates active ">
                                                 <a href="{% url 'profile-certificates' instruct.0.slug %}"
                                                     data-slug="{% url 'profile-certificates' instruct.0.slug %}">
                                                     <i class="fas fa-certificate"></i> Certificates </a>
-                                            </li>{% endif %}
+                                            </li> {% endif %}
+
                                             <!-- <li class="quizzes">
                                                 <a href="{% url 'quzess' instruct.0.slug %}"
                                                     data-slug="{% url 'quzess' instruct.0.slug %}">
                                                     <i class="fas fa-puzzle-piece"></i> Quizzes </a>
                                             </li> -->
+                                            
+                                            {% if request.user.userType.type == '2' or request.user.userType.type == '1' %}
+                                            {% if instruct.0.slug == request.user.user.slug or instruct.0.slug == request.user.users.slug %}
                                             <li class="orders">
                                                 <a href="{% url 'orders' instruct.0.slug %}"
                                                     data-slug="{% url 'orders' instruct.0.slug %}">
                                                     <i class="fas fa-shopping-cart"></i> Orders </a>
-                                            </li>
+                                            </li>{% endif %}
+                                            
+                                            {% endif %}
 
-                                            {% if request.user.is_authenticated %}
-                                            {% if request.user.id == instruct.0.user.id %}
+                                                          
+{% if request.user.is_authenticated %}
+{% if request.user.id == instruct.0.user.id %}
 
                                             <li class="settings has-child">
                                                 <a href="{% url 'setting-genralinfo' instruct.0.slug %}"
                                                     data-slug="{% url 'setting-genralinfo' instruct.0.slug %}">
                                                     <i class="fas fa-cog"></i> Settings </a>
-                                              
-                                            </li>
-                                            {% endif %}{% endif %}
+                                                
+                                            </li>{% endif %}{% endif %}
                                             {% if request.user.is_authenticated %}
-
-                                            {% if request.user.id == instruct.0.user.id %}
-                                            <li class="logout">
-                                                <a href="{% url 'logout' %}" data-slug="{% url 'logout' %}">
+                                            
+                                        {% if request.user.id == instruct.0.user.id %}
+                                        <li class="logout">
+                                                <a href="{% url 'logout' %}"
+                                                    data-slug="{% url 'logout' %}">
                                                     <i class="fas fa-sign-out-alt"></i> Logout </a>
                                             </li>{% endif %}{% endif %}
                                         </ul>
