@@ -198,7 +198,7 @@
 									<div id="profile-nav">
 										<ul class="lp-profile-nav-tabs">
 											
-											<li class="courses active">
+											<li class="courses ">
 												{% if request.user.userType.type == '1' %}
 												
 												{% if instruct.0.slug == request.user.user.slug %}
@@ -250,7 +250,7 @@
 											
 											{% if request.user.userType.type == '2' or request.user.userType.type == '1' %}
 											{% if instruct.0.slug == request.user.user.slug or instruct.0.slug == request.user.users.slug %}
-											<li class="orders">
+											<li class="orders active">
 												<a href="{% url 'orders' instruct.0.slug %}"
 													data-slug="{% url 'orders' instruct.0.slug %}">
 													<i class="fas fa-shopping-cart"></i> Orders </a>
