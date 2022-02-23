@@ -170,6 +170,13 @@ var fep_notification_script = {"root":"https:\/\/themes.envytheme.com\/ecademy\/
 										data-slug="{% url 'courses' %}?inst={{instruct.0.slug}}">
 										<i class="fas flaticon-user"></i> Course</a>
 								 {% endif %}
+
+								 {% elif request.user.is_authenticated != 'True' %}
+						
+										<a href="{% url 'courses' %}?inst={{instruct.0.slug}}"
+										data-slug="{% url 'courses' %}?inst={{instruct.0.slug}}">
+										<i class="fas flaticon-user"></i> Course</a>
+								
 										{% endif %}
 											   <!-- {% if   instruct.0.slug != request.user.users.slug %}
                                            
@@ -263,7 +270,12 @@ var fep_notification_script = {"root":"https:\/\/themes.envytheme.com\/ecademy\/
 															{% else %}0	{% endif %}
 														</strong> Course You Have Enrolled.</a>
 												</li>
-													</ul>{% endif %}{% endif %}
+													</ul>{% endif %}
+													
+													
+													
+													
+													{% endif %}
 
 
 
@@ -295,6 +307,21 @@ var fep_notification_script = {"root":"https:\/\/themes.envytheme.com\/ecademy\/
 										</li>
 											</ul>
 									  {% endif %}
+
+
+									  {% elif request.user.is_authenticated != 'True' %}
+									  
+									  <ul class="learn-press-profile-course__tab__inner">
+										 <li><a class="active" data-tab="enrolled">Instructor Course</a></li>
+										 <li><a class="" data-tab="enrolled"> This Instructor Have	<strong style="font-size: 18px;">
+											 {% if inst_crs != 0 %}{{inst_crs}}
+											 {% else %}0	{% endif %}
+										 </strong>  Courses.</a>
+								 </li>
+									 </ul>
+							   
+
+
 											 {% endif %}
 													<!-- <div class="learn-press-course-tab-enrolled learn-press-course-tab-filters"
 														data-tab="enrolled" style="">
