@@ -27,12 +27,13 @@ def profile_certificates(request,certificate):
     elif len(stud)>0:
         res={'instruct':stud}
     if len(instruct)>0:
-        usr=instructor.objects.get(user=User.objects.get(id=request.user.id))
+        usr=instructor.objects.get(slug=certificate)
         cr=course_detail.objects.filter(course_instructor=usr)
         for c in cr:
             if c.course_certificate!= '':
                 li.append(c)
         res['crtfct']=li
+        print(li,'ppp')
     return  render(request,'profile-certificates.html',res)
 
 def setting_genralinfo(request,genralinfo):
