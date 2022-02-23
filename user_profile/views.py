@@ -5,6 +5,7 @@ from course.models import course_detail
 from shop.models import *
 from user_profile.models import instructor, student
 
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
 from django.contrib import messages
 
@@ -24,8 +25,8 @@ def profile_certificates(request,certificate):
     
     if len(instruct)>0:
         res={'instruct':instruct}
-    elif len(stud)>0:
-        res={'instruct':stud}
+    # elif len(stud)>0:
+    #     res={'instruct':stud}
     if len(instruct)>0:
         usr=instructor.objects.get(slug=certificate)
         cr=course_detail.objects.filter(course_instructor=usr)
@@ -38,6 +39,7 @@ def profile_certificates(request,certificate):
 
 def setting_genralinfo(request,genralinfo):
     if request.user.is_authenticated:
+        res={}
         nxt=request.get_full_path()
         instruct=instructor.objects.filter(slug=genralinfo)
         stud=student.objects.filter(slug=genralinfo)
@@ -110,7 +112,12 @@ def setting_genralinfo(request,genralinfo):
         if len(instruct)>0:
             res={'instruct':instruct}
         elif len(stud)>0:
-            res={'instruct':stud}
+            if request.user.is_authenticated:  
+                if request.user.userType.type=='2':
+                 res={'instruct':stud}
+            else:
+                return redirect('error')
+        
     
         return  render(request,'setting-genralinfo.html',res)
     else:
@@ -163,15 +170,22 @@ def settings_privacy(request,privacy):
   
 def change_pwd(request,pwd):
     
-    if request.user.is_authenticated:    
+    if request.user.is_authenticated:  
+        res={}
         instruct=instructor.objects.filter(slug=pwd)
         stud=student.objects.filter(slug=pwd)
         if len(instruct)>0:
             slg=instructor.objects.get(slug=pwd)
             res={'instruct':instruct}
         elif len(stud)>0:
-            slg=student.objects.get(slug=pwd)
-            res={'instruct':stud}
+
+            if request.user.is_authenticated:  
+                if request.user.userType.type=='2':
+                    slg=student.objects.get(slug=pwd)
+                    res={'instruct':stud}
+            else:
+                return redirect('error')
+      
 
         if request.method == "POST":
             old = request.POST['old']
@@ -202,20 +216,25 @@ def change_pwd(request,pwd):
         return  render(request,'change-password.html',res)
     else:
         return redirect('error')
-        
+
 
 def profile(request,profile):
-        # res={}
+        res={}
         instruct=instructor.objects.filter(slug=profile)
         stud=student.objects.filter(slug=profile)
+        print(instruct,stud,'99')
         if len(instruct)>0:
             ins=instructor.objects.get(slug=profile)
             inst_crs=course_detail.objects.filter(course_instructor=ins).count()
             res={'instruct':instruct,
             'inst_crs':inst_crs
             }
-        elif len(stud)>0:
-            res={'instruct':stud}
+        elif  len(stud)>0 :    
+            if request.user.is_authenticated:  
+                if request.user.userType.type=='2':
+                 res={'instruct':stud}
+            else:
+                return redirect('error')
         if request.user.is_authenticated:
             if request.user.userType.type=='1':
                 cr=course_detail.objects.filter(course_instructor=instructor.objects.get(slug=profile))
@@ -232,9 +251,6 @@ def profile(request,profile):
                 res['corse_prchase']=totl
             # else:
             #     res={'instruct':stud}
-       
-            
-               
         return  render(request,'profile.html',res)
    
 def success_story(request):
@@ -248,13 +264,18 @@ def instructors(request):
 
 
 def orders(request,order):
-     
+    res={}
     instruct=instructor.objects.filter(slug=order)
     stud=student.objects.filter(slug=order)
     if len(instruct)>0:
         res={'instruct':instruct}
     elif len(stud)>0:
-        res={'instruct':stud}
+        if request.user.is_authenticated:  
+            if request.user.userType.type=='2':
+                 res={'instruct':stud}
+        else:
+                return redirect('error')
+      
     if request.user.is_authenticated:   
         c=User.objects.get(id=request.user.id)
         res['crs_oder']=courses_purchase_order.objects.filter(user=c)
@@ -270,7 +291,7 @@ def quzess(request,quize):
     
     if len(instruct)>0:
         res={'instruct':instruct}
-    elif len(stud)>0:
-        res={'instruct':stud}
+    # elif len(stud)>0:
+    #     res={'instruct':stud}
 
     return  render(request,'quzess.html',res)
