@@ -118,6 +118,7 @@ def single_shop(request,shops):
     res={'product':product_detl,'rlt_product':prod,'discunt':dis,'rate_count':lis}
     return  render(request,'single-shop.html',res)
 
+@login_required(login_url='loginregister')
 def mycart(request):
     cartlist=cart.objects.filter(userid=request.user.id)
     li=[]
@@ -166,6 +167,7 @@ def mycart(request):
     return  render(request,'cart.html',res)
 
 
+@login_required(login_url='loginregister')
 def add_to_cart(request,addcart):
     if request.user.is_authenticated:
         carts=cart.objects.all()
@@ -197,6 +199,7 @@ def add_to_cart(request,addcart):
         return redirect('loginregister')
 
 
+@login_required(login_url='loginregister')
 def checkout(request):
     cartlist=cart.objects.filter(userid=request.user.id)
     li=[]
@@ -237,6 +240,7 @@ def checkout(request):
         res={'cart':li,'total':total}
     return render(request, 'checkout.html',res)
 
+@login_required(login_url='loginregister')
 def order(request):
     cartlist=cart.objects.filter(userid=request.user.id)
     
@@ -346,12 +350,18 @@ def handle_request(request):
      
     return render(request, 'paymentstatus.html', {'response': res_dict})
 
+@login_required(login_url='loginregister')
 def order_book(request):
+    inst=instructor.objects.filter(user=User.objects.get(id=request.user.id))
+    stud=student.objects.filter(user=User.objects.get(id=request.user.id))
+
     cartlist=cart.objects.filter(userid=request.user.id)
     cartlist.delete()
     messages.success(request,'Order Saved Successfully.\n Order Payment success.')
-    return redirect('home')
-       
+    if len(inst)>0:
+        return redirect('orders',order=instructor.objects.get(user=User.objects.get(id=request.user.id)).slug )
+    elif len(stud)>0:
+        return redirect('orders',order=student.objects.get(user=User.objects.get(id=request.user.id)).slug)
 
 
 def purchase_guide(request):

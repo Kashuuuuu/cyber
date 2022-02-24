@@ -159,22 +159,22 @@ var fep_notification_script = {"root":"https:\/\/themes.envytheme.com\/ecademy\/
 											   {% endif %}
 											   {% if request.user.userType.type == '2' %}
 											   {% if instruct.0.slug != request.user.users.slug %}
-											   <a href="{% url 'courses' %}?inst={{instruct.0.slug}}"
-											   data-slug="{% url 'courses' %}?inst={{instruct.0.slug}}">
+											   <a href="#"
+											   data-slug="#">
 											   <i class="fas flaticon-user"></i> Course</a>
 										{% endif %}
 										
 										{% elif request.user.userType.type == '1' %}
 										{% if instruct.0.slug != request.user.user.slug %}
-										<a href="{% url 'courses' %}?inst={{instruct.0.slug}}"
-										data-slug="{% url 'courses' %}?inst={{instruct.0.slug}}">
+										<a href="#"
+										data-slug="#">
 										<i class="fas flaticon-user"></i> Course</a>
 								 {% endif %}
 
 								 {% elif request.user.is_authenticated != 'True' %}
 						
-										<a href="{% url 'courses' %}?inst={{instruct.0.slug}}"
-										data-slug="{% url 'courses' %}?inst={{instruct.0.slug}}">
+										<a href="#"
+										data-slug="#">
 										<i class="fas flaticon-user"></i> Course</a>
 								
 										{% endif %}
@@ -287,11 +287,13 @@ var fep_notification_script = {"root":"https:\/\/themes.envytheme.com\/ecademy\/
 													{% if instruct.0.slug != request.user.users.slug %}
 													<ul class="learn-press-profile-course__tab__inner">
 														<li><a class="active" data-tab="enrolled">Instructor Course</a></li>
-														<li><a class="" data-tab="enrolled">
-														This Instructor Have 	<strong style="font-size: 18px;">
+														<li style="margin-left: 25px;">
+														This Instructor Have
+														<a class="" style="padding:13px ;"  data-tab="enrolled"
+														 href="{% url 'courses' %}?inst={{instruct.0.slug}}"><strong style="font-size: 18px;color: red;">
 															{% if inst_crs != 0 %}{{inst_crs}}
 															{% else %}0	{% endif %}
-														</strong> Courses.</a>
+														</strong></a> Courses.
 												</li>
 													</ul>
 											 {% endif %}
@@ -300,10 +302,12 @@ var fep_notification_script = {"root":"https:\/\/themes.envytheme.com\/ecademy\/
 											 {% if instruct.0.slug != request.user.user.slug %}
 											 <ul class="learn-press-profile-course__tab__inner">
 												<li><a class="active" data-tab="enrolled">Instructor Course</a></li>
-												<li><a class="" data-tab="enrolled"> This Instructor Have	<strong style="font-size: 18px;">
+												<li style="margin-left: 25px;"> This Instructor Have
+													
+													<a class="" style="padding:13px ;"  data-tab="enrolled" href="{% url 'courses' %}?inst={{instruct.0.slug}}"><strong style="font-size: 18px;color: red;">
 													{% if inst_crs != 0 %}{{inst_crs}}
 													{% else %}0	{% endif %}
-												</strong>  Courses.</a>
+												</strong></a> Courses.
 										</li>
 											</ul>
 									  {% endif %}
@@ -312,11 +316,11 @@ var fep_notification_script = {"root":"https:\/\/themes.envytheme.com\/ecademy\/
 									  {% elif request.user.is_authenticated != 'True' %}
 									  
 									  <ul class="learn-press-profile-course__tab__inner">
-										 <li><a class="active" data-tab="enrolled">Instructor Course</a></li>
-										 <li><a class="" data-tab="enrolled"> This Instructor Have	<strong style="font-size: 18px;">
-											 {% if inst_crs != 0 %}{{inst_crs}}
-											 {% else %}0	{% endif %}
-										 </strong>  Courses.</a>
+										 <li><a class="active"  data-tab="enrolled">Instructor Course</a></li>
+										 <li style="margin-left: 25px;">This Instructor Have<a class="" style="padding:9px ;" data-tab="enrolled" href="{% url 'courses' %}?inst={{instruct.0.slug}}">
+											<strong style="font-size: 18px;color: red;">{% if inst_crs != 0 %}{{inst_crs}}
+											{% else %}0{% endif %}
+										 </strong></a>Courses.
 								 </li>
 									 </ul>
 							   

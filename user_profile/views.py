@@ -37,6 +37,7 @@ def profile_certificates(request,certificate):
         print(li,'ppp')
     return  render(request,'profile-certificates.html',res)
 
+@login_required(login_url='loginregister')
 def setting_genralinfo(request,genralinfo):
     if request.user.is_authenticated:
         res={}
@@ -167,7 +168,8 @@ def settings_privacy(request,privacy):
     else:
         return redirect('error')
 
-  
+
+@login_required(login_url='loginregister')
 def change_pwd(request,pwd):
     
     if request.user.is_authenticated:  
@@ -263,6 +265,7 @@ def instructors(request):
     return  render(request,'instructor.html',res)
 
 
+@login_required(login_url='loginregister')
 def orders(request,order):
     res={}
     instruct=instructor.objects.filter(slug=order)

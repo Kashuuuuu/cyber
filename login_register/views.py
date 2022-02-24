@@ -31,33 +31,33 @@ def register(request):
                 checkbox=request.POST.get('check')
                 next=request.POST.get('next')
                 
-                usermail = User.objects.filter(email=email)
+                usermail = User.objects.filter(email=email.lower())
                 usernam=User.objects.filter(username=name)
                 if len(usermail) !=1 :
                     if len(usernam)!=1:
                         if confirm==password: 
-                            user =User.objects.create_user(username=name, email=email, password=password)
+                            user =User.objects.create_user(username=name, email=email.lower(), password=password)
                             user.save()
                             if checkbox != None:
                                 typeuser = userType(user=user, type='1')
                                 typeuser.save()
-                                inst=instructor(user=user,name=name,email=email)
+                                inst=instructor(user=user,name=name,email=email.lower())
                                 inst.save()
                                 token=str(uuid.uuid4())
                                 frgpwd=frgt_pwd(user=user,frg_token=token)
                                 frgpwd.save()
-                                messages.success(request,'Registration Successfully.Thank You !\n As Instructor.')
+                                messages.success(request,'Registration Successfully As A Instructor.\n Thank You !')
                                 return redirect('home')
                             else:
                                 typeuser = userType(user=user, type='2')
                                 typeuser.save() 
                                 # new_usr = user.replace(" ", "_")
-                                stud=student(user=user,name=name,email=email)
+                                stud=student(user=user,name=name,email=email.lower())
                                 stud.save()
                                 token=str(uuid.uuid4())
                                 frgpwd=frgt_pwd(user=user,frg_token=token)
                                 frgpwd.save()  
-                                messages.success(request,'Registration Successfully.Thank You !\n As Student.')
+                                messages.success(request,'Registration Successfully As A Student.\n Thank You !')
                                 
                                 return redirect('home')
                         else:
@@ -73,7 +73,7 @@ def loged_in(request):
             Email = request.POST['email']
             next=request.POST.get('next')
             user=User.objects.filter(email=Email)
-            print(next,'nnnnn',request.get_full_path())
+            
             if len(user)==1 :
                 username = User.objects.get(email=Email).username
                 pwd = request.POST['password']
