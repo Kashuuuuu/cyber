@@ -281,8 +281,8 @@ def orders(request,order):
       
     if request.user.is_authenticated:   
         c=User.objects.get(id=request.user.id)
-        res['crs_oder']=courses_purchase_order.objects.filter(user=c)
-        res['prod_oder']=products_purchase_order.objects.filter(user=c)
+        res['crs_oder']=courses_purchase_order.objects.filter(user=c,status='Success')
+        res['prod_oder']=products_purchase_order.objects.filter(user=c,status='Success')
     return  render(request,'orders.html',res)
 
 

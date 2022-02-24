@@ -88,7 +88,7 @@ def loged_in(request):
                         return redirect(next)   
                 messages.error(request,'Invalid Email Or Password !') 
             else:
-                messages.error(request,'Please! Register.')   
+                messages.error(request,'Email Not Register.')   
     return redirect('loginregister')
 
 def loged_out(request):
