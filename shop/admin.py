@@ -3,7 +3,11 @@ from .models import*
 # Register your models here.
 @admin.register(product_detail)
 class product_detailAdmin(admin.ModelAdmin):
-    list_display=['id','category','product_tag','product_title'[:20]]
+    list_display=['category','product_tag','product_title'[:20]]
+
+@admin.register(update_order)
+class updt_odrAdmin(admin.ModelAdmin):
+    list_display=['user']
 
 
 @admin.register(shop_review)
@@ -24,14 +28,14 @@ class cart(admin.ModelAdmin):
 class product_order(admin.ModelAdmin):
     
     list_display_links=('user',)
-    list_display=['user','product','address','city','country','amount']
+    list_display=['user','product','address','fname','amount']
 
 
 @admin.register(courses_purchase_order)
 class course_order(admin.ModelAdmin):
     
     list_display_links=('user',)
-    list_display=['user','course','address','city','country','amount']
+    list_display=['user','course','address','fname','amount']
 
 
 @admin.register(coupon_code)

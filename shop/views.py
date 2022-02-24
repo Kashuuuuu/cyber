@@ -191,6 +191,7 @@ def add_to_cart(request,addcart):
                     prod=prods[0]
                     prod.quntity=1
                     prod.save()
+                    messages.warning(request,'Course Already In Cart.')
             else:
                 prod=cart.objects.create(slug=courses.slug,userid=request.user.id,prod_id=courses.id,prod_name=courses.course_title,quntity=1)
         return redirect('cart')
@@ -243,8 +244,6 @@ def checkout(request):
 @login_required(login_url='loginregister')
 def order(request):
     cartlist=cart.objects.filter(userid=request.user.id)
-    
-   
     if request.method=='POST':
         fname=request.POST['fname']
         lname=request.POST['lname']
@@ -259,11 +258,12 @@ def order(request):
         payment_method=request.POST['payment_method']
         comapny=request.POST.get('company')
         order_notes=request.POST.get('order_notes')
-
+        upt=update_order(user=User.objects.get(id=request.user.id))
+        upt.save()
         for c in cartlist:
             prod=product_detail.objects.filter(id=c.prod_id,slug=c.slug)
             crs=course_detail.objects.filter(id=c.prod_id,slug=c.slug)
-            # crs_amt=
+        
             if len(prod)>0:
                 prod=product_detail.objects.get(id=c.prod_id)
                 subtotal=prod.product_price*c.quntity
@@ -273,12 +273,13 @@ def order(request):
                     if cod.valid_date>date.today():
                         cd=int((cod.discount*subtotal)/100)
                         subtotal-=cd
-          
                 user=User.objects.get(id=c.userid)
                 orders=products_purchase_order(product=prod,user=user,fname=fname,lname=lname,email=email,phone=phone,country=country,city=city,
                 address=address+' '+address2,company=comapny,province=province,postal_code=postal_code,payment=payment_method,
                 order_notes=order_notes,quntity=c.quntity,amount=subtotal,order_id=uuid.uuid4())
                 orders.save()
+                upt.prod_orders.add(orders)
+                upt.save()
                 prods = product_detail.objects.filter(id=c.prod_id)
                 qunt=prod.quntity-c.quntity
                 if len(prods)>0:
@@ -300,17 +301,19 @@ def order(request):
                 address=address+' '+address2,company=comapny,province=province,postal_code=postal_code,payment=payment_method,
                 order_notes=order_notes,quntity=c.quntity,amount=subtotal,order_id=uuid.uuid4())
                 orders.save()
+                upt.crs_orders.add(orders)
+                upt.save()
                 crss = course_detail.objects.filter(id=c.prod_id)
                 if len(crss)>0:
                         ob=crss[0]
                         ob.student_no+=1
                         ob.save()
                 amt=cart.objects.values('total').filter(userid=request.user.id).last()
-                print(amt,'i666iiiiiiiiiii')
-               
+                
+        # print(update_order.objects.all(),'kkkkkkkkk')       
         param_dict={
             'MID': 'WorldP64425807474247',
-            'ORDER_ID': str(orders.order_id),
+            'ORDER_ID': str(upt.updt_id),
             'TXN_AMOUNT': str(format(amt['total'],'.2f')),
             'CUST_ID': email,
             'INDUSTRY_TYPE_ID': 'Retail',
@@ -330,6 +333,7 @@ def handle_request(request):
     
     # paytm will send you post request here
     form = request.POST
+    # print(form,'ffffffff')
     res_dict = {}
     for i in form.keys():
         res_dict[i] = form[i]
@@ -339,10 +343,15 @@ def handle_request(request):
     verify = Checksum.verify_checksum(res_dict, MERCHANT_KEY, checksum)
     if verify:
         if res_dict['RESPCODE'] == '01':
-            products_purchase_order.objects.filter(order_id=res_dict["ORDERID"]).update(status="Success");
-            courses_purchase_order.objects.filter(order_id=res_dict["ORDERID"]).update(status="Success");
-           
-           
+            upt=update_order.objects.filter(updt_id=res_dict["ORDERID"])
+            if len(upt)>0:
+                for i in upt:
+                    print(i.crs_orders.all(),'pppp')
+                    for c in i.crs_orders.all():
+                       courses_purchase_order.objects.filter(order_id=c.order_id).update(status="Success")
+                    for p in i.prod_orders.all():
+                        products_purchase_order.objects.filter(order_id=p.order_id).update(status="Success")
+                   
             return redirect('book')
        
         else:
@@ -357,6 +366,7 @@ def order_book(request):
 
     cartlist=cart.objects.filter(userid=request.user.id)
     cartlist.delete()
+    upt=update_order.objects.filter(user=User.objects.get(id=request.user.id)).delete()
     messages.success(request,'Order Saved Successfully.\n Order Payment success.')
     if len(inst)>0:
         return redirect('orders',order=instructor.objects.get(user=User.objects.get(id=request.user.id)).slug )

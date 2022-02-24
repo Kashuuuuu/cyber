@@ -78,7 +78,7 @@ class products_purchase_order(models.Model):
             self.order_id = self.order_date.strftime('PAY2ME%Y%m%dODR') + str(self.id)
         return super().save(*args, **kwargs)
     def __str__(self):
-        return self.product.product_title[:10]+' '+self.fname+self.lname
+        return self.product.product_title[:10]+' '+self.fname+' '+self.lname
  
 
 
@@ -105,15 +105,14 @@ class courses_purchase_order(models.Model):
     order_date=models.DateTimeField(auto_now_add=True)
     def save(self, *args, **kwargs):
         if self.order_id is None and self.order_date and self.id:
-            self.order_id = self.order_date.strftime('PAY2ME%Y%m%dOD') + str(self.id)
+            self.order_id = self.order_date.strftime('PAYTM%Y%m%dOD') + str(self.id)
         return super().save(*args, **kwargs)
  
     def __str__(self):
-        return self.course.course_title[:10]+' '+self.fname+self.lname
+        return self.course.course_title[:10]+' '+self.fname+' '+self.lname
  
-
-
 class payment_done_detail(models.Model):
+
     user = models.ForeignKey(User,on_delete=models.SET_NULL,null=True)
     amount = models.FloatField()
     gatewayname = models.CharField(max_length=100)
@@ -128,3 +127,15 @@ class payment_done_detail(models.Model):
     #     return datetime_from_utc_to_local(self.time).strftime('%I:%M')
     def __str__(self) -> str:
         return self.user.username
+
+
+class update_order(models.Model):
+    user = models.OneToOneField(User,on_delete=models.SET_NULL,null=True)
+    prod_orders=models.ManyToManyField(products_purchase_order)
+    crs_orders=models.ManyToManyField(courses_purchase_order)
+    updt_id=models.CharField(unique=True, max_length=1000, null=True, blank=True,  verbose_name="updt_pyment")
+    updt_date=models.DateTimeField(auto_now_add=True)
+    def save(self, *args, **kwargs):
+        if self.updt_id is None and self.updt_date and self.id:
+            self.updt_id = self.updt_date.strftime('PAYMENT%Y%m%dODR') + str(self.id)
+        return super().save(*args, **kwargs)
