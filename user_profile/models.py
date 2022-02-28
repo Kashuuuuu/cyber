@@ -9,7 +9,6 @@ def get_random_string(size):
     return ''.join(random.choices(string.ascii_uppercase +
                              string.digits, k = size))
 def slug_generator(instance, new_slug=None):
-  
     slug=slugify(new_slug)[:50]
     Klass = instance
     qs_exists = Klass.objects.filter(slug=slug).exists()

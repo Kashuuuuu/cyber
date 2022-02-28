@@ -105,8 +105,10 @@ def lost_password(request):
             useremail=User.objects.get(email=email)
             frgtoken=frgt_pwd.objects.get(user=useremail)
             ftoken=frgtoken.frg_token
-            emails=useremail.email
-            mail_msg=f'Your reset password link is http://127.0.0.1:8000/password-confirm/{ftoken}.'
+            emails=useremail.email 
+            
+            #mail_msg=f'Your reset password link is http://127.0.0.1:8001/password-confirm/{ftoken}.'
+            mail_msg=f'Set Password \n Your reset password link is https://cyberacdamy.herokuapp.com/password-confirm/{ftoken}.'
             send_mail('For reset password', mail_msg,settings.EMAIL_HOST_USER, [emails],fail_silently=False)
             messages.success(request, "Mail Send Successfully.\n Please Check Your Email.")
             return redirect('lost-password')

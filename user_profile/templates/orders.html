@@ -288,7 +288,7 @@
 
 												<table class="shop_table woocommerce-checkout-review-order-table">
 													<thead>
-														<tr>
+														<tr><th class="product-name">#</th>
 															<th class="product-name">Name</th>
 															<th class="product-name">Quntity</th>
 															<th class="product-total">Amount</th>
@@ -303,7 +303,10 @@
 											
 														<tr class="cart_item">
 															<td class="product-name">
-																{{c.course.course_title|capfirst}} 
+															Course 
+															</td>
+															<td class="product-name">
+																{{c.course.course_title|capfirst|slice:':20'}}  . . . 
 															</td>
 															
 															<td class="product-total">
@@ -388,6 +391,9 @@
 														{% for p  in prod_oder %}
 														
 														<tr class="cart_item">
+															<td class="product-name">
+															Product
+															</td>
 															<td class="product-name">
 																{{p.product.product_title|capfirst}} 
 															</td>
