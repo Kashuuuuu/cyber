@@ -1,4 +1,5 @@
 
+from operator import mod
 from django.db import models
 
 # Create your models here.
@@ -47,5 +48,6 @@ class crs_review(models.Model):
     comment=models.TextField()
     rate=models.IntegerField(null=True)
     name=models.ForeignKey(User,on_delete=models.CASCADE)
+    dateby=models.DateTimeField(auto_now_add=True,null=True,blank=True)
     def __str__(self):
         return  self.name.username

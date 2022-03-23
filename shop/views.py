@@ -163,7 +163,7 @@ def mycart(request):
                     c.save()
                     messages.success(request,'Coupon Applied.')
                 else:
-                    messages.error(request,'Coupon Expire !')
+                    messages.warning(request,'Coupon Expire !')
                     return  redirect('cart')   
             else:
                     messages.error(request,'Invalid Coupon !')

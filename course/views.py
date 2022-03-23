@@ -54,7 +54,7 @@ def course_single(request,course):
     ct_4=crs_review.objects.filter(crs=crs1,rate=4).count()*4
     ct_5=crs_review.objects.filter(crs=crs1,rate=5).count()*5
     print(type(format(tot,'.0f')))
-    res={'crs':crs,'more_crs':more_crs,'crss':crs_review.objects.filter(crs=crs1),
+    res={'crs':crs,'more_crs':more_crs,'crss':crs_review.objects.filter(crs=crs1).order_by('-id'),
     # 'count':len(count),'crss':count,
     'total':format(tot,'.1f'),
     'tot':int(format(tot,'.0f')),
