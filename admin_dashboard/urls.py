@@ -1,4 +1,4 @@
-from django.contrib import admin
+
 from django.urls import path,include
 from admin_dashboard import views
 

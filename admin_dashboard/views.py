@@ -2,7 +2,6 @@ import collections
 from email.mime import message
 import imp
 from os import abort
-from turtle import title
 from wsgiref.util import request_uri
 from django import http
 from django.shortcuts import redirect, render
