@@ -24,6 +24,7 @@ def loginregister(request):
 def register(request):
     
     if request.method == "POST":
+        try:
                 name = request.POST['name']
                 email = request.POST['email']
                 password = request.POST['password']
@@ -66,14 +67,17 @@ def register(request):
                     return redirect('loginregister')
                 messages.error(request,'Email Already Register.')              
                 return redirect('loginregister')
+        except Exception as e:
+             messages.warning(request,'Something Went wrong !')
+   
     return redirect('home')
   
 def loged_in(request):
     if request.method=='POST':
+        try:
             Email = request.POST['email']
             next=request.POST.get('next')
-            user=User.objects.filter(email=Email)
-            
+            user=User.objects.filter(email=Email)   
             if len(user)==1 :
                 username = User.objects.get(email=Email).username
                 pwd = request.POST['password']
@@ -88,30 +92,38 @@ def loged_in(request):
                         return redirect(next)   
                 messages.error(request,'Invalid Email Or Password !') 
             else:
-                messages.error(request,'Email Not Register.')   
+                messages.error(request,'Email Not Register.') 
+        except Exception as e:
+            messages.warning(request,'Something Went wrong !')
+     
     return redirect('loginregister')
 
 def loged_out(request):
-    logout(request)
-    
-    messages.success(request,'Logout successfully')
+    try:
+        logout(request)
+        messages.success(request,'Logout successfully')
+    except Exception as e:
+        messages.warning(request,'Something Went wrong !')
     return redirect('home')
  
 
 def lost_password(request):
     if request.user.is_authenticated!=True:
+        
         if request.method=='POST':
-            email=request.POST['email']
-            useremail=User.objects.get(email=email)
-            frgtoken=frgt_pwd.objects.get(user=useremail)
-            ftoken=frgtoken.frg_token
-            emails=useremail.email 
-            
-            #mail_msg=f'Your reset password link is http://127.0.0.1:8001/password-confirm/{ftoken}.'
-            mail_msg=f'Set Password \n Your reset password link is https://cyberacdamy.herokuapp.com/password-confirm/{ftoken}.'
-            send_mail('For reset password', mail_msg,settings.EMAIL_HOST_USER, [emails],fail_silently=False)
-            messages.success(request, "Mail Send Successfully.\n Please Check Your Email.")
-            return redirect('lost-password')
+            try:
+                email=request.POST['email']
+                useremail=User.objects.get(email=email)
+                frgtoken=frgt_pwd.objects.get(user=useremail)
+                ftoken=frgtoken.frg_token
+                emails=useremail.email   
+                mail_msg=f'Your reset password link is http://127.0.0.1:8000/password-confirm/{ftoken}.'
+                # mail_msg=f'Set Password \n Your reset password link is https://cyberacdamy.herokuapp.com/password-confirm/{ftoken}.'
+                send_mail('For reset password', mail_msg,settings.EMAIL_HOST_USER, [emails],fail_silently=False)
+                messages.success(request, "Mail Send Successfully.\n Please Check Your Email.")
+                return redirect('lost-password')
+            except Exception as e:
+                messages.error(request,'Invalid Email!')
         return render(request,'forgot-password.html')
     else:
         return redirect('error')
@@ -120,18 +132,20 @@ def lost_password(request):
 def pwd_reset_cnfrm(request,id):
     if request.user.is_authenticated!=True:
         if request.method=='POST':
-            pass1=request.POST['pass1']
-            confirm=request.POST['pass2']
-            if pass1==confirm:
-                frgpwd=frgt_pwd.objects.get(frg_token=id)
-                user=User.objects.get(username=frgpwd)
-                user.set_password(pass1)
-                user.save()
-                messages.success(request, "Password Change Successfully. ")
-                return redirect('login')
-            else:
-                messages.error(request,'Password Not Match.Enter Same Password.')
-        
+            try:
+                pass1=request.POST['pass1']
+                confirm=request.POST['pass2']
+                if pass1==confirm:
+                    frgpwd=frgt_pwd.objects.get(frg_token=id)
+                    user=User.objects.get(username=frgpwd)
+                    user.set_password(pass1)
+                    user.save()
+                    messages.success(request, "Password Change Successfully.\n +Please login. ")
+                    return redirect('login')
+                else:
+                    messages.error(request,'Password Not Match.Enter Same Password.')
+            except Exception as e:
+                print(e)
         return render(request,'pwd_reset_confirm.html')
     else:
         return redirect('error')

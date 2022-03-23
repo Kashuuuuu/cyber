@@ -52,7 +52,7 @@
                         <ul class="products columns-3 row">{% for p in product %}
                             <li class="pmpro-has-access product type-product post-1006 status-publish
                              first outofstock product_cat-business product_tag-book has-post-thumbnail sale
-                              shipping-taxable purchasable product-type-simple" style="padding: 10px; list-style-type: none; ">
+                              shipping-taxable purchasable product-type-simple" style="padding: 40px; list-style-type: none; ">
                                 <div class="single-products single-products-box">
                                     <a href="{% url 'single-shop' p.slug %}"
                                         class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
@@ -75,7 +75,7 @@
                                         </div>
                                         <div class="products-content">
                                             <h3 id='prod_title'><a
-                                                    href="{% url 'single-shop' p.slug %}">{{p.product_title|capfirst}}</a></h3>
+                                                    href="{% url 'single-shop' p.slug %}">{{p.product_title|capfirst|slice:':10'}}</a></h3>
                                             <span class="price"><del aria-hidden="true"><span
                                                         class="woocommerce-Price-amount amount"><bdi><span
                                                                 class="woocommerce-Price-currencySymbol">&#36;</span>{{p.product_price}}</bdi></span></del>
@@ -159,12 +159,7 @@
                                                         </div>
                                                         <div class="product-meta">
                                                             <div class="product_meta">
-                                                                <span class="posted_in">Quntity:
-
-                                                                    <input value="{{p.quntity}}"
-                                                                        style="border:none; display: inline;"
-                                                                        id='prod_cat'>
-                                                                </span>
+                                                               
                                                                 <span class="sku_wrapper">SKU: <span class="sku">
                                                                         <input style="border:none; display: inline;"
                                                                             value="{{p.product_sku}}" id='prod_sku' />
@@ -212,8 +207,12 @@
 
                                 {% for i in product.paginator.page_range %}
                                 {% if product.number == i %}
-                                <span aria-current="page" class="page-numbers current">{{i}}</span>
-                                {% else %} <span aria-current="page" class="page-numbers ">{{i}}</span>
+                                <a 
+                                href="?page={{i}}">
+                                <span aria-current="page" class="page-numbers current">{{i}}</span></a>
+                                {% else %}  <a 
+                                href="?page={{i}}">
+                                <span aria-current="page" class="page-numbers ">{{i}}</span></a>
 
                                 {% endif %}{% endfor %}
 

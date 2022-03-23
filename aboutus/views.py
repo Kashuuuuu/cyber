@@ -7,7 +7,6 @@ def aboutus(request):
     
     course=course_detail.objects.all()
     crs={c.course_title for c in course}
-
     inst=instructor.objects.all()
     res={'crs':crs,'inst':inst}
     return  render(request,'aboutus1.html',res)

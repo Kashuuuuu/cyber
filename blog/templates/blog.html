@@ -72,8 +72,13 @@
 
                         {% for i in blog.paginator.page_range %}
       {% if blog.number == i %}
-                        <span aria-current="page" class="page-numbers current">{{i}}</span>
-                      {% else %}  <span aria-current="page" class="page-numbers ">{{i}}</span>
+      <a 
+      href="?page={{i}}">
+                        <span aria-current="page" class="page-numbers current">{{i}}</span></a>
+                      {% else %}
+                      <a 
+                      href="?page={{i}}">
+                        <span aria-current="page" class="page-numbers ">{{i}}</span></a>
 
                         {% endif %}{% endfor %}
                    {% if blog.has_next %}

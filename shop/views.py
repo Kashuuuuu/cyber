@@ -2,7 +2,6 @@
 from urllib import request
 from django.shortcuts import render,redirect
 from django.db.models import Count
-from numpy import character
 from login_register.views import register
 from .models import *
 from django.core.paginator import Paginator
@@ -28,11 +27,11 @@ def shop(request):
     for x in product_detail.objects.all():
         try:    
             tot=cunt=0 
-            if len(shop_review.objects.filter(shop=x))!=0:
-                for i in shop_review.objects.filter(shop=x):
+            if len(product_review.objects.filter(product=x))!=0:
+                for i in product_review.objects.filter(product=x):
             
                     cunt+=i.rate
-                tot=cunt/len(shop_review.objects.filter(shop=x))
+                tot=cunt/len(product_review.objects.filter(product=x))
                 x.rating=tot
                 x.save()
                 lis.append({'id':x.id,'tot':int(format(tot,'.0f'))})
@@ -77,7 +76,7 @@ def single_shop(request,shops):
     product_detl=product_detail.objects.filter(slug=shops)
     # rt_count=[]
     # for p in prod:
-    #     rt=shop_review.objects.filter(shop=p).aggregate(Count('rate'))
+    #     rt=product_review.objects.filter(product=p).aggregate(Count('rate'))
     #     rt['id']=p.id
     #     rt_count.append(rt)
     if request.method=='POST':
@@ -86,7 +85,7 @@ def single_shop(request,shops):
             rate=request.POST['rate']
             usr=User.objects.get(id=request.user.id)
             shop=product_detail.objects.get(slug=shops)
-            rvw=shop_review(shop=shop,review=review,rate=rate,user=usr)
+            rvw=product_review(product=shop,review=review,rate=rate,user=usr)
             rvw.save()
             messages.success(request,'Review Posted.')
             return redirect(request.get_full_path())
@@ -97,11 +96,11 @@ def single_shop(request,shops):
     for x in product_detail.objects.all():
         try:    
             tot=cunt=0 
-            if len(shop_review.objects.filter(shop=x))!=0:
-                for i in shop_review.objects.filter(shop=x):
+            if len(product_review.objects.filter(product=x))!=0:
+                for i in product_review.objects.filter(product=x):
             
                     cunt+=i.rate
-                tot=cunt/len(shop_review.objects.filter(shop=x))
+                tot=cunt/len(product_review.objects.filter(product=x))
                 x.rating=tot
                 x.save()
                 lis.append({'id':x.id,'tot':int(format(tot,'.0f'))})
@@ -118,7 +117,6 @@ def single_shop(request,shops):
     res={'product':product_detl,'rlt_product':prod,'discunt':dis,'rate_count':lis}
     return  render(request,'single-shop.html',res)
 
-@login_required(login_url='loginregister')
 def mycart(request):
     cartlist=cart.objects.filter(userid=request.user.id)
     li=[]
@@ -150,24 +148,34 @@ def mycart(request):
             li.append([prod,c.quntity,subtotal])
     if request.method=='POST':
         cou_code=request.POST.get('coupon_code')
-        cd=coupon_code.objects.filter(code=cou_code)
-        if len(cd)>0:
-            cod=coupon_code.objects.get(code=cou_code)
-            for c in cartlist:
-                c.coupon=cod.code 
-                c.save()
+        if cou_code.isdigit():
+            cd=coupon_code.objects.filter(code=cou_code)
+            if len(cd)>0:
+                cod=coupon_code.objects.get(code=cou_code)
+                for c in cartlist:
+                    c.coupon=cod.code 
+                    c.save()
                 # messages.success(request,'Coupon Applied.')
-            if cod.valid_date>date.today():
-                cd=int((cod.discount*total)/100)
-                total=total-cd
-                c.total=total
-                c.save()
+                if cod.valid_date>date.today():
+                    cd=int((cod.discount*total)/100)
+                    total=total-cd
+                    c.total=total
+                    c.save()
+                    messages.success(request,'Coupon Applied.')
+                else:
+                    messages.error(request,'Coupon Expire !')
+                    return  redirect('cart')   
+            else:
+                    messages.error(request,'Invalid Coupon !')
+                    return  redirect('cart')   
+        else:
+                    messages.error(request,'Invalid Coupon Code !')
+                    return  redirect('cart')
    
     res={'cart':li,'total':total}
     return  render(request,'cart.html',res)
 
 
-@login_required(login_url='loginregister')
 def add_to_cart(request,addcart):
     if request.user.is_authenticated:
         carts=cart.objects.all()
@@ -185,22 +193,27 @@ def add_to_cart(request,addcart):
                 prod_name=product.product_title,quntity=1)
         elif len(crs)==1:
             courses=course_detail.objects.get(slug=addcart)
+            alredy_crs=courses_purchase_order.objects.filter(course=courses,user=User.objects.get(id=request.user.id))
             prods=cart.objects.filter(prod_id=courses.id,userid=request.user.id,slug=courses.slug)
-            if len(prods)>0:
+            print(alredy_crs,'ppppppppppp')
+            if len(alredy_crs)!=1:
                 if len(prods)>0:
-                    prod=prods[0]
-                    prod.quntity=1
-                    prod.save()
-                    messages.warning(request,'Course Already In Cart.')
+                    if len(prods)>0:
+                        prod=prods[0]
+                        prod.quntity=1
+                        prod.save()
+                        messages.warning(request,'Course Already In Cart.')
+                else:
+                    prod=cart.objects.create(slug=courses.slug,userid=request.user.id,prod_id=courses.id,prod_name=courses.course_title,quntity=1)
             else:
-                prod=cart.objects.create(slug=courses.slug,userid=request.user.id,prod_id=courses.id,prod_name=courses.course_title,quntity=1)
+                messages.warning(request,'You Are Already Enrolled This Course.')
+                return redirect(request.META['HTTP_REFERER'])
         return redirect('cart')
     else:
         messages.warning(request,'Please Login Or Register.')
         return redirect('loginregister')
 
 
-@login_required(login_url='loginregister')
 def checkout(request):
     cartlist=cart.objects.filter(userid=request.user.id)
     li=[]
@@ -241,7 +254,6 @@ def checkout(request):
         res={'cart':li,'total':total}
     return render(request, 'checkout.html',res)
 
-@login_required(login_url='loginregister')
 def order(request):
     cartlist=cart.objects.filter(userid=request.user.id)
     if request.method=='POST':
@@ -319,8 +331,8 @@ def order(request):
             'INDUSTRY_TYPE_ID': 'Retail',
             'WEBSITE': 'WEBSTAGING',
             'CHANNEL_ID': 'WEB',
-            'CALLBACK_URL':'https://cyberacdamy.herokuapp.com/handlerequest/',
-            # 'CALLBACK_URL':'http://127.0.0.1:8000/handlerequest/', 
+            # 'CALLBACK_URL':'https://cyberacdamy.herokuapp.com/handlerequest/',
+            'CALLBACK_URL':'http://127.0.0.1:8000/handlerequest/', 
 
             }  
         param_dict['CHECKSUMHASH'] = Checksum.generate_checksum(param_dict, MERCHANT_KEY)
@@ -333,7 +345,6 @@ def handle_request(request):
     
     # paytm will send you post request here
     form = request.POST
-    # print(form,'ffffffff')
     res_dict = {}
     for i in form.keys():
         res_dict[i] = form[i]
@@ -348,18 +359,21 @@ def handle_request(request):
                 for i in upt:
                     print(i.crs_orders.all(),'pppp')
                     for c in i.crs_orders.all():
-                       courses_purchase_order.objects.filter(order_id=c.order_id).update(status="Success")
+                        courses_purchase_order.objects.filter(order_id=c.order_id).update(status="Success") 
                     for p in i.prod_orders.all():
                         products_purchase_order.objects.filter(order_id=p.order_id).update(status="Success")
-                   
-            return redirect('book')
-       
+                PaytmTransaction(**res_dict).save()
+               
+            return redirect('book')   
         else:
-            messages.error(request,'Payment was unsuccessful because' + res_dict['RESPMSG'])
-     
+            # messages.error(request,'Payment was unsuccessful because  '  + res_dict['RESPMSG'])
+            
+            messages.error(request,'Somthing Went Wrong ! your order is failed.')
+            return redirect('checkout')
     return render(request, 'paymentstatus.html', {'response': res_dict})
 
-@login_required(login_url='loginregister')
+
+
 def order_book(request):
     inst=instructor.objects.filter(user=User.objects.get(id=request.user.id))
     stud=student.objects.filter(user=User.objects.get(id=request.user.id))

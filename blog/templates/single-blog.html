@@ -55,15 +55,16 @@
                         <p>{{blog.0.head2|capfirst}}</p>
                         <figure class="wp-block-gallery columns-3 is-cropped">
                             <ul class="blocks-gallery-grid">
-                                {% for b in blog.0.imgs.all %}
+                                
+                                {% for r in rcnt %} {% if forloop.counter < 4 %}
                                 <li class="blocks-gallery-item">
-                                    <figure><img loading="lazy" width="750" height="500" src="/media/{{b.imgs}}" alt=""
-                                            data-id="145" data-full-url="/media/{{b.imgs}}"
-                                            data-link="/media/{{b.imgs}}" class="wp-image-145" srcset="/media/{{b.imgs}} 750w,
-                                                /media/{{b.imgs}} 300w,
-                                                   /media/{{b.imgs}} 600w" sizes="(max-width: 750px) 100vw, 750px" />
+                                    <figure><img loading="lazy" width="750" height="500" src="/media/{{r.blog_img}}" alt=""
+                                            data-id="145" data-full-url="/media/{{r.blog_img}}"
+                                            data-link="/media/{{r.blog_img}}" class="wp-image-145" srcset="/media/{{r.blog_img}} 750w,
+                                                /media/{{r.blog_img}} 300w,
+                                                   /media/{{r.blog_img}} 600w" sizes="(max-width: 750px) 100vw, 750px" />
                                     </figure>
-                                </li>{% endfor %}
+                                </li>{% endif %}{% endfor %}
 
                             </ul>
                         </figure>
@@ -112,12 +113,12 @@
                             <p class="logged-in-as">
                                 
 								{% if request.user.is_authenticated  and request.user.userType.type == '1'  %}
-                                <a href="{% url 'profile' request.user.user.slug %}"
+                                <a href="{% url 'profile' request.user.intructor.slug %}"
                                     aria-label="Logged in as Navneet. Edit your profile.">
                                     Logged
                                     in as {{request.user.username}} </a>OR
 								{% elif request.user.is_authenticated  and request.user.userType.type == '2'  %}
-                                <a href="{% url 'profile' request.user.users.slug %}"
+                                <a href="{% url 'profile' request.user.student.slug %}"
                                 aria-label="Logged in as Navneet. Edit your profile.">
                            
                                     Logged
@@ -206,7 +207,7 @@
                     </div>
                     <div id="media_gallery-2" class="widget widget_media_gallery">
                         <h2 class="widget-title">Gallery</h2>
-                        <div id='gallery-1' class='gallery galleryid-1677 gallery-columns-3 gallery-size-thumbnail'>
+                        <div id='gallery-1' class='gallery galleryid-1677 gallery-columns-4 gallery-size-thumbnail'>
                             {% for r in rcnt %} {% if forloop.counter < 7 %}
                             <figure class='gallery-item'>
                                 <div class='gallery-icon landscape'>
@@ -219,6 +220,43 @@
                             </figure>
                             {% endif %} {% endfor %}
                         </div>
+                    </div>
+                    
+
+                    <div id="ecademy_posts_thumbs-5" class="widget widget_ecademy_posts_thumbs">
+                        <h2 class="widget-title">Reviews</h2>
+                        {% for r in rvw %}
+                        {% if forloop.counter < 5 %}
+                        <article  style="padding-bottom: 0px;margin-left: 20px;margin-right: 20px;" 
+                            class="item post-1931 post type-post status-publish format-standard has-post-thumbnail hentry category-kindergarten tag-preschool pmpro-has-access">
+                            <a href="#" class="thumb hover-effect"
+                                aria-label="Why Play Is Important in Preschool and Early">
+                        
+                                 
+                                        {% if r.user.img|length != 0  %}
+                                  <img src="/media/{{r.user.img}}" class="shadow-sm rounded-circle"
+                                  style="border-radius: 100%;max-width: 60%;"alt="Jone Smit">
+                                              {% else %}
+
+                                    <img src="/media/default.png" class="shadow-sm rounded-circle"
+               style="border-radius: 100%;max-width: 60%;"                     alt="Jone Smit">
+                                                {% endif %}
+                            </a>
+                            <div class="info gradient-effect">
+                                <h4 class="title usmall">
+                                       {{r.user.user.username|capfirst}}</h4>
+                                        <p>
+                                            {{r.comment|capfirst}} 
+                                                 <time style="float: right;font-size: 10px;" datetime="2020-07-01">({{r.create_date|date:'F d, Y'}})</time></p>
+                            </div>
+                            <div class="clear"></div>
+                        </article>
+                         {% endif %}
+                         {% empty %}
+                         <p> No Review yet !</p>
+                         {% endfor %}
+
+
                     </div>
                 </div>
             </div>

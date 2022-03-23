@@ -9,7 +9,7 @@ from user_profile.models import slug_generator
 class event_detail(models.Model):
     
     event_img=models.ImageField(upload_to='image/event/')
-    event_title=models.CharField(max_length=1000) 
+    event_title=models.CharField(max_length=1000,unique=True) 
     slug=models.SlugField(max_length=1000,unique=True) 
     state=models.CharField(max_length=100)
     country=models.CharField(max_length=100)

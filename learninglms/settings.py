@@ -50,10 +50,27 @@ INSTALLED_APPS = [
     'contact',
     'tinymce',
     'ckeditor',
+    'admin_dashboard',
+    
+    'ckeditor_uploader',
+
+     
+
+]
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'full',
+        'height': 'full', 
+        'width': 'full', 
+    },
+}
+CKEDITOR_UPLOAD_PATH = 'content/ckeditor/'
+CKEDITOR_UPLOAD_PATH = "uploads/"
      
     
 
-]
+
 
 MIDDLEWARE = [
      'whitenoise.middleware.WhiteNoiseMiddleware',

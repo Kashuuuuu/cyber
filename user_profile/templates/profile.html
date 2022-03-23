@@ -146,26 +146,26 @@ var fep_notification_script = {"root":"https:\/\/themes.envytheme.com\/ecademy\/
 												<li class="courses active">
 													{% if request.user.userType.type == '1' %}
 													
-													{% if instruct.0.slug == request.user.user.slug %}
-													<a href="{% url 'profile' request.user.user.slug %}"
-														data-slug="{% url 'profile' request.user.user.slug %}">
+													{% if instruct.0.slug == request.user.instructor.slug %}
+													<a href="{% url 'profile' request.user.instructor.slug %}"
+														data-slug="{% url 'profile' request.user.instructor.slug %}">
 														<i class="fas flaticon-user"></i> Profile </a>{% endif %}
 													  {% elif request.user.userType.type == '2' %}
-													  {% if instruct.0.slug == request.user.users.slug %}
-													  <a href="{% url 'profile' request.user.users.slug %}"
-													  data-slug="{% url 'profile' request.user.users.slug %}">
+													  {% if instruct.0.slug == request.user.student.slug %}
+													  <a href="{% url 'profile' request.user.student.slug %}"
+													  data-slug="{% url 'profile' request.user.student.slug %}">
 													  <i class="fas flaticon-user"></i> Profile</a>{% endif %}
 
 											   {% endif %}
 											   {% if request.user.userType.type == '2' %}
-											   {% if instruct.0.slug != request.user.users.slug %}
+											   {% if instruct.0.slug != request.user.student.slug %}
 											   <a href="#"
 											   data-slug="#">
 											   <i class="fas flaticon-user"></i> Course</a>
 										{% endif %}
 										
 										{% elif request.user.userType.type == '1' %}
-										{% if instruct.0.slug != request.user.user.slug %}
+										{% if instruct.0.slug != request.user.instructor.slug %}
 										<a href="#"
 										data-slug="#">
 										<i class="fas flaticon-user"></i> Course</a>
@@ -178,7 +178,7 @@ var fep_notification_script = {"root":"https:\/\/themes.envytheme.com\/ecademy\/
 										<i class="fas flaticon-user"></i> Course</a>
 								
 										{% endif %}
-											   <!-- {% if   instruct.0.slug != request.user.users.slug %}
+											   <!-- {% if   instruct.0.slug != request.user.student.slug %}
                                            
 											   <li class="certificates active">
 												   <a href="{% url 'courses'  %}?inst={{instruct.0.slug}}"
@@ -201,7 +201,7 @@ var fep_notification_script = {"root":"https:\/\/themes.envytheme.com\/ecademy\/
 												</li> -->
 												
 												{% if request.user.userType.type == '2' or request.user.userType.type == '1' %}
-												{% if instruct.0.slug == request.user.user.slug or instruct.0.slug == request.user.users.slug %}
+												{% if instruct.0.slug == request.user.instructor.slug or instruct.0.slug == request.user.student.slug %}
 												<li class="orders">
 													<a href="{% url 'orders' instruct.0.slug %}"
 														data-slug="{% url 'orders' instruct.0.slug %}">
@@ -246,7 +246,7 @@ var fep_notification_script = {"root":"https:\/\/themes.envytheme.com\/ecademy\/
 												<div class="learn-press-profile-course__tab">
 													{% if request.user.userType.type == '1' %}
 													
-													{% if instruct.0.slug == request.user.user.slug %}
+													{% if instruct.0.slug == request.user.instructor.slug %}
 													<ul class="learn-press-profile-course__tab__inner">
 														<li><a class="active" data-tab="enrolled">Enrolled</a></li>
 														<li><a class="" data-tab="enrolled"><strong style="font-size: 18px;">
@@ -262,13 +262,13 @@ var fep_notification_script = {"root":"https:\/\/themes.envytheme.com\/ecademy\/
 
 													{% elif request.user.userType.type == '2' %}
 
-													{% if instruct.0.slug == request.user.users.slug %}
+													{% if instruct.0.slug == request.user.student.slug %}
 													<ul class="learn-press-profile-course__tab__inner">
 														<li><a class="active" data-tab="enrolled">Enrolled</a></li>
-														<li><a class="" data-tab="enrolled"><strong style="font-size: 18px;">
+														<li><a class="" data-tab="enrolled">  You Have Enrolled In   <strong style="font-size: 18px;">
 															{% if corse_prchase != 0 %}{{corse_prchase}}
 															{% else %}0	{% endif %}
-														</strong> Course You Have Enrolled.</a>
+														</strong>   Course.        </a>
 												</li>
 													</ul>{% endif %}
 													
@@ -284,7 +284,7 @@ var fep_notification_script = {"root":"https:\/\/themes.envytheme.com\/ecademy\/
 
 
 													{% if request.user.userType.type == '2' %}
-													{% if instruct.0.slug != request.user.users.slug %}
+													{% if instruct.0.slug != request.user.student.slug %}
 													<ul class="learn-press-profile-course__tab__inner">
 														<li><a class="active" data-tab="enrolled">Instructor Course</a></li>
 														<li style="margin-left: 25px;">
@@ -299,7 +299,7 @@ var fep_notification_script = {"root":"https:\/\/themes.envytheme.com\/ecademy\/
 											 {% endif %}
 											 
 											 {% elif request.user.userType.type == '1' %}
-											 {% if instruct.0.slug != request.user.user.slug %}
+											 {% if instruct.0.slug != request.user.instructor.slug %}
 											 <ul class="learn-press-profile-course__tab__inner">
 												<li><a class="active" data-tab="enrolled">Instructor Course</a></li>
 												<li style="margin-left: 25px;"> This Instructor Have

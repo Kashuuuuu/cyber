@@ -14,3 +14,10 @@ class student(admin.ModelAdmin):
     list_display=['id','name','slug']
     list_display_links=('name','slug')
 
+
+@admin.register(chats)
+
+class cht(admin.ModelAdmin):
+    list_display=['msgby','msgto','msg','date']
+    
+

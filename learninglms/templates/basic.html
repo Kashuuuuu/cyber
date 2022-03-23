@@ -1,12 +1,17 @@
 {% load static %}
+{% load newfilter %}
 <!doctype html>
 <html lang="en-US">
 
+	{% with ''|getContact as abouts %}
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="profile" href="https://gmpg.org/xfn/11">
-	<title>cyberCademy &#8211; Elementor LMS &amp; Online Courses Theme</title>
+	<!-- cyberCademy &#8211; Elementor LMS &amp; Online Courses Theme -->
+	<title>
+		{{abouts.0.title}}
+	</title>
 	<meta name='robots' content='noindex, nofollow' />
 	<link rel='dns-prefetch' href='//fonts.googleapis.com' />
 	<link rel='dns-prefetch' href='//s.w.org' />
@@ -970,15 +975,15 @@
 			}
 		</style>
 	</noscript>
-	<link rel="icon" href="{% static '/wp-content/uploads/2020/05/shape4.png' %}" sizes="32x32" />
-	<link rel="icon" href="{% static '/wp-content/uploads/2020/05/shape4.png' %}" sizes="192x192" />
-	<link rel="apple-touch-icon" href="{% static '/wp-content/uploads/2020/05/shape4.png' %}" />
+	<link rel="icon" href="/media/{{abouts.0.favicon}}" sizes="32x32" />
+	<link rel="icon" href="/media/{{abouts.0.favicon}}" sizes="192x192" />
+	<link rel="apple-touch-icon" href="/media/{{abouts.0.favicon}}" />
 
 	<link rel='stylesheet' id='learn-press-pmpro-style-css'
 		href=" {% static '/wp-content/plugins/ecademy-toolkit/inc/paid-membership-pro/assets/lp-pms-style.min.css' %}"
 		type='text/css' media='all' />
 
-	<meta name="msapplication-TileImage" content="{% static '/wp-content/uploads/2020/05/shape4.png' %}" />
+	<meta name="msapplication-TileImage" content="/media/{{abouts.0.favicon}}" />
 
 	<style type="text/css" title="dynamic-css" class="options-output">
 		.ecademy-nav .navbar .navbar-brand {
@@ -1009,7 +1014,6 @@
 	</style>
 	{% block body1 %} {% endblock body1 %}
 </head>
-
 <body
 	class="home page-template page-template-elementor_header_footer page page-id-30 theme-ecademy pmpro-body-has-access woocommerce-no-js cookies-not-set elementor-default elementor-template-full-width elementor-kit-17 elementor-page elementor-page-30">
 	<div class="preloader">
@@ -1025,7 +1029,7 @@
 				<div class="ecademy-responsive-menu">
 					<div class="logo">
 						<a href="/">
-							<img src="{% static '/wp-content/uploads/2020/06/eCademy.png' %}" alt="eCademy">
+							<img src="/media/{{abouts.0.logo}}" alt="eCademy">
 						</a>
 					</div>
 				</div>
@@ -1035,11 +1039,11 @@
 			<div class="container-fluid">
 				<nav class="navbar navbar-expand-md navbar-light">
 					<a class="navbar-brand" href="/">
-						<img src="{% static '/wp-content/uploads/2020/06/eCademy.png' %}" alt="eCademy">
+						<img src="/media/{{abouts.0.logo}}" alt="eCademy">
 					</a>
 					<div class="collapse navbar-collapse mean-menu">
 						<form class="search-box" method="post" action="{% url 'search' %}">{% csrf_token %}
-							<input type="search" value="" name="search" class="input-search"
+							<input type="search" value="" name="search" class="input-search" required
 								placeholder="Search for anything">
 							<input type="hidden" value="course" name="ref" />
 							<input type="hidden" name="post_type" value="courses">
@@ -1123,25 +1127,31 @@
 							</div>
 							<div class="option-item">
 								{% if request.user.is_authenticated  and request.user.userType.type == '1'  %}
-								<a href="{% url 'profile' request.user.user.slug %}" class="default-btn">
+								<a href="{% url 'profile' request.user.instructor.slug %}" class="default-btn">
 									<i class="flaticon-user"></i>
-									Profile<span></span>
+									Profile
 								</a>{% elif request.user.is_authenticated  and request.user.userType.type == '2' %}
-								<a href="{% url 'profile' request.user.users.slug %}" class="default-btn">
+								<a href="{% url 'profile' request.user.student.slug %}" class="default-btn">
 									<i class="flaticon-user"></i>
-									Profile<span></span>
-								</a>{% endif %}
+									Profile
+								</a>{% elif request.user.is_superuser   %}
+								<a href="{% url 'ad_dash' %}" class="default-btn">
+									<i class="flaticon-user"></i>
+									Admin
+								</a>
+								
+								{% endif %}
 
 
 
 
 								&nbsp;<a href="{% url 'logout' %}" class="default-btn">
 									<i class="flaticon-user"></i>
-									Logout<span></span>
+									Logout
 								</a>{% else %}
 								<a href="{% url 'loginregister' %}" class="default-btn">
 									<i class="flaticon-user"></i>
-									Login/Register<span></span>
+									Login/Register
 								</a>
 								{% endif %}
 
@@ -1184,12 +1194,12 @@
 
 							<div class="option-item">
 								{% if request.user.is_authenticated and request.user.userType.type == '1' %}
-								<a href="{% url 'profile' request.user.user.slug %}" class="default-btn">
+								<a href="{% url 'profile' request.user.instructor.slug %}" class="default-btn">
 									<i class="flaticon-user"></i>
 									Profile<span></span>
 								</a>
 								{% elif request.user.is_authenticated  and request.user.userType.type == '2' %}
-								<a href="{% url 'profile' request.user.users.slug %}" class="default-btn">
+								<a href="{% url 'profile' request.user.student.slug %}" class="default-btn">
 									<i class="flaticon-user"></i>
 									Profile<span></span>
 								</a>{% endif %}
@@ -1207,11 +1217,10 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
 	
-
 	{% if messages %}
-
+<!-- {{messages}}== -->
 	<!-- Button trigger modal-->
-
+<!-- <button   data-target="#exampleModal" data-toggle="modal">cli</button> -->
 	<!--Modal: modalConfirmDelete-->
 	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModal"
 		aria-hidden="true">
@@ -1378,18 +1387,18 @@
 							education!</p>
 						<ul class="social-link">
 							<li>
-								<a class="d-block twitter" target="_blank" href="#"> <i class="bx bxl-twitter"></i></a>
+								<a class="d-block twitter"  href="#"> <i class="bx bxl-twitter"></i></a>
 							</li>
 							<li>
-								<a class="d-block facebook" target="_blank" href="#"> <i
+								<a class="d-block facebook"  href="#"> <i
 										class="bx bxl-facebook"></i></a>
 							</li>
 							<li>
-								<a class="d-block instagram" target="_blank" href="#"> <i
+								<a class="d-block instagram"  href="#"> <i
 										class="bx bxl-instagram"></i></a>
 							</li>
 							<li>
-								<a class="d-block" target="_blank" href="#"> <i class="bx bxl-linkedin"></i></a>
+								<a class="d-block"  href="#"> <i class="bx bxl-linkedin"></i></a>
 							</li>
 						</ul>
 					</div>
@@ -1444,7 +1453,7 @@
 					<ul class="footer-contact-info">
 						<li>
 							<i class="bx bx-map"></i>
-							<a href="#" target="_blank">
+							<a href="https://goo.gl/maps/2nJarT1pL1EU3frX8" target="_blank">
 								407, Sai Kesava Towers Shilpa Park Kondapur, HITEC City, Hyderabad, Telangana 500084
 							</a>
 						</li>
@@ -1455,7 +1464,7 @@
 						<li>
 							<!-- Email: sales@cyberflax.com -->
 							<i class="bx bx-envelope"></i>
-							<a href="mail:sales@cyberflax.com"><span class="__cf_email__"
+							<a href="mailto:sales@cyberflax.com"><span class="__cf_email__"
 									data-cfemail="523a373e3e3d1237313336373f2b7c313d3f">[email&#160;protected]</span></a>
 						</li>
 						<li>
@@ -1794,21 +1803,37 @@
 		integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
 	</script>
 
-	<script type="text/javascript">
-		$(window).on('load', function () {
-			$('#exampleModal').modal('show');
-		});
-	</script>
+<script type="text/javascript">
+	$(window).on('load', function () {
+		$('#exampleModal').modal('show');
+	});
+</script>
 
 <script>
-    
-        // Close modal on button click
-        $("#close").click(function(){
-            $("#exampleModal").modal('hide');
-        });
+
+	$("#close").click(function(){
+		$("#exampleModal").modal('hide');
+	});
 
 </script>
 
+<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
+
+<script>
+	$(document).ready(function(){
+		$(".lp-show-password-input").on("click",function(){
+			if($(this).parent().find('input').attr('type')=='password'){
+
+				$(this).parent().find('input').attr('type','text')
+			}else{
+				$(this).parent().find('input').attr('type','password')
+
+			}
+		})
+
+	})
+</script>
 </body>
 
+{% endwith %}
 </html>

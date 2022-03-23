@@ -13,6 +13,7 @@ from django.db.models import Count
 from .models import*
 # Create your views here.
 def home(request):
+    # messages.success(request,'hyyy')
     if request.method=="POST":
         email = request.POST['email1']
         var = Newsletter_subscriber(suscriber_email=email)
@@ -33,7 +34,7 @@ def search(request):
     next=request.get_full_path()
     if request.method=='POST':
         search=request.POST['search']
-        crs=(Q(course_title__icontains=search)|Q(category__icontains=search)|Q(slug__icontains=search))
+        crss=(Q(course_title__icontains=search)|Q(category__icontains=search)|Q(slug__icontains=search))
 
         blog=(Q(blog_category__icontains=search)|Q(blog_title__icontains=search)
         |Q(slug__icontains=search)|Q(tags__icontains=search))
@@ -44,7 +45,7 @@ def search(request):
          
         ints=(Q(name__icontains=search)|Q(slug__icontains=search)|Q(expert__icontains=search))
         
-        crs=course_detail.objects.filter(crs)
+        crs=course_detail.objects.filter(crss)
         blg=blog_detail.objects.filter(blog).order_by('id')
         evnt=event_detail.objects.filter(event).order_by('id')
         shop=product_detail.objects.filter(shop_product).order_by('id')
@@ -53,7 +54,7 @@ def search(request):
         paginator=Paginator(crs,6)
         page_no=request.GET.get('page')
         cors=paginator.get_page(page_no)
-        res={'crs':cors,'count':course_detail.objects.all().count}
+        res={'crs':cors,'count':len(crss),'cnt':len(cors)}
         return  render(request,'courses.html',res)
 
     elif len(blg)>0:
@@ -84,7 +85,7 @@ def search(request):
         prod=product_detail.objects.all()
         rt_count=[]
         for p in prod:
-            rt=shop_review.objects.filter(shop=p).aggregate(Count('rate'))
+            rt=product_review.objects.filter(product=p).aggregate(Count('rate'))
             rt['id']=p.id
             rt_count.append(rt)
    

@@ -58,20 +58,28 @@ def single_blog(request,blogs):
     
     tag=blog_detail.objects.values('tags')
     tags={t['tags'] for t in tag}
-    
+    # stud=student.objects.all()
+    rvw=blog_review.objects.filter(blog_id=blog_detail.objects.get(slug=blogs)).order_by('-id')
     if request.method=='POST':
-        if request.user.is_authenticated:
-          comment=request.POST['comment']
-          user=User.objects.get(id=request.user.id)
-          bg=blog_detail.objects.get(slug=blogs)
-          rvw=review(user=user,blog_id=bg,comment=comment)
-          rvw.save()
-          messages.success(request,'Review Posted Successfully.')
-          return redirect(request.get_full_path())
+        if request.user.is_authenticated :
+          if request.user.userType.type =='2' :
+
+            comment=request.POST['comment']
+            user=student.objects.get(user=User.objects.get(id=request.user.id))
+            bg=blog_detail.objects.get(slug=blogs)
+            rvw=blog_review(user=user,blog_id=bg,comment=comment)
+            rvw.save()
+            messages.success(request,'Review Posted Successfully.')
+            return redirect(request.get_full_path())
+          else:
+             messages.error(request,'You are not student.')
+             return redirect(request.get_full_path())
         else:
+          
+          messages.warning(request,'Please login or register !')
           return redirect('loginregister')
-    com=review.objects.filter(blog_id=blog_detail.objects.get(slug=blogs)).count()
-    res={'blog':blgs,'rcnt':blog_rcnt,'cat':li,'tag':tags,'comment_count':com}
+    com=blog_review.objects.filter(blog_id=blog_detail.objects.get(slug=blogs)).count()
+    res={'blog':blgs,'rcnt':blog_rcnt,'cat':li,'tag':tags,'comment_count':com,'rvw':rvw}
     return  render(request,'single-blog.html',res)
 
 

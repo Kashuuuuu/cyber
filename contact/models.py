@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 class contact_msg(models.Model):
-    user=models.ForeignKey(User,on_delete=models.CASCADE)
+    user=models.ForeignKey(User,on_delete=models.CASCADE,related_name='contact_message')
     name=models.CharField(max_length=100)
     email=models.EmailField()
     subject=models.CharField(max_length=500)

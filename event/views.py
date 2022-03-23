@@ -1,7 +1,7 @@
 
 from django.shortcuts import render,HttpResponse,redirect
 
-from shop.models import shop_review
+from shop.models import *
 from .models import *
 from datetime import date
 from django.core.paginator import Paginator

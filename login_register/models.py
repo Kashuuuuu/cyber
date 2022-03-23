@@ -13,7 +13,7 @@ class userType(models.Model):
 
 
 class frgt_pwd(models.Model):
-    user=models.OneToOneField(User,on_delete=models.CASCADE,related_name='pwd')
+    user=models.OneToOneField(User,on_delete=models.CASCADE,related_name='forgot_password')
     frg_token=models.CharField(max_length=1000)
     def __str__(self):
         return self.user.username

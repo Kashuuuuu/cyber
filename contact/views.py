@@ -25,13 +25,12 @@ def contact(request):
             user=User.objects.get(id=request.user.id)
             cont=contact_msg(user=user,name=name,email=email,subject=subject,Msg=msg)
             cont.save()  
-            
             msg1=(f'\n\n\n Name :  {name} \n Email :  {email} \n Message :  {msg}')
             send_mail(subject,msg1,email,[settings.EMAIL_HOST_USER],fail_silently=False)
             messages.success(request,'Your Message Send Successfully.')
             return redirect(request.get_full_path())
         else:
-            messages.warning(request,'Please Login Or Register.')
+            messages.warning(request,'Please! Login Or Register.')
             return redirect('loginregister')
     if len(User.objects.filter(username='admin'))>0:
         usr=User.objects.get(username='admin')

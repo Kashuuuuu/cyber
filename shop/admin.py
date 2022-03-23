@@ -9,12 +9,16 @@ class product_detailAdmin(admin.ModelAdmin):
 class updt_odrAdmin(admin.ModelAdmin):
     list_display=['user']
 
+@admin.register(PaytmTransaction)
+class payAdmin(admin.ModelAdmin):
+    list_display=['ORDERID']
 
-@admin.register(shop_review)
+
+@admin.register(product_review)
 class shop_review(admin.ModelAdmin):
     
-    list_display_links=('shop','user','id')
-    list_display=['id','user','shop'[:20],'rate','review']
+    list_display_links=('product','user','id')
+    list_display=['id','user','product'[:20],'rate','review']
 
 
 @admin.register(cart)
@@ -35,7 +39,7 @@ class product_order(admin.ModelAdmin):
 class course_order(admin.ModelAdmin):
     
     list_display_links=('user',)
-    list_display=['user','course','address','fname','amount']
+    list_display=['user','course','address','status','fname','amount']
 
 
 @admin.register(coupon_code)

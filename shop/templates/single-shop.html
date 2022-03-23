@@ -23,7 +23,7 @@
 <script type='text/javascript' src="{% static '/wp-includes/js/comment-reply.min.js' %}" id='comment-reply-js'></script>
 
 <script type='text/javascript' src="{% static '/wp-content/plugins/woocommerce/assets/js/zoom/jquery.zoom.min.js' %}"
-    id='zoom-js'>
+    id='zoom-js'></script>
 </script>
 <script type='text/javascript'
     src="{% static '/wp-content/plugins/woocommerce/assets/js/flexslider/jquery.flexslider.min.js' %}"
@@ -96,9 +96,12 @@
                         <div class="woocommerce-notices-wrapper"></div>
                         <div id="product-1007"
                             class="pmpro-has-access product type-product post-1007 status-publish first outofstock product_cat-business product_tag-book has-post-thumbnail sale shipping-taxable purchasable product-type-simple">
-                            <span class="sale-btn" style='margin-top:40px;margin-left: 5px;'>Sale!</span>
-                            <div class="woocommerce-product-gallery woocommerce-product-gallery--with-images woocommerce-product-gallery--columns-4 images"
-                                data-columns="4" style="transition: opacity .25s ease-in-out;float: left;width: 48%;">
+                            <span class="sale-btn" style="margin-top: 5%;" >Sale!</span>
+                            <div  style="transition: opacity .25s ease-in-out;
+                            float: left;
+                            width: 48%;"
+                         class="woocommerce-product-gallery woocommerce-product-gallery--with-images woocommerce-product-gallery--columns-4 images"
+                                data-columns="4">
                                 <figure class="woocommerce-product-gallery__wrapper">
                                     <div data-thumb="/media/{{product.0.product_img}}" data-thumb-alt=""
                                         class="woocommerce-product-gallery__image"><a
@@ -115,8 +118,11 @@
                                 </figure>
                             </div>
 
-                            <div class="summary entry-summary products-details" style="float: right;width: 48%;">
-                                <h3 class="product_title entry-title">{{product.0.product_title|capfirst}}</h3>
+                            <div style="
+                            float: right;
+                            width: 48%;
+                        " class="summary entry-summary products-details" >
+                                <h3 class="product_title entry-title">{{product.0.product_title|capfirst|slice:':20'}}</h3>
                                 <p class="price">
                                     <del aria-hidden="true"><span class="woocommerce-Price-amount amount"><bdi><span
                                                     class="woocommerce-Price-currencySymbol">&#36;</span>{{product.0.product_price}}</bdi></span></del>
@@ -182,8 +188,9 @@
                             
                             <div class="woocommerce-tabs wc-tabs-wrapper products-details-tabs">
                                 <ul class="nav nav-tabs tabs wc-tabs" role="tablist" id="tabs">
-                                    <li class="description_tab nav-item" id="tab-title-description" role="tab"
-                                        style="box-sizing: border-box;" aria-controls="tab-description">
+                                    <li class="description_tab nav-item" id="tab-title-description" role="tab" 
+                                    style="margin-top: 10%;box-sizing: border-box;"
+                                        aria-controls="tab-description">
                                         <a href="#tab-description" class="nav-link active">Description</a>
                                     </li>
                                     <li class="reviews_tab nav-item" id="tab-title-reviews" role="tab"
@@ -192,9 +199,9 @@
                                     </li>
                                 </ul>
                                 <div class="row woocommerce-Tabs-panel woocommerce-Tabs-panel--description panel entry-content wc-tab content"
-                                    id="tab-description" role="tabpanel" aria-labelledby="tab-title-description">
+                                    id="tab-description" role="tabpanel" aria-labelledby="tab-title-description" style="margin-top: 5%;">
                                     <h3>Description</h3></br>
-                                    <p>{{product.0.product_description|safe|capfirst}} </p>
+                                    <p style="margin-top: 20px;margin-left: 0px;">{{product.0.product_description|safe|capfirst}} </p>
 
                                 </div>
                                 <div class="woocommerce-Tabs-panel woocommerce-Tabs-panel--reviews panel entry-content wc-tab content"
@@ -252,8 +259,9 @@
                                 <h2>Related products</h2>
                                 <ul class="products columns-3 row">
                                     {% for r in rlt_product %}
+                                    {% if forloop.counter < 4 %}
                                     <li class="pmpro-has-access product type-product post-1006 status-publish first outofstock product_cat-business product_tag-book has-post-thumbnail 
-                                    sale shipping-taxable purchasable product-type-simple" style="padding: 10px;">
+                                    sale shipping-taxable purchasable product-type-simple" style="padding: 40px; list-style-type: none; ">
                                         <div class="single-products single-products-box">
                                             <a href="{% url 'single-shop' r.slug %}"
                                                 class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
@@ -278,7 +286,7 @@
                                                 </div>
                                                 <div class="products-content">
                                                     <h3><a href="{% url 'single-shop' r.slug %}">
-                                                            {{r.product_title|capfirst}}</a></h3>
+                                                            {{r.product_title|capfirst|slice:':10'}}</a></h3>
                                                     <span class="price"><del aria-hidden="true"><span
                                                                 class="woocommerce-Price-amount amount"><bdi><span
                                                                         class="woocommerce-Price-currencySymbol">&#36;</span>{{r.product_price}}</bdi></span></del>
@@ -360,12 +368,7 @@
                                                                     </div>
                                                                     <div class="product-meta">
                                                                         <div class="product_meta">
-                                                                            <span class="posted_in">Quntity:
-            
-                                                                                <input value="{{r.quntity}}"
-                                                                                    style="border:none; display: inline;"
-                                                                                    id='prod_cat'>
-                                                                            </span>
+                                                                           
                                                                             <span class="sku_wrapper">SKU: <span class="sku">
                                                                                     <input style="border:none; display: inline;"
                                                                                         value="{{r.product_sku}}" id='prod_sku' />
@@ -399,7 +402,7 @@
                                                 </div>
             
                                             </div>
-                                    </li>
+                                    </li>{% endif %}
                                     {% endfor %}
                                 </ul>
 

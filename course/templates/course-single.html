@@ -453,10 +453,11 @@
 														<!-- <h3>Certification</h3>
 														<p>{{crs.0.course_certificate}}</p> -->
 														{% endcomment %}
+														{% if crs.0.who_this_course.all %}
 														<h3>Who This Course is for</h3>
 														{% for i in crs.0.who_this_course.all %}
 														<p>* {{i.title|capfirst}}</p>
-														{% endfor %}
+														{% endfor %}{% endif %}
 													</div>
 												</div>
 
@@ -637,14 +638,14 @@
 															<div class="course-author__pull-left">
 
 																<!-- {{r.name.user.img}}={{r.name.users.img}} -->
-																{% if r.name.user.img|length != 0 %}
-																<img alt='User Avatar' src='/media/{{r.name.user.img}}'
-																	srcset='/media/{{r.name.user.img}} 2x'
+																{% if r.name.instructor.img|length != 0 %}
+																<img alt='User Avatar' src='/media/{{r.name.instructor.img}}'
+																	srcset='/media/{{r.name.instructor.img}} 2x'
 																	class='avatar avatar-96 photo' height='20'
 																	width='20' loading='lazy' />
-																{% elif r.name.users.img|length != 0 %}
-																<img alt='User Avatar' src='/media/{{r.name.users.img}}'
-																	srcset='/media/{{r.name.users.img}} 2x'
+																{% elif r.name.student.img|length != 0 %}
+																<img alt='User Avatar' src='/media/{{r.name.student.img}}'
+																	srcset='/media/{{r.name.student.img}} 2x'
 																	class='avatar avatar-96 photo' height='20'
 																	width='20' loading='lazy' />
 
@@ -770,7 +771,7 @@
 				</div>
 				<div class="col-lg-4 col-md-12">
 					<div class="courses-details-info">
-						<div class="image">
+						<!-- <div class="image">
 							<img src="/media/{{crs.0.course_img}}" alt="" width="100%">
 							{% comment %} {{crs.0.YT_video_url}} {% endcomment %}
 							<a href="#" class="link-btn popup-youtube"></a>
@@ -778,7 +779,7 @@
 								<i class="flaticon-play"></i>
 								<span>Course Preview</span>
 							</div>
-						</div>
+						</div> -->
 
 						<ul class="info">
 							<li class="price">
@@ -860,7 +861,7 @@
 		</div>
 	</div>
 
-	<section class="courses-area bg-f8f9f8 pt-100 pb-70">
+	<section class="courses-area bg-f8f9f8 pt-100 pb-0">
 		<div class="container">
 			<div class="section-title">
 				<h2>More Courses You Might Like</h2>

@@ -30,6 +30,8 @@ urlpatterns = [
     path('', include('login_register.urls')),
     path('', include('event.urls')),
     path('', include('user_profile.urls')),
+    path('dashboard/', include('admin_dashboard.urls')),
+    # path('dashboard/', include('superuser.urls')),
    
 ]+ static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)  +\
               static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

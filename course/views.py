@@ -1,6 +1,6 @@
 from django.shortcuts import render,HttpResponse,redirect
 
-from blog.models import review
+# from blog.models import *
 from .models import *
 from django.core.paginator import Paginator
 from django.db.models import Q
@@ -28,7 +28,9 @@ def course_single(request,course):
             messages.success(request,'Review Posted Successfully.')
             return redirect(request.get_full_path())
         else:
-            return redirect ('login')
+            
+            messages.warning(request,'Please! login or register.')
+            return redirect ('loginregister')
     # rt_count=[]
     
     crs1=course_detail.objects.get(slug=course)
@@ -70,20 +72,20 @@ def courses(request):
         # Q(course_description__icontains=search)|Q(lession_no__icontains=search) 
         # |Q(student_no__icontains=search)|Q(course_certificate__icontains=search)|
         # Q(course_quiz__icontains=search) |Q(course_duration_in_weeks__icontains=search))
-        crs=course_detail.objects.filter(or_look).order_by('id')
+        crss=course_detail.objects.filter(or_look).order_by('id')
     
     elif request.GET.get('inst')!=None:
         ins=instructor.objects.get(slug=request.GET.get('inst'))
-        crs=course_detail.objects.filter(course_instructor=ins).order_by('id')
+        crss=course_detail.objects.filter(course_instructor=ins).order_by('id')
     else:
-        crs=course_detail.objects.all().order_by('id')
-    if len(crs)==0:    
+        crss=course_detail.objects.all().order_by('id')
+    if len(crss)==0:    
       return render(request,'searchnotfound.html')
 
         
-    paginator=Paginator(crs,6)
+    paginator=Paginator(crss,6)
     page_no=request.GET.get('page')
     crs=paginator.get_page(page_no)
        
-    res={'crs':crs,'count':course_detail.objects.all().count,'cnt':len(crs)}
+    res={'crs':crs,'count':len(crss),'cnt':len(crs)}
     return  render(request,'courses.html',res)
