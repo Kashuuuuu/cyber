@@ -1,4 +1,4 @@
-from attr import attr
+
 from django.forms import widgets,ModelForm
 from django import forms  
 from blog.models import *
