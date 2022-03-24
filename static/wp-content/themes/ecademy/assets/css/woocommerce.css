@@ -174,9 +174,9 @@ button {
     transition: prop time
 }
 
-.woocommerce .btn-primary:hover {
+/* .woocommerce .btn-primary:hover {
     background-color: #221638 !important
-}
+} */
 
 .single-products {
     text-align: center;

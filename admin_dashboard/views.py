@@ -165,33 +165,38 @@ def payments(request):
 def ad_login(request):
     if request.user.is_authenticated and request.user.is_superuser:
         return redirect('ad_dash')
-    res={}
-    if request.method=="POST":
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        USER = authenticate(request,username=username, password=password)
-        if USER is not None:
-            login(request, USER)
-            if request.user.is_superuser:
-                sms.success(request,'Login Success.')
-                return redirect('ad_dash')
+    else:
+        res={}
+        if request.method=="POST":
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+            USER = authenticate(request,username=username, password=password)
+            if USER is not None:
+                login(request, USER)
+                if request.user.is_superuser:
+                    sms.success(request,'Login Success.')
+                    return redirect('ad_dash')
+                else:
+                    
+                    sms.error(request,'wrong username or password!')
+                    return redirect('ad_login')
+            
             else:
-                
-                sms.error(request,'wrong username or password!')
+                sms.error(request,'Invalid Username or Password!')
                 return redirect('ad_login')
-        
-        else:
-            sms.error(request,'Invalid Username or Password!')
-            return redirect('ad_login')
-              
-    return render(request,'logn.html',res)
+                
+        return render(request,'logn.html',res)
 def ad_logout(request):
-    try:
-        logout(request)
-        sms.success(request,'Logout Successfully.')
-        return redirect('ad_login')
-    except Exception as e:
-        sms.warning(request,'something went wrong !')
+    if request.user.is_authenticated and request.user.is_superuser:
+   
+        try:
+            logout(request)
+            sms.success(request,'Logout Successfully.')
+            return redirect('ad_login')
+        except Exception as e:
+            sms.warning(request,'something went wrong !')
+            return redirect('ad_login')
+    else:
         return redirect('ad_login')
     # return redirect('home')
 def ad_forgot_pwd(request):
@@ -509,7 +514,7 @@ def add_blog(request):
     if request.user.is_authenticated and request.user.is_superuser:
         res={}
         res['inst']=instructor.objects.all()
-        res['imgs']=blogdetail_img.objects.all()
+        # res['imgs']=blogdetail_img.objects.all()
         res['elem']=blogdetail_element.objects.all()
 
         if request.method=='POST'  :
@@ -610,43 +615,51 @@ def add_product(request):
         return redirect('ad_login')
 
 def stud(request):
-    res={}
-    nxt=request.get_full_path()
-    res['studs']=student.objects.all()
-    paginator=Paginator(res['studs'],6)
-    page_no=request.GET.get('page')
-    res['stud']=paginator.get_page(page_no)
-    res['tot']=len( student.objects.all() )
-    if request.method=='POST':
-            if request.POST.get('sdid')!=None: # for delete
-                sdid=request.POST['sdid']
-                prod=student.objects.filter(id=sdid)
-                # prod.delete()
-                ur=User.objects.filter(id=student.objects.get(id=sdid).user.id).delete()
-                sms.success(request,'Student Deleted SuccessFully.')
-                return redirect(nxt)
-           
-    return render(request,'instrut.html',res)
-def inst(request):
-    res={}
-    nxt=request.get_full_path()
-    res['insts']=instructor.objects.all()
-    paginator=Paginator(res['insts'],6)
-    page_no=request.GET.get('page')
-    res['inst']=paginator.get_page(page_no)
-    res['tot']=len( instructor.objects.all() )
-    if request.method=='POST':
-            if request.POST.get('idid')!=None: # for delete
-                idid=request.POST['idid']
-                prod=instructor.objects.filter(id=idid)
-                # prod.delete()
-                ur=User.objects.filter(id=instructor.objects.get(id=idid).user.id).delete()
-                sms.success(request,'Instructor Deleted SuccessFully.')
-                return redirect(nxt)
-           
+    if request.user.is_authenticated and request.user.is_superuser:
+        res={}
+        nxt=request.get_full_path()
+        res['studs']=student.objects.all()
+        paginator=Paginator(res['studs'],6)
+        page_no=request.GET.get('page')
+        res['stud']=paginator.get_page(page_no)
+        res['tot']=len( student.objects.all() )
+        if request.method=='POST':
+                if request.POST.get('sdid')!=None: # for delete
+                    sdid=request.POST['sdid']
+                    prod=student.objects.filter(id=sdid)
+                    # prod.delete()
+                    ur=User.objects.filter(id=student.objects.get(id=sdid).user.id).delete()
+                    sms.success(request,'Student Deleted SuccessFully.')
+                    return redirect(nxt)
+            
+        return render(request,'instrut.html',res)
+    else:
+        return redirect('ad_login')
 
-    
-    return render(request,'instrut.html',res)
+def inst(request):
+    if request.user.is_authenticated and request.user.is_superuser:
+        res={}
+        nxt=request.get_full_path()
+        res['insts']=instructor.objects.all()
+        paginator=Paginator(res['insts'],6)
+        page_no=request.GET.get('page')
+        res['inst']=paginator.get_page(page_no)
+        res['tot']=len( instructor.objects.all() )
+        if request.method=='POST':
+                if request.POST.get('idid')!=None: # for delete
+                    idid=request.POST['idid']
+                    prod=instructor.objects.filter(id=idid)
+                    # prod.delete()
+                    ur=User.objects.filter(id=instructor.objects.get(id=idid).user.id).delete()
+                    sms.success(request,'Instructor Deleted SuccessFully.')
+                    return redirect(nxt)
+            
+
+        
+        return render(request,'instrut.html',res)
+    else:
+        return redirect('ad_login')
+
 
 def ad_profile(request):
     if request.user.is_authenticated and request.user.is_superuser:
@@ -731,205 +744,226 @@ def ad_profile(request):
     else:
         return redirect('ad_login')
 def inst_detail(request,inst):
-    res={}
-    res['inst']=instructor.objects.filter(slug=inst)
-    res['crss']=course_detail.objects.filter(course_instructor=instructor.objects.get(slug=inst)).order_by('-id')
-    res['odrprod']=products_purchase_order.objects.filter(user=instructor.objects.get(slug=inst).user.id).order_by('-id')
+    if request.user.is_authenticated and request.user.is_superuser:
+        res={}
+        res['inst']=instructor.objects.filter(slug=inst)
+        res['crss']=course_detail.objects.filter(course_instructor=instructor.objects.get(slug=inst)).order_by('-id')
+        res['odrprod']=products_purchase_order.objects.filter(user=instructor.objects.get(slug=inst).user.id).order_by('-id')
 
-    print(res['odrprod'],'[[[[[[[[')
-    paginator=Paginator(res['crss'],10)
-    page_no=request.GET.get('page')
-    res['crs']=paginator.get_page(page_no)
-    res['tot']=len( res['crss'])
-    nxt=request.get_full_path()
-    if request.method=='POST':
-            email=request.POST['email']
-            name=request.POST['name']
-            img=request.POST['img']
-            expert=request.POST['expert']
-            about=request.POST['about']
-            if request.POST.get('inst')!=None:
-                pro= instructor.objects.filter(id=request.POST['inst'])
-                if len(pro)>0:
-                    ob=pro[0]
-                    ob.user=User.objects.get(id=request.user.id)
-                    if len(name)>0:
-                        ob.name=name
-                    if len(img)>0:
-                        ob.img=img
-                    if len(email)>0:
-                        ob.email=email
-                    if len(expert)>0:
-                        ob.expert=expert
-                    if len(about)>0:
-                        ob.about=about
-                    ob.save()
-                    sms.success(request,'Profile Updated.')
-                    return redirect(nxt)    
-           
-    
-    return render(request,'inst-stud-profile.html',res)
+        print(res['odrprod'],'[[[[[[[[')
+        paginator=Paginator(res['crss'],10)
+        page_no=request.GET.get('page')
+        res['crs']=paginator.get_page(page_no)
+        res['tot']=len( res['crss'])
+        nxt=request.get_full_path()
+        if request.method=='POST':
+                email=request.POST['email']
+                name=request.POST['name']
+                img=request.POST['img']
+                expert=request.POST['expert']
+                about=request.POST['about']
+                if request.POST.get('inst')!=None:
+                    pro= instructor.objects.filter(id=request.POST['inst'])
+                    if len(pro)>0:
+                        ob=pro[0]
+                        ob.user=User.objects.get(id=request.user.id)
+                        if len(name)>0:
+                            ob.name=name
+                        if len(img)>0:
+                            ob.img=img
+                        if len(email)>0:
+                            ob.email=email
+                        if len(expert)>0:
+                            ob.expert=expert
+                        if len(about)>0:
+                            ob.about=about
+                        ob.save()
+                        sms.success(request,'Profile Updated.')
+                        return redirect(nxt)    
+            
+        
+        return render(request,'inst-stud-profile.html',res)
+    else:
+        return redirect('ad_login')
+
 
 import itertools 
 from itertools import chain
 def stud_detail(request,stud):
-    res={}
-    res['stud']=student.objects.filter(slug=stud)
-    res['odrcrs']=courses_purchase_order.objects.filter(user=student.objects.get(slug=stud).user.id).order_by('-id')
-    res['odrprod']=products_purchase_order.objects.filter(user=student.objects.get(slug=stud).user.id).order_by('-id')
+    if request.user.is_authenticated and request.user.is_superuser:
+        res={}
+        res['stud']=student.objects.filter(slug=stud)
+        res['odrcrs']=courses_purchase_order.objects.filter(user=student.objects.get(slug=stud).user.id).order_by('-id')
+        res['odrprod']=products_purchase_order.objects.filter(user=student.objects.get(slug=stud).user.id).order_by('-id')
 
-    
-    # for i in chn:
-    #     print(i.order_date,'////////')
-    # paginator=Paginator(res['chn'],10)
-    # page_no=request.GET.get('page')
-    # res['ordr']=paginator.get_page(page_no)
-    # res['tots']=len( res['chn'])
-    nxt=request.get_full_path()
-    if request.method=='POST':
-            email=request.POST['email']
-            name=request.POST['name']
-            img=request.POST['img']
-            expert=request.POST['expert']
-            about=request.POST['about']
-            if request.POST.get('stud')!=None:
-                pro= student.objects.filter(id=request.POST['stud'])
-                if len(pro)>0:
-                    ob=pro[0]
-                    ob.user=User.objects.get(id=request.user.id)
-                    if len(name)>0:
-                        ob.name=name
-                    if len(img)>0:
-                        ob.img=img
-                    if len(email)>0:
-                        ob.email=email
-                    if len(expert)>0:
-                        ob.expert=expert
-                    if len(about)>0:
-                        ob.about=about
-                    ob.save() 
-                    sms.success(request,'Profile Updated.')
-                    return redirect(nxt)
-    return render(request,'inst-stud-profile.html',res)
+        
+        # for i in chn:
+        #     print(i.order_date,'////////')
+        # paginator=Paginator(res['chn'],10)
+        # page_no=request.GET.get('page')
+        # res['ordr']=paginator.get_page(page_no)
+        # res['tots']=len( res['chn'])
+        nxt=request.get_full_path()
+        if request.method=='POST':
+                email=request.POST['email']
+                name=request.POST['name']
+                img=request.POST['img']
+                expert=request.POST['expert']
+                about=request.POST['about']
+                if request.POST.get('stud')!=None:
+                    pro= student.objects.filter(id=request.POST['stud'])
+                    if len(pro)>0:
+                        ob=pro[0]
+                        ob.user=User.objects.get(id=request.user.id)
+                        if len(name)>0:
+                            ob.name=name
+                        if len(img)>0:
+                            ob.img=img
+                        if len(email)>0:
+                            ob.email=email
+                        if len(expert)>0:
+                            ob.expert=expert
+                        if len(about)>0:
+                            ob.about=about
+                        ob.save() 
+                        sms.success(request,'Profile Updated.')
+                        return redirect(nxt)
+        return render(request,'inst-stud-profile.html',res)
+    else:
+        return redirect('ad_login')
+
 
 
 def who_this(request):
-    res={}
-    res['whos']=who_this_crs_for.objects.all().order_by('-id')
-    paginator=Paginator(res['whos'],10)
-    page_no=request.GET.get('page')
-    res['who']=paginator.get_page(page_no)
-    res['tot']=len(who_this_crs_for.objects.all())
-    if request.method=='POST':
-        
-        if request.POST.get('crs')!=None:
-            crs=request.POST['crs']
-            title=request.POST['title']
-            pro= who_this_crs_for(crs=crs,title=title)
-            pro.save() 
-            sms.success(request,'Element Added.')
-            return redirect('who')
+    if request.user.is_authenticated and request.user.is_superuser:
+        res={}
+        res['whos']=who_this_crs_for.objects.all().order_by('-id')
+        paginator=Paginator(res['whos'],10)
+        page_no=request.GET.get('page')
+        res['who']=paginator.get_page(page_no)
+        res['tot']=len(who_this_crs_for.objects.all())
+        if request.method=='POST':
             
-        elif request.POST.get('eid')!=None:
-                    pro= who_this_crs_for.objects.filter(id=request.POST.get('eid'))
-                    crs=request.POST['crss']
-                    title=request.POST['title']
-                    if len(pro)>0:
-                        ob=pro[0]
-                        if len(title)>0:
-                            ob.title=title
-                        if len(crs)>0:
-                            ob.crs=crs
-                        ob.save()
-                        sms.success(request,'Updated successfully.')
+            if request.POST.get('crs')!=None:
+                crs=request.POST['crs']
+                title=request.POST['title']
+                pro= who_this_crs_for(crs=crs,title=title)
+                pro.save() 
+                sms.success(request,'Element Added.')
+                return redirect('who')
+                
+            elif request.POST.get('eid')!=None:
+                        pro= who_this_crs_for.objects.filter(id=request.POST.get('eid'))
+                        crs=request.POST['crss']
+                        title=request.POST['title']
+                        if len(pro)>0:
+                            ob=pro[0]
+                            if len(title)>0:
+                                ob.title=title
+                            if len(crs)>0:
+                                ob.crs=crs
+                            ob.save()
+                            sms.success(request,'Updated successfully.')
+                            return redirect('who')
+            
+            elif request.POST.get('did')!=None:
+                        pro= who_this_crs_for(id=request.POST.get('did')).delete()
+                        sms.success(request,'Deleted Successfully.')
                         return redirect('who')
-        
-        elif request.POST.get('did')!=None:
-                    pro= who_this_crs_for(id=request.POST.get('did')).delete()
-                    sms.success(request,'Deleted Successfully.')
-                    return redirect('who')
 
-    return render(request,'whothiscrs.html',res)
+        return render(request,'whothiscrs.html',res)
+    else:
+        return redirect('ad_login')
+
 
 def blgele(request):
-    res={}
-    res['blg']=blogdetail_element.objects.all().order_by('-id')
-    paginator=Paginator(res['blg'],10)
-    page_no=request.GET.get('page')
-    res['blg']=paginator.get_page(page_no)
-    res['tot']=len(blogdetail_element.objects.all())
-    if request.method=='POST':
-        
-        if request.POST.get('eles')!=None:
-            ele=request.POST['eles']
-            pro= blogdetail_element(element=ele)
-            pro.save() 
-            sms.success(request,'Element Added.')
-            return redirect('blgele')
+    if request.user.is_authenticated and request.user.is_superuser:
+        res={}
+        res['blg']=blogdetail_element.objects.all().order_by('-id')
+        paginator=Paginator(res['blg'],10)
+        page_no=request.GET.get('page')
+        res['blg']=paginator.get_page(page_no)
+        res['tot']=len(blogdetail_element.objects.all())
+        if request.method=='POST':
             
-        elif request.POST.get('bid')!=None:
-                    pro= blogdetail_element.objects.filter(id=request.POST.get('bid'))
-                    ele=request.POST['ele']
-                    if len(pro)>0:
-                        ob=pro[0]
-                        if len(ele)>0:
-                            ob.element=ele
-                        ob.save()
-                        sms.success(request,'Updated successfully.')
+            if request.POST.get('eles')!=None:
+                ele=request.POST['eles']
+                pro= blogdetail_element(element=ele)
+                pro.save() 
+                sms.success(request,'Element Added.')
+                return redirect('blgele')
+                
+            elif request.POST.get('bid')!=None:
+                        pro= blogdetail_element.objects.filter(id=request.POST.get('bid'))
+                        ele=request.POST['ele']
+                        if len(pro)>0:
+                            ob=pro[0]
+                            if len(ele)>0:
+                                ob.element=ele
+                            ob.save()
+                            sms.success(request,'Updated successfully.')
+                            return redirect('blgele')
+            
+            elif request.POST.get('deid')!=None:
+                        pro= blogdetail_element(id=request.POST.get('deid')).delete()
+                        sms.success(request,'Deleted Successfully.')
                         return redirect('blgele')
-        
-        elif request.POST.get('deid')!=None:
-                    pro= blogdetail_element(id=request.POST.get('deid')).delete()
-                    sms.success(request,'Deleted Successfully.')
-                    return redirect('blgele')
 
-    return render(request,'whothiscrs.html',res)
+        return render(request,'whothiscrs.html',res)
+    else:
+        return redirect('ad_login')
 
 
 
 
 def add_coupon(request):
-   
-    if request.method=='POST':
-            code=request.POST['code']
-            valid_date=request.POST['date']
-            discount=request.POST['dis']
-            pro= coupon_code(code=code,valid_date=valid_date,discount=discount)
-            pro.save() 
-            sms.success(request,'Coupon Added.')
-            return redirect('coupons')
-    return render(request,'addcoupon.html')
-
-def coupons(request):
-    res={}
-    res['cop']=coupon_code.objects.all()
-    nxt=request.get_full_path()
-    if request.method=='POST':
-           
-            if request.POST.get('cid')!=None:
+    if request.user.is_authenticated and request.user.is_superuser:
+        if request.method=='POST':
                 code=request.POST['code']
                 valid_date=request.POST['date']
                 discount=request.POST['dis']
+                pro= coupon_code(code=code,valid_date=valid_date,discount=discount)
+                pro.save() 
+                sms.success(request,'Coupon Added.')
+                return redirect('coupons')
+        return render(request,'addcoupon.html')
+    else:
+        return redirect('ad_login')
 
-                pro= coupon_code.objects.filter(id=request.POST['cid'])
-                if len(pro)>0:
-                    ob=pro[0]
-                    if len(valid_date)>0:
-                        ob.valid_date=valid_date
-                    if len(discount)>0:
-                        ob.discount=discount
-                    if len(code)>0:
-                        ob.code=code
-                    ob.save()
-                    sms.success(request,'Coupon Updated.')
-                    return redirect(nxt)
-            elif request.POST.get('did')!=None:
-                pro= coupon_code.objects.filter(id=request.POST['did'])
-                pro.delete()   
-                sms.success(request,'Coupon Deleted.')
-                return redirect(nxt)           
 
-    return render(request,'coupons.html',res)
+def coupons(request):
+    if request.user.is_authenticated and request.user.is_superuser:
+        res={}
+        res['cop']=coupon_code.objects.all()
+        nxt=request.get_full_path()
+        if request.method=='POST':
+            
+                if request.POST.get('cid')!=None:
+                    code=request.POST['code']
+                    valid_date=request.POST['date']
+                    discount=request.POST['dis']
+
+                    pro= coupon_code.objects.filter(id=request.POST['cid'])
+                    if len(pro)>0:
+                        ob=pro[0]
+                        if len(valid_date)>0:
+                            ob.valid_date=valid_date
+                        if len(discount)>0:
+                            ob.discount=discount
+                        if len(code)>0:
+                            ob.code=code
+                        ob.save()
+                        sms.success(request,'Coupon Updated.')
+                        return redirect(nxt)
+                elif request.POST.get('did')!=None:
+                    pro= coupon_code.objects.filter(id=request.POST['did'])
+                    pro.delete()   
+                    sms.success(request,'Coupon Deleted.')
+                    return redirect(nxt)           
+
+        return render(request,'coupons.html',res)
+    else:
+        return redirect('ad_login')
 
 def error404(request):
     return render(request,'pages/404.html')

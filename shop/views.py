@@ -67,7 +67,8 @@ def shop(request):
     for p in products:
                 dis.append({
                     'id':p.id,'disc':"{:.0f}".format(p.product_price-(p.product_price*p.discount/100)) })
-    res={'product':products,'rate_count':lis,'discunt':dis,'count':product_detail.objects.all().count,
+    res={'product':products,'rate_count':lis,'discunt':dis,
+    'count':product_detail.objects.all().count,
     'result_count':len(product_detl)}
     return  render(request,'shop.html',res)
 
@@ -114,9 +115,11 @@ def single_shop(request,shops):
                     'id':p.id,'disc':"{:.0f}".format(p.product_price-(p.product_price*p.discount/100)) })
    
 
-    res={'product':product_detl,'rlt_product':prod,'discunt':dis,'rate_count':lis}
+    res={'product':product_detl,'rlt_product':prod,'discunt':dis,
+    'rate_count':lis}
     return  render(request,'single-shop.html',res)
 
+@login_required(login_url='loginregister')
 def mycart(request):
     cartlist=cart.objects.filter(userid=request.user.id)
     li=[]
@@ -176,6 +179,7 @@ def mycart(request):
     return  render(request,'cart.html',res)
 
 
+@login_required(login_url='loginregister')
 def add_to_cart(request,addcart):
     if request.user.is_authenticated:
         carts=cart.objects.all()
@@ -214,6 +218,7 @@ def add_to_cart(request,addcart):
         return redirect('loginregister')
 
 
+@login_required(login_url='loginregister')
 def checkout(request):
     cartlist=cart.objects.filter(userid=request.user.id)
     li=[]
@@ -254,6 +259,7 @@ def checkout(request):
         res={'cart':li,'total':total}
     return render(request, 'checkout.html',res)
 
+@login_required(login_url='loginregister')
 def order(request):
     cartlist=cart.objects.filter(userid=request.user.id)
     if request.method=='POST':

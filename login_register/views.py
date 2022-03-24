@@ -22,89 +22,100 @@ def loginregister(request):
         return  render(request,'loginregister.html')
 
 def register(request):
+    if request.user.is_authenticated!=True:
     
-    if request.method == "POST":
-        try:
-                name = request.POST['name']
-                email = request.POST['email']
-                password = request.POST['password']
-                confirm=request.POST['confirm']
-                checkbox=request.POST.get('check')
-                next=request.POST.get('next')
-                
-                usermail = User.objects.filter(email=email.lower())
-                usernam=User.objects.filter(username=name)
-                if len(usermail) !=1 :
-                    if len(usernam)!=1:
-                        if confirm==password: 
-                            user =User.objects.create_user(username=name, email=email.lower(), password=password)
-                            user.save()
-                            if checkbox != None:
-                                typeuser = userType(user=user, type='1')
-                                typeuser.save()
-                                inst=instructor(user=user,name=name,email=email.lower())
-                                inst.save()
-                                token=str(uuid.uuid4())
-                                frgpwd=frgt_pwd(user=user,frg_token=token)
-                                frgpwd.save()
-                                messages.success(request,'Registration Successfully As A Instructor.\n Thank You !')
-                                return redirect('home')
+        if request.method == "POST":
+            try:
+                    name = request.POST['name']
+                    email = request.POST['email']
+                    password = request.POST['password']
+                    confirm=request.POST['confirm']
+                    checkbox=request.POST.get('check')
+                    next=request.POST.get('next')
+                    
+                    usermail = User.objects.filter(email=email.lower())
+                    usernam=User.objects.filter(username=name)
+                    if len(usermail) !=1 :
+                        if len(usernam)!=1:
+                            if confirm==password: 
+                                user =User.objects.create_user(username=name, email=email.lower(), password=password)
+                                user.save()
+                                if checkbox != None:
+                                    typeuser = userType(user=user, type='1')
+                                    typeuser.save()
+                                    inst=instructor(user=user,name=name,email=email.lower())
+                                    inst.save()
+                                    token=str(uuid.uuid4())
+                                    frgpwd=frgt_pwd(user=user,frg_token=token)
+                                    frgpwd.save()
+                                    messages.success(request,'Registration Successfully As A Instructor.\n Thank You !')
+                                    return redirect('home')
+                                else:
+                                    typeuser = userType(user=user, type='2')
+                                    typeuser.save() 
+                                    # new_usr = user.replace(" ", "_")
+                                    stud=student(user=user,name=name,email=email.lower())
+                                    stud.save()
+                                    token=str(uuid.uuid4())
+                                    frgpwd=frgt_pwd(user=user,frg_token=token)
+                                    frgpwd.save()  
+                                    messages.success(request,'Registration Successfully As A Student.\n Thank You !')
+                                    
+                                    return redirect('home')
                             else:
-                                typeuser = userType(user=user, type='2')
-                                typeuser.save() 
-                                # new_usr = user.replace(" ", "_")
-                                stud=student(user=user,name=name,email=email.lower())
-                                stud.save()
-                                token=str(uuid.uuid4())
-                                frgpwd=frgt_pwd(user=user,frg_token=token)
-                                frgpwd.save()  
-                                messages.success(request,'Registration Successfully As A Student.\n Thank You !')
-                                
-                                return redirect('home')
-                        else:
-                            messages.error(request,'Password Not Match.')
-                    messages.error(request,'Username Already Register.')           
+                                messages.error(request,'Password Not Match.')
+                        messages.error(request,'Username Already Register.')           
+                        return redirect('loginregister')
+                    messages.error(request,'Email Already Register.')              
                     return redirect('loginregister')
-                messages.error(request,'Email Already Register.')              
-                return redirect('loginregister')
-        except Exception as e:
-             messages.warning(request,'Something Went wrong !')
-   
-    return redirect('home')
-  
+            except Exception as e:
+                messages.warning(request,'Something Went wrong !')
+    
+        return redirect('home')
+    else:
+        return redirect(request.get_full_path())
+ 
 def loged_in(request):
-    if request.method=='POST':
+    
+    if request.user.is_authenticated!=True:
+        if request.method=='POST':
+            try:
+                Email = request.POST['email']
+                next=request.POST.get('next')
+                user=User.objects.filter(email=Email)   
+                if len(user)==1 :
+                    username = User.objects.get(email=Email).username
+                    pwd = request.POST['password']
+                    user= authenticate(username=username,password=pwd)
+                    if user is not None:
+                        login(request,user)
+                        if next=='password-confirm' or next=='lost-password':
+                            messages.success(request, f"{username} You are Login Successfully. ")
+                            return redirect('home')
+                        else:
+                            messages.success(request, f"{username} You are Login Successfully. ")           
+                            return redirect(next)   
+                    messages.error(request,'Invalid Email Or Password !') 
+                else:
+                    messages.error(request,'Email Not Register.') 
+            except Exception as e:
+                messages.warning(request,'Something Went wrong !')
+        
+        return redirect('loginregister')
+    else:
+        return redirect(request.get_full_path())
+ 
+def loged_out(request):
+    
+    if request.user.is_authenticated==True:
         try:
-            Email = request.POST['email']
-            next=request.POST.get('next')
-            user=User.objects.filter(email=Email)   
-            if len(user)==1 :
-                username = User.objects.get(email=Email).username
-                pwd = request.POST['password']
-                user= authenticate(username=username,password=pwd)
-                if user is not None:
-                    login(request,user)
-                    if next=='password-confirm' or next=='lost-password':
-                        messages.success(request, f"{username} You are Login Successfully. ")
-                        return redirect('home')
-                    else:
-                        messages.success(request, f"{username} You are Login Successfully. ")           
-                        return redirect(next)   
-                messages.error(request,'Invalid Email Or Password !') 
-            else:
-                messages.error(request,'Email Not Register.') 
+            logout(request)
+            messages.success(request,'Logout successfully')
         except Exception as e:
             messages.warning(request,'Something Went wrong !')
-     
-    return redirect('loginregister')
-
-def loged_out(request):
-    try:
-        logout(request)
-        messages.success(request,'Logout successfully')
-    except Exception as e:
-        messages.warning(request,'Something Went wrong !')
-    return redirect('home')
+            return redirect('home')
+    else:
+        return redirect(request.get_full_path())
  
 
 def lost_password(request):

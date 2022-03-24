@@ -3970,7 +3970,7 @@ Courses Details Area CSS
   border-radius: 5px;
   padding: 12px 12px 50px 12px;
   margin-left: 15px;
-  margin-top: -240px;
+  /* margin-top: -240px; */
 }
 
 .courses-details-info .image {
