@@ -16882,10 +16882,10 @@ Newsletter Modal CSS
   padding-bottom: 12px;
 }
 
-.newsletter-modal .newsletter-modal-content .modal-inner-content form button:hover {
+/* .newsletter-modal .newsletter-modal-content .modal-inner-content form button:hover {
   color: var(--whiteColor);
   background-color: var(--blackColor);
-}
+} */
 
 .newsletter-modal .newsletter-modal-content .close-btn {
   position: absolute;
