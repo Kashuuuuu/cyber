@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-c4+)%kz38b&5#havm33664&!2$mj5mzr@r62_dfxgnz+u(k9$3
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -157,8 +157,8 @@ USE_TZ = True
 # STATIC_ROOT=BASE_DIR / 'static'
 
 
-STATIC_ROOT  =   os.path.join(BASE_DIR, 'staticfiles')
-STATIC_URL = '/static/'
+# STATIC_ROOT  =   os.path.join(BASE_DIR, 'staticfiles')
+# STATIC_URL = '/static/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
@@ -184,7 +184,7 @@ DEFAULT_FROM_EMAIL = '<anything you want>'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 PROJECT_ROOT   =   os.path.join(os.path.abspath(__file__))
-STATIC_ROOT  =   os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT  =   os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 
 # Extra lookup directories for collectstatic to find static files
